@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <form action="" method="post" novalidate="novalidate">
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+        {% endif %}
+
+         <label >{{ form.username.label }}</label> {{ form.username }}
+
+        <label >{{ form.password.label }}</label> {{ form.password }}
+
+        {% csrf_token %}
+
+        <button type="submit" >登陆</button>
+    </form>
+
+</body>
+</html>

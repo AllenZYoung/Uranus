@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-
 from Uranus import views
 
 urlpatterns = [
-    url(r'^$',views.index,name='index'),
+    url(r'^$', views.index),
     url(r'^admin/', admin.site.urls),
-    url(r'student/', include('student.urls', namespace='student')),
-    url(r'teacher/', include('teacher.urls', namespace='teacher')),
-    url(r'system/', include('system.urls', namespace='system')),
+    url(r'^login/', include('app.urls')),
+    url(r'student/', include('app.student.urls', namespace='student')),
+    url(r'teacher/', include('app.teacher.urls', namespace='teacher')),
+    url(r'system/', include('app.system.urls', namespace='system')),
 ]
