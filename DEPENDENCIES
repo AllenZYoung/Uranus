@@ -5,5 +5,3 @@ MySQL>=5.7(Mariadb>=10.0)
 [pip3]
 Django==1.11.2
 PyMySQL>=0.7.11
-pillow
-
