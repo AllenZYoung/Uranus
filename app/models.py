@@ -73,7 +73,8 @@ class Enroll(models.Model):
 # [团队]==[课程]&[用户:学生账户]
 class Team(models.Model):
     course = models.ForeignKey(Course)
-    name = models.CharField(max_length=32, help_text='取代ID的备用策略')
+    serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号') # 'id' is a reserved word...
+    name = models.CharField(max_length=32, help_text='可选的自定义名字')
     STATUS = (
         ('unsubmitted', '未提交'),
         ('auditing', '待审核'),
@@ -125,6 +126,7 @@ class File(models.Model):
         ('media', '视频'),
     )
     type = models.CharField(max_length=16, choices=TYPE, default='text')
+    time = models.DateTimeField(auto_now_add=True)
 
 
 # <附件>==[作业任务|作业提交]&[资源文件]
@@ -137,6 +139,7 @@ class Attachment(models.Model):
         ('work', '作业提交'),
     )
     type = models.CharField(max_length=16, choices=TYPE, default='workmeta')
+
 
 # [签到]
 class Attendance(models.Model):
