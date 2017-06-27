@@ -16,7 +16,7 @@
             <label>作业管理</label><br/>
             <a href="{% url 'teacher:create_homework' %}?course_id={{ course.id }}">发布作业</a><br/>
             <a href="{% url 'teacher:homework' %}?course_id={{ course.id }}">调整作业</a><br/>
-{#            <a href="{% url 'teacher:' %}?course_id={{ course.id }}">评价作业</a><br/>#}
+            <a href="{% url 'teacher:show_works' %}?course_id={{ course.id }}">评价作业</a><br/>
             <a href="{% url 'teacher:past_homeworks' %}">往期作业</a><br/>
             <label>课程管理</label><br/>
 

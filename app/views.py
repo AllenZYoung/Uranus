@@ -46,6 +46,6 @@ def logout(request):
 
 # Added by kahsolt
 def sampleDBView(request):
-    from app.utils.sampleDB import sampleDB
+    from app.test.sampleDB import sampleDB
     sampleDB()
     return render(request, 'test/sampleDB.html')

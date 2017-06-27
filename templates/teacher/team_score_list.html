@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>score list of gtoups</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>团队名称</td>
+            <td>团队得分</td>
+        </tr>
+        {% num = len(team_list) %}
+        {% num_list = range(num) %}
+        {% for i in num_list %}
+             {% team_name = team_list[i].name %}
+             {% score = score_list[i] %}
+            <tr>
+                <td>{{ team_name }}</td>
+                <td>{{ score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{% url 'teacher:download_tean_score_list' %}">下载得分表</a>
+</body>
+</html>

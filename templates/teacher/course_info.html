@@ -5,7 +5,7 @@
     <title>课程信息</title>
 </head>
 <body>
-    <label>{{ teacher.username }}</label><br/>
+    <label>{{ teacher.name }}</label><br/>
 
     <label>学期:</label>{{ course.term.year }} {{ course.term.semester }}<br/>
     <label>课程名称:</label>{{ course.name }}<br/>
@@ -16,7 +16,7 @@
     <label>开课时间:</label>{{ course.startTime }} - {{ course.endTime }}<br/>
 
 
-    <button onclick="location.href='{% url 'teacher:edit_course'  course.id %}'" type="button">编辑课程信息</button><br/>
+    <button onclick="location.href='{% url 'teacher:course_edit_form'  %}?course_id={{ course.id }}'" type="button">编辑课程信息</button><br/>
 
     <table title="选课学生">
         <tr>
@@ -26,9 +26,9 @@
         </tr>
         {% for student in students %}
             <tr>
-                <td>student.username</td>
-                <td>student.name</td>
-                <td>student.gender</td>
+                <td>{{ student.username }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.gender }}</td>
             </tr>
         {% endfor %}
     </table>
