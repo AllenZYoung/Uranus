@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from app.models import *
 from app.teacher.forms import *
 from app.teacher.utils import *
@@ -202,6 +202,7 @@ def past_homeworks(request):
     return render(request,'teacher/past_homeworks.html',{'workmetas':workmetas})
 
 
+
 # 下载学生作业
 def download_stu_homework(request):
     pass
@@ -214,9 +215,47 @@ def set_rate_of_homework(request):
 
 # 生成个人得分表
 def generate_stu_score_table(request):
-    pass
+    member_score_dict = compute_member_score()
+    stu_list = get_members_list_in_now_term()
+
+    #第一次计算出每个学生的得分后保存到excel表，以便老师下载
+    file = get_stu_score_excel_file_abspath()
+    if not os.path.isfile(file):
+        create_team_score_excel(file, stu_list, member_score_dict)
+    return render(request, 'teacher/member_score_list.html',
+                  {'member_score_dict': member_score_dict, 'stu_list': stu_list})
 
 
-# 生成小组最终成绩
-def generate_group_score_table(request):
-    pass
+
+#生成小组最终成绩
+def generate_team_score_table(request):
+    team_list, score_list, team_score = compute_team_score()
+
+    # 第一次计算出各团队得分之后保存到excel表，以便老师下载
+    file = get_team_score_excel_file_abspath()
+    if not os.path.isfile(file):
+        create_team_score_excel(file, team_list, team_score)
+
+    return render(request, 'teacher/team_score_list.html',
+                  {'team_list': team_list, 'score_list': score_list})
+
+
+#下载小组得分表
+def download_team_score_list():
+    file = get_team_score_excel_file_abspath()
+    response = StreamingHttpResponse(file_iterator(file))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
+
+    return response
+
+
+# 下载所有学生的分数excel
+def download_stu_score_list(request):
+    file = get_stu_score_excel_file_abspath()
+    response = StreamingHttpResponse(file_iterator(file))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
+
+    return response
+

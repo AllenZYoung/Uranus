@@ -8,6 +8,8 @@ from . import utils
 
 #TODO 学生登录和注销（一般而言，要与教师、教务统一）
 
+
+
 # Create your views here.
 def index(request):
     return HttpResponse('student page')
