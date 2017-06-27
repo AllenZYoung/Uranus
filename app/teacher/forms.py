@@ -4,7 +4,18 @@ from django import forms
 
 # define your custom forms here
 class UploadFileForm(forms.Form):
-    file = forms.FileField()
+    file = forms.FileField(label='选择附件')
+
+
+class HomeworkForm(forms.Form):
+    content=forms.CharField(label='作业内容')
+    proportion=forms.FloatField(label='总分占比',min_value=0,max_value=1)
+    submits=forms.IntegerField(label='最大提交次数',min_value=1)
+    startTime=forms.DateTimeField(label='开始日期')
+    endTime=forms.DateTimeField(label='截止日期')
+    attachment=forms.FileField(label='上传附件')
+
+
 
 
 #comment and score form

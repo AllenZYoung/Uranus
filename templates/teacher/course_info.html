@@ -16,7 +16,7 @@
     <label>开课时间:</label>{{ course.startTime }} - {{ course.endTime }}<br/>
 
 
-    <button onclick="location.href='{% url 'teacher:edit_course' %}course_id={{ course.id }}'" type="button">编辑课程信息</button><br/>
+    <button onclick="location.href='{% url 'teacher:edit_course'  course.id %}'" type="button">编辑课程信息</button><br/>
 
     <a href="{% url 'teacher:resources' %}?course_id={{ course.id }}">课程资源</a><br/>
 
@@ -38,7 +38,7 @@
     </table>
 
     <form action="{% url 'teacher:import_student' %}" enctype="multipart/form-data" method="post">
-        {{ import_student_form.as_p }}
+        {{ import_student_form }}
         <input type="hidden" value="{{ course.id }}" name="course_id" />
         <button type="submit">导入课程学生信息</button>
     </form>

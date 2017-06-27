@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建课程作业</title>
+</head>
+<body>
+    <label>课程名称: {{ course.name }}</label><br/>
+    <form action="{% url 'teacher:create_homework' %}" method="post">
+        {% csrf_token %}
+        {{ homework_form }}
+        <input type="hidden" name="course_id" value="{{ course.id }}">
+        <button type="submit" value="确认"></button>
+    </form>
+    {% if error_message %}
+        <label>{{ error_message }}</label>
+    {% endif %}
+</body>
+</html>

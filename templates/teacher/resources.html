@@ -5,10 +5,27 @@
     <title>课程资源</title>
 </head>
 <body>
-    <form method="POST" action="{% url 'teacher:upload_file' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ upload_file_form.as_p }}
-        <button type="submit">上传</button>
-   </form>
+<table>
+    <tr>
+        <th>类型</th>
+        <th>资源名称</th>
+        <th>上传时间</th>
+    </tr>
+    {% for file in files %}
+        <tr>
+            <td>{{ file.type }}</td>
+            <td>
+                <a href="{{ file.file.url }}">{{ file.file.name }}</a>
+            </td>
+            <td>{{ file.time }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<form method="POST" action="{% url 'teacher:upload_file' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ upload_file_form }}
+    <button type="submit">上传</button>
+</form>
 </body>
 </html>

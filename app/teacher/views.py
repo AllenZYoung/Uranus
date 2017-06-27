@@ -5,6 +5,7 @@ from app.models import *
 from app.teacher.forms import *
 from app.teacher.utils import *
 from django.shortcuts import get_object_or_404
+from app.teacher.entities import *
 
 
 # Create your views here.
@@ -22,7 +23,25 @@ def index(request):
 
 @login_required(login_url='app:login')
 def create_homework(request):
-    return HttpResponse('create homework')
+    if request.method == 'GET':
+        course_id = request.GET.get('course_id', None)
+        if course_id is None:
+            return HttpResponse('course_id is None')
+        course = get_object_or_404(Course, id=course_id)
+        homework_form = HomeworkForm()
+        return render(request, 'teacher/create_homework.html', {'homework_form': homework_form, 'course': course})
+    else:
+        course_id=request.POST.get('course_id',None)
+        if course_id is None:
+            return HttpResponse('course_id is None')
+        course = get_object_or_404(Course, id=course_id)
+        form = HomeworkForm(request.POST)
+        if form.is_valid():
+            add_homework(form,course_id,request.user.username)
+            return HttpResponseRedirect('/homework/')
+        else:
+            error_message='数据不合法'
+            return render(request, 'teacher/create_homework.html', {'homework_form': form, 'course': course,'error_message':error_message})
 
 
 @login_required(login_url='app:login')
@@ -83,7 +102,6 @@ def import_student(request):
         return HttpResponse('upload file is empty!')
 
 
-# todo select all resourses for a course
 @login_required(login_url='app:login')
 def resources(request):
     course_id = request.GET.get('course_id', None)
@@ -93,13 +111,23 @@ def resources(request):
     user = request.user
     upload_file_form = UploadFileForm()
     teacher = User.objects.get(username=user.username)
+    files = File.objects.filter(course_id=course_id)
     return render(request, 'teacher/resources.html',
-                  {'course': course, 'teacher': teacher, 'upload_file_form': upload_file_form})
+                  {'course': course, 'teacher': teacher, 'upload_file_form': upload_file_form, 'files': files})
 
 
 @login_required(login_url='app:login')
 def homework(request):
-    return HttpResponse('homework')
+    course_id = request.GET.get('course_id', None)
+    if course_id is None:
+        return HttpResponse('course_id = None')
+    course = get_object_or_404(Course, id=course_id)
+    works = WorkMeta.objects.filter(course_id=course_id)
+    homeworks = []
+    for work in works:
+        attachments = Attachment.objects.filter(workMeta_id=work.id, type='workmeta')
+        homeworks.append(Homework(work, attachments))
+    return render(request, 'teacher/homework.html', {'homeworks': homeworks, 'course': course})
 
 
 #在线预览课程资源
