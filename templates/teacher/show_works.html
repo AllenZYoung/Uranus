@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>当前作业</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>作业名称</th>
+            <th>作业内容</th>
+        </tr>
+        {% for work in works %}
+            <tr>
+                <td>
+                    <a href="{% url 'teacher:work_detail' %}?work_id={{ work.id }}">{{ work.title }}</a>
+                </td>
+                <td>{{ work.content }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

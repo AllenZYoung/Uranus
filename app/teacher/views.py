@@ -259,3 +259,20 @@ def download_stu_score_list(request):
 
     return response
 
+
+#显示所有的当前学期的作业
+def show_works(request):
+    course_id = request.GET.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+    works = WorkMeta.objects.filter(course_id=course_id)
+    return render(request,'teacher/show_works.html',{'course':course,'works':works})
+
+
+#显示学生提交的一次作业
+def work_detail(request):
+    work_id=request.GET.get('work_id',None)
+    work=get_object_or_404(Work,id=work_id)
+    attachments=Attachment.objects.filter(workMeta_id=work.workMeta_id)
+    return render(request,'teacher/work_detail.html',{'work':work,'attachments':attachments})
+
+

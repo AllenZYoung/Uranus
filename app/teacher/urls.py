@@ -21,7 +21,9 @@ urlpatterns = [
     url(r'^generate_team_score_table$', views.generate_team_score_table, name='generate_team_score_table'),
     url(r'^download_tean_score_list$', views.download_team_score_list, name='download_tean_score_list'),
     url(r'^generate_stu_score_table$', views.generate_stu_score_table, name='generate_stu_score_table'),
-    url(r'^download_stu_score_list$', views.download_stu_score_list, name='download_stu_score_list')
+    url(r'^download_stu_score_list$', views.download_stu_score_list, name='download_stu_score_list'),
+    url(r'^show_works/',views.show_works,name='show_works'),
+    url(r'^work_detail/',views.work_detail,name='work_detail'),
 
 
 ]

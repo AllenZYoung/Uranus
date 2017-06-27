@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>作业提交详情</title>
+</head>
+<body>
+    <label>提交者:</label>{{ work.team.name }}<br/>
+    <label>小组编号:</label>{{ work.team.serialNum }}<br/>
+    <label>作业状态:</label>{{ work.team.status }}<br/>
+    <label>说明:</label>{{ work.team.info }}<br/>
+    <label>附件:</label><br/>
+    {% for attachment in attachments %}
+        <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a><br>
+    {% endfor %}
+
+    <a href="{% url 'teacher:add_comment_score' %}?homework_id={{ work.id }}">
+        <button>评价作业</button>
+    </a>
+</body>
+</html>

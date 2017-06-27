@@ -21,8 +21,8 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^admin/', admin.site.urls),
     url(r'^login/', include('app.urls')),
-    url(r'student/', include('app.student.urls', namespace='student')),
-    url(r'teacher/', include('app.teacher.urls', namespace='teacher')),
-    url(r'system/', include('app.system.urls', namespace='system')),
-    url(r'test/', include('app.urls')),
+    url(r'^student/', include('app.student.urls', namespace='student')),
+    url(r'^teacher/', include('app.teacher.urls', namespace='teacher')),
+    url(r'^system/', include('app.system.urls', namespace='system')),
+    url(r'^test/', views.sampleDBView,name='sampleDB'),
 ]
