@@ -24,7 +24,6 @@ def handle_uploaded_user(request, f=None, user_role='student'):
     wb = load_workbook(filepath)
     print(filepath)
     table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
-    user_list = []
     model_user_list = []
     for i in range(2, table.max_row + 1):
         if table.cell(row=i, column=1).value is None:
@@ -50,8 +49,6 @@ def handle_uploaded_user(request, f=None, user_role='student'):
         )
         if(user_role=='student'):
             model_user.classID = classID = table.cell(row=i,column=5).value
-        user = User(username=user_id, password='User123')
-        user_list.append(user)
+        user = User.objects.create_user(username=user_id, password='User123')
         model_user_list.append(model_user)
     models.User.objects.bulk_create(model_user_list)
-    User.objects.bulk_create(user_list)
