@@ -26,6 +26,9 @@ class User(models.Model):
     tel = models.CharField(max_length=16, null=True, help_text='电话')
     email = models.EmailField(max_length=64, null=True)
 
+    def __str__(self):
+        return self.username
+
 
 # [学期]
 class Term(models.Model):
@@ -65,6 +68,9 @@ class Course(models.Model):
     status = models.CharField(max_length=16, choices=STATUS, default='unstarted')
     startTime = models.DateTimeField(default=datetime.now())
     endTime = models.DateTimeField(default=datetime.now())
+
+    def __str__(self):
+        return self.name
 
 
 # <选课>==[课程]&[用户:学生/教师账户]

@@ -16,7 +16,7 @@ def index(request):
     course = None
     present = datetime.now()
     for enroll in enrolls:
-        if enroll.course.startTime <= present and enroll.course.endTime >= present:
+        if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course
     teacher = User.objects.get(username=user.username)
     return render(request, 'teacher/teacher_index.html', {'teacher': teacher, 'course': course})
@@ -113,9 +113,10 @@ def create_resource(request):
         return render(request, 'teacher/create_resource.html',
                       {'course': course, 'teacher': teacher, 'upload_file_form': upload_file_form})
     else:
+        course_id = request.POST.get('course_id', None)
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request)
+            handle_uploaded_file(request,course_id,form)
             return HttpResponse('upload file success')
         else:
             return HttpResponse('form is not valid')
