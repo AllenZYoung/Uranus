@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑作业信息</title>
+</head>
+<body>
+
+    {% if error_message %}
+     <label>{{ error_message }}</label>
+    <{% endif %}
+<form action="{% url 'teacher:edit_homework' %}" method="post">
+
+    {% csrf_token %}
+    {{ homework_form }}
+    <input type="hidden" name="workmeta_id" value="{{ workmeta_id }}">
+    <button type="submit">确认修改</button>
+</form>
+</body>
+</html>

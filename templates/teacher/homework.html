@@ -9,6 +9,7 @@
         <tr>
             <th>作业内容</th>
             <th>附件</th>
+            <th>修改作业</th>
         </tr>
         {% for work in homeworks %}
             <tr>
@@ -18,12 +19,13 @@
                         <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a>
                     {% endfor %}
                 </td>
+                <td>
+                    <a href="{% url 'teacher:edit_homework' %}?workmeta_id={{ work.workmeta.id }}">
+                        <button>编辑</button>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
     </table>
-
-    <a href="{% url 'teacher:create_homework' %}?course_id={{ course.id }}">
-        <button>新建课程作业</button>
-    </a>
 </body>
 </html>

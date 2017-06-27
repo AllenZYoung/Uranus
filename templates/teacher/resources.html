@@ -10,6 +10,7 @@
         <th>类型</th>
         <th>资源名称</th>
         <th>上传时间</th>
+        <th>删除资源</th>
     </tr>
     {% for file in files %}
         <tr>
@@ -18,14 +19,11 @@
                 <a href="{{ file.file.url }}">{{ file.file.name }}</a>
             </td>
             <td>{{ file.time }}</td>
+            <td>
+                <a href="{% url 'teacher:delete_file' %}?file_id={{ file.id }}">删除</a>
+            </td>
         </tr>
     {% endfor %}
 </table>
-
-<form method="POST" action="{% url 'teacher:upload_file' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ upload_file_form }}
-    <button type="submit">上传</button>
-</form>
 </body>
 </html>

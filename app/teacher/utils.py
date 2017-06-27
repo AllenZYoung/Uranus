@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from openpyxl import *
 from app.models import *
+from django.shortcuts import get_object_or_404
 
 
 # todo save file into database according to the user
@@ -51,16 +52,30 @@ def students_to_course(students_id, course_id):
         enroll.save()
 
 
-def add_homework(homework_form,course_id,username):
-    content=homework_form.cleaned_data['content']
-    proportion=homework_form.cleaned_data['proportion']
-    submits=homework_form.cleaned_data['submits']
-    startTime=homework_form.cleaned_data['startTime']
-    endTime=homework_form.cleaned_data['endTime']
-    workmeta=WorkMeta(course_id=course_id,username=username,content=content,
-                      proportion=proportion,submits=submits,startTime=startTime,endTime=endTime)
+def add_homework(homework_form, course_id, username):
+    content = homework_form.cleaned_data['content']
+    proportion = homework_form.cleaned_data['proportion']
+    submits = homework_form.cleaned_data['submits']
+    startTime = homework_form.cleaned_data['startTime']
+    endTime = homework_form.cleaned_data['endTime']
+    workmeta = WorkMeta(course_id=course_id, username=username, content=content,
+                        proportion=proportion, submits=submits, startTime=startTime, endTime=endTime)
     workmeta.save()
-    file=homework_form.cleaned_data['attachment']
+    file = homework_form.cleaned_data['attachment']
     if file is not None:
-        attachment=Attachment(file=file,workmeta=workmeta,type='workmeta')
+        attachment = Attachment(file=file, workmeta=workmeta, type='workmeta')
         attachment.save()
+
+
+# 获取一个老师往期课程的所有作业
+def get_past_homeworks(username):
+    teacher = get_object_or_404(User, username=username)
+    enrolls = Enroll.objects.filter(user__username=teacher.username)
+    homeworks = []
+    present = datetime.now()
+    for enroll in enrolls:
+        course = enroll.course
+        if course.endTime <= present:
+            workmetas = WorkMeta.objects.filter(course_id=course.id)
+            homeworks.extend(workmetas)
+    return homeworks

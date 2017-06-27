@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>往期作业</title>
+</head>
+    <table>
+        <tr>
+            <th>课程名称</th>
+            <th>作业标题</th>
+            <th>作业内容</th>
+            <th>总分折算占比</th>
+            <th>最大提交次数</th>
+            <th>时间</th>
+        </tr>
+        {% for workmeta in workmetas %}
+            <tr>
+                <td>{{ workmeta.course.name }}</td>
+                <td>{{ workmeta.title }}</td>
+                <td>{{ workmeta.content }}</td>
+                <td>{{ workmeta.proportion }}</td>
+                <td>{{ workmeta.submits }}</td>
+                <td>{{ workmeta.startTime }} - {{ workmeta.endTime }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+<body>
+
+</body>
+</html>
