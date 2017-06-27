@@ -4,18 +4,23 @@ from django.contrib.auth.decorators import login_required
 from app.models import File, User, Work, WorkMeta
 from django.conf import settings
 import os
+from django.shortcuts import get_object_or_404
 from . import utils
-
+from .utils import set_members_evaluations
 #TODO 学生登录和注销（一般而言，要与教师、教务统一）
 
 
 
 # Create your views here.
 def index(request):
-    return HttpResponse('student page')
+    return render(request,'student/course_student.html')
 
 #@login_required(login_url='app:login')
 def member_evaluation(request): # （团队负责人）学生的成员评价页面
+    if request.method == 'GET':
+        student_id = request.GET.get('student_id',None)
+        student = User.objects.get(username=student_id)
+        set_members_evaluations(student)
     return HttpResponse('Member Evaluation here.')
 
 #@login_required(login_url='app:login')
