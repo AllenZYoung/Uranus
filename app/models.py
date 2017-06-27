@@ -145,3 +145,10 @@ class Attachment(models.Model):
 class Attendance(models.Model):
     user = models.ForeignKey(User, help_text='学生')
     time = models.DateTimeField(auto_now_add=True)
+
+
+# [公告]
+class Bulletin(models.Model):
+    course = models.ForeignKey(Course)
+    user = models.ForeignKey(User, help_text='发布者')
+    time = models.DateTimeField(auto_now_add=True)
