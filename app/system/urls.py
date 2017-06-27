@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^createTerm$', views.create_term, name='createTerm'),
     url(r'^createCourse$', views.create_course, name='createCourse'),
     url(r'^showTerm$', views.show_term, name='showTerm'),
+    url(r'^showCourse$', views.show_course, name='s')
 ]

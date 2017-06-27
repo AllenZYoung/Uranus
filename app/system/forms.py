@@ -38,3 +38,6 @@ class CourseForm(forms.Form):
 
 class EditTermForm(forms.Form):
     name = ' '
+
+class EditCourseForm(forms.Form):
+    name = ''
