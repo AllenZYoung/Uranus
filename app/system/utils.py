@@ -25,6 +25,7 @@ def handle_uploaded_user(request, f=None, user_role='student'):
     print(filepath)
     table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
     user_list = []
+    model_user_list = []
     for i in range(2, table.max_row + 1):
         if table.cell(row=i, column=1).value is None:
             # '为空，应跳过'
@@ -41,7 +42,7 @@ def handle_uploaded_user(request, f=None, user_role='student'):
             sex = 'female'
         model_user = models.User(
             username = user_id,
-            password = 'Student123',
+            password = 'User123',
             name = table.cell(row=i,column=2).value,
             role = user_role,
             gender = sex,
@@ -49,6 +50,8 @@ def handle_uploaded_user(request, f=None, user_role='student'):
         )
         if(user_role=='student'):
             model_user.classID = classID = table.cell(row=i,column=5).value
-        user = User.objects.create_user(username=user_id, password='Teacher123')
-        user_list.append(model_user)
-    models.User.objects.bulk_create(user_list)
+        user = User(username=user_id, password='User123')
+        user_list.append(user)
+        model_user_list.append(model_user)
+    models.User.objects.bulk_create(model_user_list)
+    User.objects.bulk_create(user_list)
