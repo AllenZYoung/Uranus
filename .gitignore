@@ -1,4 +1,5 @@
 .idea/
 *.pyc
 */migrations/*
-Uranus/__pycache__/
+*/__pycache__/
+*.DS_Store

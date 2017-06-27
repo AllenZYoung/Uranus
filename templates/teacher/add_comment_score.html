@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>add comment and score</title>
+</head>
+<body>
+
+    <table>
+        <tr>
+            <td>发布者</td>
+            <td>内容</td>
+            <td>占分比</td>
+            <td>可提交次数</td>
+            <td>开始时间</td>
+            <td>结束时间</td>
+            <td>团队</td>
+        </tr>
+
+        <tr>
+            <td>发布者{{ homework.workMeta.user.username }}</td>
+            <td>内容{{ homework.workMeta.content }}</td>
+            <td>占分比{{ homework.workMeta.proportion }}</td>
+            <td>可提交次数{{ homework.workMeta.submits }}</td>
+            <td>开始时间{{ homework.workMeta.startTime }}</td>
+            <td>结束时间{{ homework.workMeta.endTime }}</td>
+            <td>团队{{ homework.team.name }}</td>
+        </tr>
+    </table>
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="add_comment_score">
+    </form>
+</body>
+</html>

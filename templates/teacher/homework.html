@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homework</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>作业内容</th>
+            <th>附件</th>
+            <th>修改作业</th>
+        </tr>
+        {% for work in homeworks %}
+            <tr>
+                <td>{{ work.workmeta.content}}</td>
+                <td>
+                    {% for attachment in work.attachments %}
+                        <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{% url 'teacher:edit_homework' %}?workmeta_id={{ work.workmeta.id }}">
+                        <button>编辑</button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

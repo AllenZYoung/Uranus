@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>年份</th>
+        <th>学期</th>
+       <th>开始周次</th>
+       <th>结束周次</th>
+    </tr>
+    {% for term in terms %}
+        <tr>
+            <th>{{ term.year }}</th>
+            <th>{{ term.semester }}</th>
+            <th>{{ term.startWeek }}</th>
+            <th>{{ term.endWeek }}</th>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
