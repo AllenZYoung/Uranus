@@ -1,3 +1,7 @@
+# Author: kahsolt
+# Date: 2017-06-26
+# Principle: Maintain tables as least as possible!
+
 from django.db import models
 
 

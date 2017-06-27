@@ -151,7 +151,7 @@ def auditTeamRejected(team, info):
 
 
 # 设置队员贡献值
-def setContribution(user, contribute):
+def setContribution(user, contribution):
     def validateContribution(c):
         # Method 1:
         return c >= 0.4 and c <= 1.2
@@ -163,5 +163,17 @@ def setContribution(user, contribute):
         return False, '参数对象错误'
     if user.role != 'student':
         return False, '不是学生'
-    if not validateContribution(contribute):
-        return False, '贡献比例不合要求'
+    if not validateContribution(contribution):
+        return False, '设定的个人贡献比例不在值范围'
+
+    course = Enroll.objects.filter(user=user)
+    team = TeamMeta.objects.filter(course=course)
+    members = Member.objects.filter(team=team)
+    maxContrib = members.count()
+    curContrib = 0
+    for member in members:
+        curContrib += (member.contribution is None) and 0 or member.contribution
+    if curContrib + contribution > maxContrib:
+        return False, '团队总贡献度超额'
+    Member.objects.filter(user=user).update(contribution=contribution)
+    return curContrib + contribution

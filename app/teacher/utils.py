@@ -49,3 +49,18 @@ def students_to_course(students_id, course_id):
         student = User.objects.get(username=id)
         enroll = Enroll(course=course, user=student)
         enroll.save()
+
+
+def add_homework(homework_form,course_id,username):
+    content=homework_form.cleaned_data['content']
+    proportion=homework_form.cleaned_data['proportion']
+    submits=homework_form.cleaned_data['submits']
+    startTime=homework_form.cleaned_data['startTime']
+    endTime=homework_form.cleaned_data['endTime']
+    workmeta=WorkMeta(course_id=course_id,username=username,content=content,
+                      proportion=proportion,submits=submits,startTime=startTime,endTime=endTime)
+    workmeta.save()
+    file=homework_form.cleaned_data['attachment']
+    if file is not None:
+        attachment=Attachment(file=file,workmeta=workmeta,type='workmeta')
+        attachment.save()

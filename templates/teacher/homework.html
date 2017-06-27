@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Homewrk</title>
+    <title>Homework</title>
 </head>
 <body>
+    <table>
+        <tr>
+            <th>作业内容</th>
+            <th>附件</th>
+        </tr>
+        {% for work in homeworks %}
+            <tr>
+                <td>{{ work.workmeta.content}}</td>
+                <td>
+                    {% for attachment in work.attachments %}
+                        <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 
+    <a href="{% url 'teacher:create_homework' %}?course_id={{ course.id }}">
+        <button>新建课程作业</button>
+    </a>
 </body>
 </html>
