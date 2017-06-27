@@ -31,8 +31,6 @@ class Term(models.Model):
         ('autumn', '秋季学期'),
     )
     semester = models.CharField(max_length=8, choices=SEMESTER, default='spring')
-    startTime = models.DateTimeField()
-    endTime = models.DateTimeField()
     startWeek = models.PositiveSmallIntegerField(help_text='课程开始的周次')
     endWeek = models.PositiveSmallIntegerField()
 
@@ -99,6 +97,7 @@ class Member(models.Model):
 
 # [作业任务]~~<附件>
 class WorkMeta(models.Model):
+    course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='发布者:教师')
     content = models.TextField()
     proportion = models.FloatField(help_text='总分折算占比:0.0~1.0')
@@ -118,6 +117,7 @@ class Work(models.Model):
 
 # [资源文件]
 class File(models.Model):
+    course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='上传者')
     file = models.FileField(upload_to='file', help_text='文件实体，保存时为绝对路径(未重命名)')
     TYPE = (
