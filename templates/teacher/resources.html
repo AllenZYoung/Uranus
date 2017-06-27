@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程资源</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'teacher:upload_file' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ upload_file_form.as_p }}
+        <button type="submit">上传</button>
+   </form>
+</body>
+</html>

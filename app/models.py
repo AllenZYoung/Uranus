@@ -31,8 +31,6 @@ class Term(models.Model):
         ('autumn', '秋季学期'),
     )
     semester = models.CharField(max_length=8, choices=SEMESTER, default='spring')
-    startTime = models.DateTimeField()
-    endTime = models.DateTimeField()
     startWeek = models.PositiveSmallIntegerField(help_text='课程开始的周次')
     endWeek = models.PositiveSmallIntegerField()
 
@@ -73,7 +71,8 @@ class Enroll(models.Model):
 # [团队]==[课程]&[用户:学生账户]
 class Team(models.Model):
     course = models.ForeignKey(Course)
-    name = models.CharField(max_length=32, help_text='取代ID的备用策略')
+    serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号') # 'id' is a reserved word...
+    name = models.CharField(max_length=32, help_text='可选的自定义名字')
     STATUS = (
         ('unsubmitted', '未提交'),
         ('auditing', '待审核'),
@@ -98,6 +97,7 @@ class Member(models.Model):
 
 # [作业任务]~~<附件>
 class WorkMeta(models.Model):
+    course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='发布者:教师')
     content = models.TextField()
     proportion = models.FloatField(help_text='总分折算占比:0.0~1.0')
@@ -117,6 +117,7 @@ class Work(models.Model):
 
 # [资源文件]
 class File(models.Model):
+    course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='上传者')
     file = models.FileField(upload_to='file', help_text='文件实体，保存时为绝对路径(未重命名)')
     TYPE = (
@@ -125,6 +126,7 @@ class File(models.Model):
         ('media', '视频'),
     )
     type = models.CharField(max_length=16, choices=TYPE, default='text')
+    time = models.DateTimeField(auto_now_add=True)
 
 
 # <附件>==[作业任务|作业提交]&[资源文件]
@@ -138,7 +140,15 @@ class Attachment(models.Model):
     )
     type = models.CharField(max_length=16, choices=TYPE, default='workmeta')
 
+
 # [签到]
 class Attendance(models.Model):
     user = models.ForeignKey(User, help_text='学生')
+    time = models.DateTimeField(auto_now_add=True)
+
+
+# [公告]
+class Bulletin(models.Model):
+    course = models.ForeignKey(Course)
+    user = models.ForeignKey(User, help_text='发布者')
     time = models.DateTimeField(auto_now_add=True)

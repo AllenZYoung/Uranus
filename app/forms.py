@@ -9,3 +9,4 @@ class LoginForm(forms.Form):
         attrs={'placeholder': '请输入用户名', }))
     password = forms.CharField(label='密码', widget=forms.PasswordInput(
         attrs={'placeholder': '请输入密码', }))
+
