@@ -100,6 +100,7 @@ class Member(models.Model):
 class WorkMeta(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='发布者:教师')
+    title = models.CharField(max_length=128, help_text='作业标题')
     content = models.TextField()
     proportion = models.FloatField(help_text='总分折算占比:0.0~1.0')
     submits = models.SmallIntegerField(default=-1, help_text='可提交次数，默认-1为无限')
@@ -149,7 +150,9 @@ class Attendance(models.Model):
 
 
 # [公告]
-class Bulletin(models.Model):
+class Notice(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='发布者')
+    title = models.CharField(max_length=128)
+    content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)

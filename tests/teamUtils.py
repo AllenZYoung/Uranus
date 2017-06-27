@@ -4,8 +4,7 @@ from app.models import *
 
 # 发起组队
 def createTeam(user, name):
-    user = User(user)
-    if not user:
+    if not isinstance(user, User):
         return False, '参数对象错误'
     if user.role != 'student':
         return False, '不是学生'
@@ -22,13 +21,12 @@ def createTeam(user, name):
     member.team = team
     member.role = 'leader'
     member.save()
-    return True
+    return team, member
 
 
 # 解散团队
 def dismissTeam(team):
-    team = Team(team)
-    if not team:
+    if not isinstance(team, Team):
         return False, '参数对象错误'
     if team.status == 'passed':
         return False, '团队已通过审核'
@@ -37,13 +35,12 @@ def dismissTeam(team):
     for member in members:
         member.delete()
     team.delete()
+    return True
 
 
 # 加入团队
 def joinTeam(user, team):
-    user = User(user)
-    team = Team(team)
-    if not team or not user:
+    if not isinstance(team, Team) or not isinstance(user, User):
         return False, '参数对象错误'
     if team.status != 'incomplete' or user.role != 'student':
         return False, '团队已冻结/不是学生'
@@ -55,15 +52,14 @@ def joinTeam(user, team):
     member.team = team
     member.role = 'member'
     member.save()
-    return True
+    return member
 
 
 # 离开团队
 def leaveTeam(user):
-    user = User(user)
-    if not user:
+    if not isinstance(user, User):
         return False, '参数对象错误'
-    member = Member.objects.filter(user=user, team=team)
+    member = Member.objects.filter(user=user)
     if not member:
         return False, '未加入任何团队'
 
@@ -73,9 +69,7 @@ def leaveTeam(user):
 
 # 转让组长
 def transferLeadership(team, user):
-    team = Team(team)
-    user = User(user)
-    if not team or not user:
+    if not isinstance(team, Team) or not isinstance(user, User):
         return False, '参数对象错误'
     if user.role != 'student':
         return False, '不是学生'
@@ -87,32 +81,31 @@ def transferLeadership(team, user):
 
 # 维护团队信息
 def updateInfo(team, **kwargs):
-    team = Team(team)
-    if not team:
+    if not isinstance(team, Team):
         return False, '参数对象错误'
 
     if kwargs.get('name') is not None:
         team.name = kwargs.get('name')
+        team.save()
     if kwargs.get('info') is not None:
         team.info = kwargs.get('info')
-    return True
+        team.save()
+    return team
 
 
 # 完成组队：冻结join
 def completeTeam(team):
-    team = Team(team)
-    if not team:
+    if not isinstance(team, Team):
         return False, '参数对象错误'
 
     team.status = 'unsubmitted'
     team.save()
-    return True
+    return team
 
 
 # 提交组队申请
 def submitTeam(team):
-    team = Team(team)
-    if not team:
+    if not isinstance(team, Team):
         return False, '参数对象错误'
     if team.status != 'unsubmitted':
         return False, '未审核且已冻结的团队才能提交申请'
@@ -125,13 +118,12 @@ def submitTeam(team):
 
     team.status = 'auditing'
     team.save()
-    return True
+    return team
 
 
 # 审核团队：通过
 def auditTeamPassed(team):
-    team = Team(team)
-    if not team:
+    if not isinstance(team, Team):
         return False, '参数对象错误'
     if team.status != 'auditing':
         return False, '未提交申请'
@@ -142,13 +134,12 @@ def auditTeamPassed(team):
     team.status = 'passed'
     team.serialNum = id
     team.save()
-    return True
+    return team
 
 
 # 审核团队：拒绝
 def auditTeamRejected(team, info):
-    team = Team(team)
-    if not team:
+    if not isinstance(team, Team):
         return False, '参数对象错误'
     if team.status != 'auditing':
         return False, '未提交申请'
@@ -156,4 +147,21 @@ def auditTeamRejected(team, info):
     team.status = 'rejected'
     team.info = info
     team.save()
-    return True
+    return team
+
+
+# 设置队员贡献值
+def setContribution(user, contribute):
+    def validateContribution(c):
+        # Method 1:
+        return c >= 0.4 and c <= 1.2
+        # Method 2:
+        # C = [0.4, 0.6, 0.8, 1.0, 1.2]
+        # return c in C
+
+    if not isinstance(user, User):
+        return False, '参数对象错误'
+    if user.role != 'student':
+        return False, '不是学生'
+    if not validateContribution(contribute):
+        return False, '贡献比例不合要求'

@@ -2,8 +2,8 @@ from app.models import *
 
 
 def reportTeam(team):
-    if team is None:
-        return
+    if not isinstance(team, Team):
+        return False, '参数对象错误'
     t = {
         'id': team.serialNum,
         'name': team.name,
@@ -20,8 +20,8 @@ def reportTeam(team):
 
 
 def reportTeams(course):
-    if course is None:
-        return
+    if not isinstance(course, Course):
+        return False, '参数对象错误'
     ts = []
     teams = Team.objects.filter(course=course)
     for team in teams:
@@ -44,17 +44,18 @@ def reportWorks(course):
 
 
 def reportGrade(user):
-    if user is None or user.role != 'student':
-        print('[Report]: user role must be "student"')
-        return
+    if not isinstance(user, User):
+        return False, '参数对象错误'
+    if user.role != 'student':
+        return False, '不是学生'
     pass
 
 
 def reportGradeTeam(team):
-    if team is None:
-        return
+    if not isinstance(team, Team):
+        return False, '参数对象错误'
 
 
 def reportGradeTeams(course):
-    if course is None:
-        return
+    if not isinstance(course, Course):
+        return False, '参数对象错误'
