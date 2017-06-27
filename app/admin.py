@@ -12,3 +12,5 @@ admin.site.register(WorkMeta)
 admin.site.register(Work)
 admin.site.register(File)
 admin.site.register(Attachment)
+admin.site.register(Attendance)
+
