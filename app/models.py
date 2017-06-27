@@ -74,12 +74,13 @@ class Team(models.Model):
     serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号') # 'id' is a reserved word...
     name = models.CharField(max_length=32, help_text='可选的自定义名字')
     STATUS = (
+        ('incomplete', '未完成组队'),
         ('unsubmitted', '未提交'),
         ('auditing', '待审核'),
         ('passed', '已通过'),
         ('rejected', '已驳回')
     )
-    status = models.CharField(max_length=16, choices=STATUS, default='unsubmitted')
+    status = models.CharField(max_length=16, choices=STATUS, default='incomplete')
     info = models.TextField(help_text='通过欢迎信息/驳回理由')
 
 
