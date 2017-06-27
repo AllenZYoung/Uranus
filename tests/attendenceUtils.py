@@ -2,11 +2,18 @@ from app.models import *
 from datetime import datetime
 
 
-def showBetweenTime(startTime, endTime):
+def showToday():
+    startTime = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 9, 0, 0, 0)
+    endTime = datetime.now()
+    attendences = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
+    return attendences
+
+
+def showTimeBetween(startTime, endTime):
     if not isinstance(startTime, datetime) or not isinstance(endTime, datetime):
         return False, '参数对象错误'
 
-    attendences = Attendance.objects.filter(time__range=(startTime, endTime))
+    attendences = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
     return attendences
 
 
