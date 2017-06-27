@@ -100,3 +100,52 @@ def resources(request):
 @login_required(login_url='app:login')
 def homework(request):
     return HttpResponse('homework')
+
+
+#在线预览课程资源
+# @login_required(login_url='app:login')
+def preview_source_online(request):
+    pass
+    #return render(request, 'teacher/sourcePreview.html')
+
+
+#设置分数和评论
+def add_comment_score(request):
+    if request.method == 'GET':
+        homework_id = request.GET.get('homework_id')
+        homework = get_object_or_404(Work, id=homework_id)
+        form = CommentAndScoreForm()
+        form.initial['homework_id'] = homework_id
+        form.fields['homework_id'].widget = forms.HiddenInput()
+        return render(request, 'teacher/add_comment_score.html',
+                      {'homework': homework, 'form': form})
+    else:
+        form = CommentAndScoreForm(request.POST)
+        if form.is_valid():
+            homework = models.Work.objects.filter(pk=form.cleaned_data['homework_id'])\
+                .update(comment=form.cleaned_data['comment'], score=form.cleaned_data['score'])
+        else:
+            return HttpResponse('fail to add comment and score')
+
+
+
+
+
+#下载学生作业
+def download_stu_homework(request):
+    pass
+
+
+#设置作业占分比例
+def set_rate_of_homework(request):
+    pass
+
+
+#生成个人得分表
+def generate_stu_score_table(request):
+    pass
+
+
+#生成小组最终成绩
+def generate_group_score_table(request):
+    pass
