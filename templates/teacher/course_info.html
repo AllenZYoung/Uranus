@@ -36,5 +36,11 @@
             </tr>
         {% endfor %}
     </table>
+
+    <form action="{% url 'teacher:import_student' %}" enctype="multipart/form-data" method="post">
+        {{ import_student_form.as_p }}
+        <input type="hidden" value="{{ course.id }}" name="course_id" />
+        <button type="submit">导入课程学生信息</button>
+    </form>
 </body>
 </html>

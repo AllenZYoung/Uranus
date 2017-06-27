@@ -40,9 +40,9 @@ def course_info(request):
     course_id = request.GET.get('course_id', None)
     if course_id is None:
         return HttpResponse('course_id=None')
-    course = Course.objects.get(id=course_id)
+    course = get_object_or_404(Course, id=course_id)
     user = request.user
-    enrolls = Enroll.objects.get(course_id=course_id)
+    enrolls = Enroll.objects.filter(course_id=course_id)
     teachers = []
     students = []
     for enroll in enrolls:
@@ -50,9 +50,11 @@ def course_info(request):
             students.append(enroll.user)
         elif enroll.user.role == 'teacher':
             teachers.append(enroll.user)
-    teacher = User.objects.get(username=user.username)
+    teacher = get_object_or_404(User, username=user.username)
+    import_student_form = UploadFileForm()
     return render(request, 'teacher/course_info.html',
-                  {'course': course, 'teachers': teachers, 'teacher': teacher, 'students': students})
+                  {'course': course, 'teachers': teachers, 'teacher': teacher,
+                   'students': students, 'import_student_form': import_student_form})
 
 
 @login_required(login_url='app:login')
@@ -62,6 +64,19 @@ def upload_file(request):
         if form.is_valid():
             handle_uploaded_file(request)
             return HttpResponse('upload file success')
+        else:
+            return HttpResponse('form is not valid')
+    else:
+        return HttpResponse('upload file is empty!')
+
+
+@login_required(login_url='app:login')
+def import_student(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            ret = import_student_for_course(request)
+            return HttpResponse(ret)
         else:
             return HttpResponse('form is not valid')
     else:

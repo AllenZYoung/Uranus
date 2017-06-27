@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^upload_file/', views.upload_file, name='upload_file'),
     url(r'^resources/', views.resources, name='resources'),
     url(r'^homework/', views.homework, name='homework'),
+    url(r'^import_student/', views.import_student, name='import_student'),
 
 ]

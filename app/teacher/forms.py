@@ -3,6 +3,6 @@ from django import forms
 
 
 # define your custom forms here
-
 class UploadFileForm(forms.Form):
     file = forms.FileField()
+
