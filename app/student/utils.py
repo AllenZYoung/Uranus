@@ -24,4 +24,3 @@ def submit_homework_file(form):  # 提交某个作业（的文件）
 
 def set_members_evaluations(form): # 为团队成员设置贡献度（可以理解为权重）
     pass
-

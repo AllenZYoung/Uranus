@@ -10,10 +10,12 @@
 <table border="1">
     <th>文件名</th>
     <th>上传者</th>
+    <th>上传时间</th>
     {% for meta in file_meta %}
     <tr>
         <td><a href="s/{{ meta.file_name }}">{{ meta.file_name }}</a></td>
         <td>{{ meta.user_name }}</td>
+        <td>{{ meta.date }}</td>
     </tr>
     {% endfor %}
 </table>

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
-from app.models import File, User
+from app.models import File, User, Work, WorkMeta
 from django.conf import settings
 import os
 
@@ -28,7 +28,8 @@ def view_resources(request):
     for file in files:
         user = User.objects.get(id=file.user_id)
         file_meta.append({'file_name': file.file,
-                          'user_name': user.name})
+                          'user_name': user.name,
+                          'date': file.time})
     return render(request, 'student/resources.html', {'file_meta': file_meta, })
 
 #@login_required(login_url='app:login')
@@ -50,3 +51,22 @@ def download(request):
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
     return response
+
+#@login_required(login_url='app:login')
+def view_admitted_work(request):
+    team_id = 1
+    course_id = 1
+    submitted=[]
+    unsubmitted=[]
+    submitted_id = set()
+    # 未完成
+    for work in Work.objects.filter(team_id=team_id):
+        submitted.append(WorkMeta.objects.get(id=work.workMeta_id))
+        submitted_id.add(work.workMeta_id)
+    # 没有提交的作业
+    for workMeta in WorkMeta.objects.filter(course_id=course_id):
+        if workMeta.id not in submitted_id:
+            unsubmitted.append(workMeta)
+    return render(request, 'student/admitted_work.html', {'submitted': submitted,
+                                                          'unsubmitted': unsubmitted,})
+
