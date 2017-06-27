@@ -14,5 +14,5 @@ urlpatterns = [
     url(r'^resources/', views.resources, name='resources'),
     url(r'^homework/', views.homework, name='homework'),
     url(r'^import_student/', views.import_student, name='import_student'),
-
+    url(r'^add_comment_score/$', views.add_comment_score, name='add_comment_score')
 ]
