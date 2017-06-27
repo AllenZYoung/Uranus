@@ -1,12 +1,12 @@
 from app.models import *
 
 
-# class CourseInfo:
-#     teachers = None
-#     course = None
-#     term = None
-#
-#     def __init__(self, teachers, course, term):
-#         self.teachers = teachers
-#         self.course = course
-#         self.term = term
+# 用于存放包装类
+
+class Homework:
+    workmeta = None
+    attachments = None
+
+    def __init__(self, workmeta, attachments):
+        self.workmeta = workmeta
+        self.attachments = attachments
