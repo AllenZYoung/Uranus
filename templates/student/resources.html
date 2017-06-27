@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resources</title>
+</head>
+<script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
+<body>
+
+<table border="1">
+    <th>文件名</th>
+    <th>上传者</th>
+    {% for meta in file_meta %}
+    <tr>
+        <td><a href="s/{{ meta.file_name }}">{{ meta.file_name }}</a></td>
+        <td>{{ meta.user_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

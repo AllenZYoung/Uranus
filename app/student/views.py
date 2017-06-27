@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
+from app.models import File, User
+from django.conf import settings
+import os
 
 #TODO 学生登录和注销（一般而言，要与教师、教务统一）
 
@@ -17,3 +20,33 @@ def member_evaluation(request): # （团队负责人）学生的成员评价页�
 @login_required(login_url='app:login')
 def work_submit(request): # （团队负责人）学生的作业提交页面
     return HttpResponse('Submit your group\'s homework here.')
+
+#@login_required(login_url='app:login')
+def view_resources(request):
+    files = File.objects.all()
+    file_meta = []
+    for file in files:
+        user = User.objects.get(id=file.user_id)
+        file_meta.append({'file_name': file.file,
+                          'user_name': user.name})
+    return render(request, 'student/resources.html', {'file_meta': file_meta, })
+
+#@login_required(login_url='app:login')
+def download(request):
+
+    def read_file(fn, buf_size=262144):
+        f = open(fn, 'rb')
+        while True:
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+        f.close()
+
+    file_name = os.path.basename(request.path)
+    file_path = os.path.join(settings.MEDIA_ROOT, 'file', file_name)
+    response = StreamingHttpResponse(read_file(file_path))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
+    return response
