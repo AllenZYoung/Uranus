@@ -1,9 +1,9 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
 from app.forms import *
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
 # 在需要鉴别用户身份的地方，调用request.user.is_authenticated()判断即可
@@ -44,3 +44,8 @@ def logout(request):
         return render(request, 'logout.html')
 
 
+# Added by kahsolt
+def sampleDBView(request):
+    from app.utils.sampleDB import sampleDB
+    sampleDB()
+    return render(request, 'test/sampleDB.html')

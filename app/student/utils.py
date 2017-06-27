@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-#define your utility function here
 
-from . import models
 from django.contrib.auth.models import User
-from .models import *
+from app import models
 
 def auth_user(form): # 瞎写的东西
     if form.is_valid():
@@ -11,7 +9,7 @@ def auth_user(form): # 瞎写的东西
         username = data['username']
         password = data['password']
         # check
-        user = models.Student.objects.filter(username=username, password=password)
+        user = models.User.objects.filter(username=username, password=password)
         if user:
             return True
         else:

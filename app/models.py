@@ -50,7 +50,7 @@ class TeamMeta(models.Model):
 # [课程]==[学期]&[团队元信息]
 class Course(models.Model):
     term = models.ForeignKey(Term)            # 学期
-    teamMeta = models.ForeignKey(TeamMeta)    # 团队元信息
+    teamMeta = models.ForeignKey(TeamMeta, null=True)    # 团队元信息
     name = models.CharField(max_length=64)
     info = models.TextField(help_text='课程要求/其他说明')
     syllabus = models.TextField(help_text='课程大纲')
@@ -119,6 +119,7 @@ class Work(models.Model):
     content = models.TextField()
     review = models.TextField(help_text='教师简评')
     score = models.FloatField(help_text='得分: 0.0~10.0')
+    time = models.DateTimeField(auto_now_add=True)
 
 
 # [资源文件]
@@ -138,8 +139,8 @@ class File(models.Model):
 # <附件>==[作业任务|作业提交]&[资源文件]
 class Attachment(models.Model):
     file = models.ForeignKey(File)
-    workMeta = models.ForeignKey(WorkMeta)
-    work = models.ForeignKey(Work)
+    workMeta = models.ForeignKey(WorkMeta, null=True)
+    work = models.ForeignKey(Work, null=True)
     TYPE = (
         ('workmeta', '作业任务'),
         ('work', '作业提交'),

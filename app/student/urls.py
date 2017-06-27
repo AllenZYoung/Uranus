@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^resources$', views.view_resources, name='resources'),  # 资源列表页面
     url(r'^s', views.download, name='download'),  # 资源下载链接
     url(r'^works', views.view_admitted_work, name='admitted_work'),  # 资源下载链接
+    url(r'^work', views.workView, name='work'),  # 资源下载链接
 ]

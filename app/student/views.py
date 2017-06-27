@@ -11,13 +11,11 @@ import os
 def index(request):
     return HttpResponse('student page')
 
-
-
-@login_required(login_url='app:login')
+#@login_required(login_url='app:login')
 def member_evaluation(request): # （团队负责人）学生的成员评价页面
     return HttpResponse('Member Evaluation here.')
 
-@login_required(login_url='app:login')
+#@login_required(login_url='app:login')
 def work_submit(request): # （团队负责人）学生的作业提交页面
     return HttpResponse('Submit your group\'s homework here.')
 
@@ -70,3 +68,10 @@ def view_admitted_work(request):
     return render(request, 'student/admitted_work.html', {'submitted': submitted,
                                                           'unsubmitted': unsubmitted,})
 
+
+# Added by kahsolt 2017-06-27
+#@login_required(login_url='app:login')
+def workView(request):
+    wid = request.content_params.get('id')
+    work = Work.objects.filter(id=wid)
+    return render(request, 'student/work.html', {'work': work,})
