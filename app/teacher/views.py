@@ -379,7 +379,9 @@ def add_comment_score(request):
         if form.is_valid():
             homework = Work.objects.filter(pk=homework_id) \
                 .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
-            return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id)
+            return render(request, 'teacher/success.html',
+                          {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
+            # return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id)
         else:
             return HttpResponse('fail to add comment and score!')
 
