@@ -8,4 +8,4 @@ from django.forms import ModelForm
 class ContributionForm(ModelForm):
     class Meta:
         model = Member
-        fields = ['user', 'role', 'contribution']
+        fields = ['user','role', 'contribution']
