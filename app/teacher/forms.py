@@ -39,5 +39,5 @@ class HomeworkForm(forms.Form):
 # comment and score form
 class CommentAndScoreForm(forms.Form):
     homework_id = forms.CharField()
-    score = forms.IntegerField(help_text='score')
-    comment = forms.CharField(help_text='comment')
+    score = forms.IntegerField()
+    review = forms.CharField()
