@@ -102,7 +102,7 @@
                         <div class="card card-plain">
                             <div class="card-header" data-background-color="orange">
                                 <h4 class="title">我的团队</h4>
-                                <p class="category">设置团队成员贡献度</p>
+                                <p class="category">团队成员贡献度</p>
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table table-hover">
@@ -120,21 +120,31 @@
                                     {% endfor %}
                                 </table>
                             </div>
+
+                            <div class="card-content table-responsive">
+                            <p>上传学生贡献表</p>
+                                <form method="Post" action="" enctype="multipart/form-data">
+
+                                    {{ form.file }}
+
+                                    {% csrf_token %}
+                                    <input type="submit" value="点我提交"/>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <footer class="footer">
-            <div class="container-fluid">
-                <p class="copyright pull-right">
-                    URANUS@2017
-                </p>
-            </div>
-        </footer>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <p class="copyright pull-right">
+                        URANUS@2017
+                    </p>
+                </div>
+            </footer>
+        </div>
     </div>
-</div>
 
 </body>
 

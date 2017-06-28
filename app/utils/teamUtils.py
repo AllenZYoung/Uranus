@@ -154,26 +154,47 @@ def auditTeamRejected(team, info):
 def setContribution(user, contribution):
     def validateContribution(c):
         # Method 1:
-        return c >= 0.4 and c <= 1.2
+        return c >= 0.4 and c <= 1.6
         # Method 2:
         # C = [0.4, 0.6, 0.8, 1.0, 1.2]
         # return c in C
 
     if not isinstance(user, User):
-        return False, '参数对象错误'
-    if user.role != 'student':
-        return False, '不是学生'
+        print('参数对象错误')
+        return False
     if not validateContribution(contribution):
-        return False, '设定的个人贡献比例不在值范围'
+        print('设定的个人贡献比例不在值范围')
+        return False
 
-    course = Enroll.objects.filter(user=user)
-    team = TeamMeta.objects.filter(course=course)
+    enroll = Enroll.objects.filter(user=user).first()
+    team = Team.objects.filter(course=enroll.course).first()
     members = Member.objects.filter(team=team)
     maxContrib = members.count()
     curContrib = 0
-    for member in members:
-        curContrib += (member.contribution is None) and 0 or member.contribution
-    if curContrib + contribution > maxContrib:
+    curContrib += contribution
+    if curContrib > maxContrib:
+        print('团队总贡献度超额')
         return False, '团队总贡献度超额'
+
     Member.objects.filter(user=user).update(contribution=contribution)
+    print("setContribution DONE!")
     return curContrib + contribution
+
+def isTeamLeader(student):
+    '''
+    确定一个学生是否为该团队的负责人
+    :param team: 
+    :param student: 
+    :return: bool value
+    '''
+    check = False
+    if not isinstance(student, User):
+        print('参数对象错误')
+        return False, '参数对象错误'
+    memberships = Member.objects.filter(user=student).first()
+    if memberships.role == 'leader' or memberships.role == '队长':
+        check = True
+    return check
+
+
+

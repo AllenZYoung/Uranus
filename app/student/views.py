@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from app.models import File, User, Work, WorkMeta, Attachment
@@ -8,14 +8,14 @@ from .forms import ContributionForm, UploadFileForm
 from .models import Member, User, Team
 from django.shortcuts import get_object_or_404
 from . import utils
-from ..utils.teamUtils import setContribution
+from .utils import *
 from .models import Course, Enroll, User
-
+from  django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
 @login_required(login_url='app:login')
-def index(request):
+def index(request):  # 也可以看做是“courseRoot函数”
     return render(request, 'student/student_course.html')
 
 
@@ -34,41 +34,46 @@ def my_course(request):
 # todo 该函数很不完善
 @login_required(login_url='app:login')
 def member_evaluation(request):  # （团队负责人）学生的团队管理，即成员评价页面
+    student_id = request.user
+    student = User.objects.filter(username=student_id).first()
+    member_model = Member.objects.filter(user__username__contains=student_id).first()
+    team = member_model.team
+
     if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
-        student_id = request.user
-        member_model = Member.objects.filter(user__username__contains=student_id).first()
-        team = member_model.team
+        form = UploadFileForm()
+        # student_id = request.user
+        # member_model = Member.objects.filter(user__username__contains=student_id).first()
+        # team = member_model.team
         member_list = Member.objects.filter(team=team)
-        contribution_form = ContributionForm()
         return render(request, ''
                                'student/student_team_manage.html',
-                      {'contribution_form': contribution_form, 'team': team, 'member_list': member_list})
-    elif request.method == 'POST':  # 改变每个人的权重（贡献度）
-        student_id = request.user
-        f = ContributionForm(request.POST)
-        # 此处表单没写好，注意。@果冻
-        print(f.cleaned_data['contribution'])
-        if f.is_valid():
-            print("Contribution form valid!")
-            # set_members_evaluations(student_id)
-            member_model = Member.objects.filter(user__username__contains=student_id).first()
-            team = member_model.team
-            member_list = Member.objects.filter(team=team)
-            # i = 0
-            for member in member_list:
-                contribution = f.cleaned_data['contribution']
-                # print(f.cleaned_data['contribution'])
-                print(member.user, contribution)
-                setContribution(member.user, contribution)
-                # i+=1
+                      {'team': team, 'member_list': member_list,'form':form})
+
+    elif (request.method == 'POST' and isTeamLeader(student)): # 设置贡献度（权重）
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            print("form is VALID!")
+            if request.FILES['file'].name.split('.')[-1] == 'xlsx':
+                try:
+                    handle_uploaded_contribution(request, f=request.FILES['file'])
+                except ObjectDoesNotExist as e:
+                    error_message = "XLS obeject not exists"
+                    return HttpResponse('error')
+                return render(request, 'student/student_team_manage.html', {'form': form})
+            else:
+                error_message = '文件格式错误，请上传Excel文件（.xlsl)'
+                form = UploadFileForm()
+                return HttpResponse("Your submit is GG")
+                # return render(request, 'student/student_team_manage.html', {'form': form, 'errorMessage': error_message})
         else:
-            print("Contribution form NOT valid")
-            error_message = 'Some error here!'
-            return render(request, 'student/student_member_contribution.html',
-                          {'error_message': error_message})
+            error_message = '请添加文件'
+            form = UploadFileForm()
+            return HttpResponse("Your submit is GG")
+            # return render_to_response('student/student_team_manage.html', {'form': form, 'errorMessage': error_message})
+    form = UploadFileForm()
+    return render(request, 'student/student_team_manage.html', {'form': form})
 
 
-# @login_required(login_url='app:login')
 def work_submit(request):  # （团队负责人）学生的作业提交页面
     course_id = request.GET.get('course_id', None)
 
