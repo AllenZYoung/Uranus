@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^ourse/',views.course,name='course'),
     url(r'^task/',views.task,name='task'),
     url(r'^postcourse/',views.postcourse,name='postcourse'),
+    url(r'^submitted_work_list/', views.submitted_work_list, name='submitted_work_list'),
+
 
 ]
