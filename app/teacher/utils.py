@@ -7,7 +7,7 @@ from app.models import *
 from django.shortcuts import get_object_or_404
 
 
-def handle_uploaded_file(request,course_id,form):
+def handle_uploaded_file(request,course_id,f):
     # f = request.FILES['file']
     # name = f.name
     # new_name = name.split('.', 1)[0] + '-' + datetime.now().strftime("%Y-%m-%d-%H-%M-%S").__str__() + '.' + \
@@ -15,11 +15,10 @@ def handle_uploaded_file(request,course_id,form):
     # with open(os.path.join('uploads/file/teacher/', new_name), 'wb+') as destination:
     #     for chunk in f.chunks():
     #         destination.write(chunk)
-    f=form.cleaned_data['file']
+    #f=form.cleaned_data['file']
     teacher=get_object_or_404(User,username=request.user.username)
-    file=File(course_id=course_id,time=datetime.now(),file=form.cleaned_data['file'],user=teacher)
+    file=File(course_id=course_id,time=datetime.now(),file=f,user=teacher)
     file.save()
-    form.clean()
 
 
 def import_student_for_course(request):
