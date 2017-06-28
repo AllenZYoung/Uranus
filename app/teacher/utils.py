@@ -59,12 +59,11 @@ def add_homework(homework_form, course_id, username,file):
     content = homework_form.cleaned_data['content']
     proportion = homework_form.cleaned_data['proportion']
     submits = homework_form.cleaned_data['submits']
-    startTime = homework_form.cleaned_data['startTime']
     endTime = homework_form.cleaned_data['endTime']
     title=homework_form.cleaned_data['title']
     teacher = get_object_or_404(User, username=username)
     workmeta = WorkMeta(course_id=course_id, user=teacher, content=content,title=title,
-                        proportion=proportion, submits=submits, startTime=startTime, endTime=endTime)
+                        proportion=proportion, submits=submits, startTime=datetime.now(), endTime=endTime)
     workmeta.save()
     if file is not None:
         f=File(course_id=course_id,user=teacher,file=file,type='text',time=datetime.now())

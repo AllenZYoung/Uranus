@@ -29,20 +29,23 @@ def create_homework(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
-        homework_form = HomeworkForm()
-        return render(request, 'teacher/create_homework.html', {'homework_form': homework_form, 'course': course})
+        form = HomeworkForm()
+        return render(request, 'teacher/create_homework.html', {'form': form, 'course': course})
     else:
         course_id = request.POST.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         form = HomeworkForm(request.POST)
         if form.is_valid():
-            file=request.FILES['attachment']
+            try:
+                file=request.FILES['attachment']
+            except:
+                file=None
             add_homework(form, course_id, request.user.username,file)
             return HttpResponseRedirect('/teacher/homework?course_id='+course_id)
         else:
             error_message = '数据不合法'
             return render(request, 'teacher/create_homework.html',
-                          {'homework_form': form, 'course': course, 'error_message': error_message})
+                          {'form': form, 'course': course, 'error_message': error_message})
 
 
 @login_required(login_url='app:login')
@@ -127,13 +130,6 @@ def create_resource(request):
         return render(request, 'teacher/create_resource.html',
                       {'course': course, 'teacher': teacher,})
     else:
-        # course_id = request.POST.get('course_id', None)
-        # form = UploadFileForm(request.POST, request.FILES)
-        # if form.is_valid():
-        #     handle_uploaded_file(request,course_id,form)
-        #     return HttpResponse('upload file success')
-        # else:
-        #     return HttpResponse('form is not valid')
         course_id=request.POST.get('course_id',None)
         course=get_object_or_404(Course,id=course_id)
         user = request.user
@@ -189,36 +185,52 @@ def delete_file(request):
 def edit_homework(request):
     if request.method == 'GET':
         workmeta_id = request.GET.get('workmeta_id', None)
+        course_id=request.GET.get('course_id',None)
+        course=get_object_or_404(Course,id=course_id)
         workmeta = get_object_or_404(WorkMeta, id=workmeta_id)
         homework_form = HomeworkForm()
         homework_form.set_data(workmeta)
         return render(request, 'teacher/edit_homework.html',
-                      {'workmeta_id': workmeta_id, 'homework_form': homework_form})
+                      {'course':course,'workmeta_id': workmeta_id, 'form': homework_form})
     else:
+        teacher=User.objects.get(username=request.user.username)
         workmeta_id = request.POST.get('workmeta_id', None)
+        course_id=request.POST.get('course_id',None)
+        course=get_object_or_404(Course,id=course_id)
         workmeta = get_object_or_404(WorkMeta, id=workmeta_id)
         homework_form = HomeworkForm(request.POST)
         if homework_form.is_valid():
+            workmeta.title=homework_form.cleaned_data['title']
             workmeta.content = homework_form.cleaned_data['content']
             workmeta.proportion = homework_form.cleaned_data['proportion']
             workmeta.submits = homework_form.cleaned_data['submits']
-            workmeta.startTime = homework_form.cleaned_data['startTime']
             workmeta.endTime = homework_form.cleaned_data['endTime']
+            try:
+                file=request.FILES['attachment']
+            except:
+                file=None
+            if file is not None:
+                f=File(course=course,user=teacher,file=file,type='text',time=datetime.now())
+                f.save()
+                attachment=Attachment(file=f,workMeta=workmeta,type='workmeta')
+                attachment.save()
             workmeta.save()
-            return HttpResponse('edit homework success')
+            return redirect('/teacher/homework/?course_id='+course_id)
         else:
             error_message = '数据不合法'
             return render(request, 'teacher/edit_homework.html',
-                          {'workmeta_id': workmeta_id, 'homework_form': homework_form, 'error_message': error_message})
+                          {'course':course,'workmeta_id': workmeta_id, 'form': homework_form, 'error_message': error_message})
 
 
 @login_required(login_url='app:login')
 def past_homeworks(request):
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
     user = request.user
     workmetas=get_past_homeworks(user.username)
     if len(workmetas) == 0:
         error_message = '当前没有往期作业数据'
-    return render(request,'teacher/past_homeworks.html',{'workmetas':workmetas,'error_message':error_message})
+    return render(request,'teacher/past_homeworks.html',{'course':course,'workmetas':workmetas,'error_message':error_message})
 
 
 
@@ -325,10 +337,6 @@ def course(request):
             course = enroll.course
     teacher = User.objects.get(username=user.username)
     return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course})
-
-
-def postcourse(request):
-    pass
 
 
 def task(request):
