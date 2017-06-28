@@ -12,3 +12,6 @@ class ContributionForm(ModelForm):
 
 class UploadFileForm(forms.Form):
     file = forms.FileField(label='选择附件')
+
+
+

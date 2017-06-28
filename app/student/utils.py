@@ -2,13 +2,16 @@
 
 from django.contrib.auth.models import User
 from app import models
-from app.models import Work, WorkMeta
+from app.models import Work, WorkMeta,Member,Team,User
 from django.shortcuts import get_object_or_404
 from .models import User,Team, TeamMeta, Member, File, Attachment
 from django.conf import settings
 import datetime
 import pytz
 import os
+from openpyxl.reader.excel import load_workbook
+from ..utils.teamUtils import setContribution, isTeamLeader
+
 
 
 def auth_user(form):  # 瞎写的东西
@@ -74,3 +77,29 @@ def get_submittings(team_id, course_id):
             submittings['unsubmitted'].append(workMeta)
     return submittings
 
+def handle_uploaded_contribution(request, f=None):
+    datenow = datetime.datetime.now()
+    filedate = datenow.strftime('%Y%m%d-%H%M%S')
+    path = os.path.join(os.path.abspath('.'),'uploads','user')
+    filepath = path + '/' + filedate + '_' + f.name
+    with open(filepath, 'ab') as de:
+        for chunk in f.chunks():
+            de.write(chunk)
+    wb = load_workbook(filepath)
+    print(filepath)
+    table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+    for i in range(2, table.max_row + 1):
+        if table.cell(row=i, column=1).value is None:
+            # '为空，应跳过'
+            continue
+        print('正在导入第' + str(i - 1) + '行...')
+
+        student_id = table.cell(row=i,column=1).value
+        student_contribution = table.cell(row=i, column=3).value
+        print(student_id, student_contribution)
+        student = User.objects.filter(username=student_id).first()
+        # if student is not None:
+        #     Member.objects.filter(user=student).update(contribution=student_contribution)
+        # else:
+        #     return None
+        setContribution(student,student_contribution)
