@@ -4,14 +4,11 @@ from django.contrib.auth.decorators import login_required
 from app.models import File, User, Work, WorkMeta, Attachment
 from django.conf import settings
 import os
-from .forms import ContributionForm
+from .forms import ContributionForm, UploadFileForm
 from .models import Member, User, Team
 from django.shortcuts import get_object_or_404
 from . import utils
 from ..utils.teamUtils import setContribution
-
-
-# from .utils import set_members_evaluations
 
 
 # Create your views here.
@@ -98,31 +95,55 @@ def download(request):
 
 
 # @login_required(login_url='app:login')
-def view_admitted_work(request):
+def view_submitted_work(request):
+    team_id = 1
+    course_id = 1
+    print(1)
+    submittings = utils.get_submittings(team_id, course_id)
+    print(submittings)
+    return render(request, 'student/submitted_work.html', {'submitted': submittings['submitted'], })
+
+# @login_required(login_url='app:login')
+def view_unsubmitted_work(request):
     team_id = 1
     course_id = 1
     submittings = utils.get_submittings(team_id, course_id)
-    return render(request, 'student/admitted_work.html', {'submitted': submittings['submitted'],
-                                                          'unsubmitted': submittings['unsubmitted'], })
+    print(submittings)
+    return render(request, 'student/unsubmitted_work.html', {'unsubmitted': submittings['unsubmitted'], })
 
 
 # added by wanggd 2017-06-28
 # @login_required(login_url='app:login')
 def workView(request):
-    if 'work_id' in request.GET:
-        wid = request.GET['work_id']
-        work = Work.objects.get(id=wid)
-        files = Attachment.objects.filter(workMeta_id=work.workMeta_id)
-        return render(request, 'student/student_task_details.html', {'work': work,
-                                                                     'workMeta': work.workMeta,
-                                                                     'files': files,
-                                                                     'is_work': True})
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            ret = utils.submit_homework_file(request)
+            if ret:
+                return HttpResponse('Sumbit successfully')
+            else:
+                return HttpResponse('Sumbit failed')
+        else:
+            return HttpResponse('form is not valid')
+    elif request.method == 'GET':
+        form = UploadFileForm()
+        if 'work_id' in request.GET:
+            wid = request.GET['work_id']
+            work = Work.objects.get(id=wid)
+            files = Attachment.objects.filter(workMeta_id=work.workMeta_id)
+            return render(request, 'student/work.html', {'work': work,
+                                                         'workMeta': work.workMeta,
+                                                         'files': files,
+                                                         'is_work': True,
+                                                         'form': form})
+        else:
+            wid = request.GET['workmeta_id']
+            workMeta = WorkMeta.objects.get(id=wid)
+            return render(request, 'student/work.html', {'workMeta': workMeta,
+                                                         'is_work': False,
+                                                         'form': form})
     else:
-        wid = request.GET['workmeta_id']
-        workMeta = WorkMeta.objects.get(id=wid)
-
-        return render(request, 'student/student_task_details.html', {'workMeta': workMeta,
-                                                             'is_work': False})
+        return HttpResponse('404 NOT FOUND')
 
 
 # pass

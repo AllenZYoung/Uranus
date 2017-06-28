@@ -9,6 +9,14 @@
     <h3>{{ workMeta.title }}</h3>
     作业内容
     <h3>{{ workMeta.content }}</h3>
+    {% if not is_work %}
+        <form method="Post" action="" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="提交"/>
+        </form>
+    {% endif %}
+
     {% if is_work %}
         评论<h3>{{ work.review }}</h3>
         下载<br>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submitted Word</title>
+</head>
+<body>
+已提交作业
+<table border="1">
+    <th>作业名称</th>
+    <th>开始时间</th>
+    <th>结束时间</th>
+    {% for meta in submitted %}
+    <tr>
+        <td><a href="work?workmeta_id={{ meta.id }}">{{ meta.workMeta.title }}</a></td>
+        <td>{{ meta.workMeta.startTime }}</td>
+        <td>{{ meta.workMeta.endTime }}</td>
+    </tr>
+    {% endfor %}
+</table><br>
+</table>
+</body>
+</html>

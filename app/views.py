@@ -97,6 +97,7 @@ def change_info(request):
             if passwd is not None:
                 user.password=passwd
                 request.user.set_password(passwd)
+                request.user.save()
             user.save()
             return redirect('/user/profile')
         else:

@@ -4,9 +4,11 @@ from django.contrib.auth.models import User
 from app import models
 from app.models import Work, WorkMeta
 from django.shortcuts import get_object_or_404
-from .models import User,Team, TeamMeta, Member
+from .models import User,Team, TeamMeta, Member, File, Attachment
+from django.conf import settings
 import datetime
 import pytz
+import os
 
 
 def auth_user(form):  # 瞎写的东西
@@ -23,9 +25,21 @@ def auth_user(form):  # 瞎写的东西
     else:
         return False
 
+# 提交某个作业（的文件），只能是负责人提交
+def submit_homework_file(request):
+    team_id = course_id = user_id = team_id = workMeta_id = 1
+    f = request.FILES['file']
+    upload_path = os.path.join(settings.MEDIA_ROOT, 'file\student', f.name)
+    with open(upload_path, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    file = File(file=f.name, course_id=course_id, user_id=user_id)
+    file.save()
+    work = Work(team_id=team_id, workMeta_id=workMeta_id)
+    work.save()
+    Attachment(file_id=file.id, work_id=work.id, workMeta_id=workMeta_id).save()
+    return True
 
-def submit_homework_file(form):  # 提交某个作业（的文件）
-    pass
 
 #TODO this function, some puzzled questions here
 # def set_members_evaluations(team_leader):  # 为团队成员设置贡献度（可以理解为权重）
@@ -59,3 +73,4 @@ def get_submittings(team_id, course_id):
         if workMeta.id not in submitted_id:
             submittings['unsubmitted'].append(workMeta)
     return submittings
+

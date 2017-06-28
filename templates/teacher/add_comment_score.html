@@ -7,28 +7,37 @@
 </head>
 <body>
 
-    <table>
-        <tr>
-            <td>发布者</td>
-            <td>内容</td>
-            <td>占分比</td>
-            <td>可提交次数</td>
-            <td>开始时间</td>
-            <td>结束时间</td>
-            <td>团队</td>
-        </tr>
+{#    <table>#}
+{#        <tr>#}
+{#            <td>发布者</td>#}
+{#            <td>内容</td>#}
+{#            <td>占分比</td>#}
+{#            <td>可提交次数</td>#}
+{#            <td>开始时间</td>#}
+{#            <td>结束时间</td>#}
+{#            <td>团队</td>#}
+{#        </tr>#}
+{##}
+{#        <tr>#}
+{#            <td>发布者{{ homework.workMeta.user.username }}</td>#}
+{#            <td>内容{{ homework.workMeta.content }}</td>#}
+{#            <td>占分比{{ homework.workMeta.proportion }}</td>#}
+{#            <td>可提交次数{{ homework.workMeta.submits }}</td>#}
+{#            <td>开始时间{{ homework.workMeta.startTime }}</td>#}
+{#            <td>结束时间{{ homework.workMeta.endTime }}</td>#}
+{#            <td>团队{{ homework.team.name }}</td>#}
+{#        </tr>#}
+{#    </table>#}
 
-        <tr>
-            <td>发布者{{ homework.workMeta.user.username }}</td>
-            <td>内容{{ homework.workMeta.content }}</td>
-            <td>占分比{{ homework.workMeta.proportion }}</td>
-            <td>可提交次数{{ homework.workMeta.submits }}</td>
-            <td>开始时间{{ homework.workMeta.startTime }}</td>
-            <td>结束时间{{ homework.workMeta.endTime }}</td>
-            <td>团队{{ homework.team.name }}</td>
-        </tr>
-    </table>
-
+    <label>提交者:</label>{{ homework.workMeta.user.username }}<br/>
+    <label>小组编号:</label>{{ homework.team.serialNum }}<br/>
+    <label>小组名称:</label>{{ homework.team.name }}<br/>
+    <label>作业状态:</label>{{ homework.team.status }}<br/>
+    <label>说明:</label>{{ homework.team.info }}<br/>
+    <label>附件:</label><br/>
+    {% for attachment in attachments %}
+        <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a><br>
+    {% endfor %}
 
     <form action="" method="post">
         {% csrf_token %}

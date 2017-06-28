@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, Http404
 from app.models import *
 from app.teacher.forms import *
@@ -35,7 +35,8 @@ def create_homework(request):
         course = get_object_or_404(Course, id=course_id)
         form = HomeworkForm(request.POST)
         if form.is_valid():
-            add_homework(form, course_id, request.user.username)
+            file=request.FILES['attachment']
+            add_homework(form, course_id, request.user.username,file)
             return HttpResponseRedirect('/teacher/homework?course_id='+course_id)
         else:
             error_message = '数据不合法'
@@ -145,25 +146,6 @@ def preview_source_online(request):
     # return render(request, 'teacher/sourcePreview.html')
 
 
-# 设置分数和评论
-def add_comment_score(request):
-    if request.method == 'GET':
-        homework_id = request.GET.get('homework_id')
-        # homework_id = 1
-        homework = get_object_or_404(Work, id=homework_id)
-        form = CommentAndScoreForm()
-        form.initial['homework_id'] = homework_id
-        form.fields['homework_id'].widget = forms.HiddenInput()
-        return render(request, 'teacher/add_comment_score.html',
-                      {'homework': homework, 'form': form})
-    else:
-        form = CommentAndScoreForm(request.POST)
-        if form.is_valid():
-            homework = Work.objects.filter(pk=form.cleaned_data['homework_id']) \
-                .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
-            return HttpResponse('succeed to add comment and score!')
-        else:
-            return HttpResponse('fail to add comment and score!')
 
 
 @login_required(login_url='app:login')
@@ -218,10 +200,6 @@ def download_stu_homework(request):
     pass
 
 
-# 设置作业占分比例
-def set_rate_of_homework(request):
-    pass
-
 
 # 生成个人得分表
 def generate_stu_score_table(request):
@@ -238,6 +216,7 @@ def generate_stu_score_table(request):
 
 
 #生成小组最终成绩
+@login_required(login_url='app:login')
 def generate_team_score_table(request):
     team_list, score_list, team_score = compute_team_score()
 
@@ -251,6 +230,7 @@ def generate_team_score_table(request):
 
 
 #下载小组得分excel
+@login_required(login_url='app:login')
 def download_team_score_list():
     file = get_team_score_excel_file_abspath()
     response = StreamingHttpResponse(file_iterator(file))
@@ -260,6 +240,7 @@ def download_team_score_list():
 
 
 # 下载所有学生的分数excel
+@login_required(login_url='app:login')
 def download_stu_score_list(request):
     file = get_stu_score_excel_file_abspath()
     response = StreamingHttpResponse(file_iterator(file))
@@ -268,18 +249,21 @@ def download_stu_score_list(request):
     return response
 
 
-#显示所有学生已提交的的当前学期的作业
+#显示当前已布置的作业
+@login_required(login_url='app:login')
 def show_works(request):
     course_id = request.GET.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
     workmetas=WorkMeta.objects.filter(course_id=course_id)
-    works=[]
-    for workmeta in workmetas:
-        works.extend(Work.objects.filter(workMeta=workmeta))
-    return render(request,'teacher/show_works.html',{'course':course,'works':works})
+    # works=[]
+    # for workmeta in workmetas:
+    #     works.extend(Work.objects.filter(workMeta=workmeta))
+    return render(request,'teacher/show_works.html',
+                  {'course':course, 'work_metas': workmetas, 'course_id': course_id})
 
 
 #显示学生提交的一次作业
+@login_required(login_url='app:login')
 def work_detail(request):
     work_id=request.GET.get('work_id',None)
     work=get_object_or_404(Work,id=work_id)
@@ -288,7 +272,8 @@ def work_detail(request):
 
 
 #下载上传的资源
-def dwnload_file(request,path):
+@login_required(login_url='app:login')
+def download_file(request,path):
     file_path=os.path.join(settings.MEDIA_ROOT,path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
@@ -296,6 +281,7 @@ def dwnload_file(request,path):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
 
 
 def course(request):
@@ -320,3 +306,49 @@ def task(request):
     user = request.user
     teacher = User.objects.get(username=user.username)
     return render(request, 'teacher/task.html', {'teacher': teacher, 'course': course})
+
+# 某作业的所有提交的附件
+@login_required(login_url='app:login')
+def submitted_work_list(request):
+    course_id = request.GET.get('course_id')
+    work_meta_id = request.GET.get('work_meta_id')
+    workmetas = WorkMeta.objects.filter(id=work_meta_id)
+    works=[]
+    for workmeta in workmetas:
+        works.extend(Work.objects.filter(workMeta=workmeta))
+    attachment_team_dict = {}
+    for work in works:
+        attachments = Attachment.objects.filter(work=work)
+        if attachments:
+            attachment_team_dict[work.team] = attachments
+    return render(request,'teacher/submitted_work_list.html',
+                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id})
+
+
+# 设置分数和评论
+@login_required(login_url='app:login')
+def add_comment_score(request):
+    if request.method == 'GET':
+        work_meta_id = request.GET.get('work_meta_id')
+        homework_id = request.GET.get('work_id')
+        homework = get_object_or_404(Work, id=homework_id)
+        attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
+        form = CommentAndScoreForm()
+        # form.initial['homework_id'] = homework_id
+        # form.fields['homework_id'].widget = forms.HiddenInput()
+        # form.initial['post_work_meta_id'] = work_meta_id
+        # form.fields['post_work_meta_id'].widget = forms.HiddenInput()
+        return render(request, 'teacher/add_comment_score.html',
+                      {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
+                       'attachments': attachments})
+    else:
+        form = CommentAndScoreForm(request.POST)
+        work_meta_id = request.GET.get('work_meta_id')
+        homework_id = request.GET.get('work_id')
+        if form.is_valid():
+            homework = Work.objects.filter(pk=homework_id) \
+                .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
+            return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id)
+        else:
+            return HttpResponse('fail to add comment and score!')
+

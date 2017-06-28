@@ -8,14 +8,22 @@
     <table>
         <tr>
             <th>作业名称</th>
-            <th>提交团队</th>
+            <th>发布者</th>
+            <th>占分比</th>
+            <th>可提交次数</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
         </tr>
-        {% for work in works %}
+        {% for work_meta in work_metas %}
             <tr>
                 <td>
-                    <a href="{% url 'teacher:work_detail' %}?work_id={{ work.id }}">{{ work.workMeta.title }}</a>
+                    <a href="{% url 'teacher:submitted_work_list' %}?work_meta_id={{ work_meta.id }}&course_id={{ course_id }}">{{ work_meta.title }}</a>
                 </td>
-                <td>{{ work.team.name }}</td>
+                <td>{{ work_meta.user.name }}</td>
+                <td>{{ work_meta.proportion }}</td>
+            <td>{{ work_meta.submits }}</td>
+            <td>{{ work_meta.startTime }}</td>
+            <td>{{ work_meta.endTime }}</td>
             </tr>
         {% endfor %}
     </table>
