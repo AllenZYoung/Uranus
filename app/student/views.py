@@ -72,6 +72,9 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
 
 # @login_required(login_url='app:login')
 def work_submit(request):  # （团队负责人）学生的作业提交页面
+    course_id = request.GET.get('course_id',None)
+
+
     return HttpResponse('Submit your group\'s homework here.')
 
 
