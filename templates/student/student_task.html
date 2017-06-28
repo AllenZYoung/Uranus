@@ -45,19 +45,19 @@
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
 	                <li>
-	                    <a href="student_course.html">
+	                    <a href={% url 'student:index' %}>
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
 	                <li class="active">
-	                    <a href="student_task.html">
+	                    <a href='{% url 'student:workpage' %}'>
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="student_team.html">
+	                    <a href={% url 'student:teampage' %}>
 	                        <i class="material-icons">face</i>
 	                        <p>团队管理</p>
 	                    </a>
@@ -98,7 +98,7 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-6 col-sm-6">
-							<a href="student_task_submit.html">
+							<a href="{% url 'student:unsubmitted_work' %}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="blue">
 										<i class="material-icons">content_copy</i>
@@ -116,7 +116,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-sm-6">
-							<a href="student_task_view.html">
+							<a href="{% url 'student:submitted_work' %}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
 										<i class="material-icons">content_copy</i>
