@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>团队管理</title>
+	<title>学期管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -38,28 +38,22 @@
 
 			<div class="logo">
 				<a href="#" class="simple-text">
-					学生
+					教务
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
+	                <li class="active">
+	                    <a href="admin_semester.html">
+	                        <i class="material-icons">today</i>
+	                        <p>学期管理</p>
+	                    </a>
+	                </li>
 	                <li>
-	                    <a href="course_student.html">
+	                    <a href="admin_course.html">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="task_student.html">
-	                        <i class="material-icons">content_copy</i>
-	                        <p>作业管理</p>
-	                    </a>
-	                </li>
-	                <li class="active">
-	                    <a href="team_student.html">
-	                        <i class="material-icons">face</i>
-	                        <p>团队管理</p>
 	                    </a>
 	                </li>
 	            </ul>
@@ -76,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="team_student.html">团队管理</a>
+						<a class="navbar-brand" href="admin_semester.html">学期管理</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -99,53 +93,35 @@
 					<div class="row">
 						<div class="col-md-6 col-sm-6">
 							<a href="#">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">face</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">发起团队</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>发起团队将作为团队负责人创建一个团队</p>
-										</div>
+							<div class="card card-stats">
+								<div class="card-header" data-background-color="blue">
+									<i class="material-icons">today</i>
+								</div>
+								<div class="card-content">
+									<p class="category"><br></p>
+									<h3 class="title">创建学期</h3>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<p>创建一个新的学期，以开始课程</p>
 									</div>
 								</div>
+							</div>
 							</a>
 						</div>
 						<div class="col-md-6 col-sm-6">
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
-										<i class="material-icons">face</i>
+										<i class="material-icons">today</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">加入团队</h3>
+										<h3 class="title">学期信息</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看已有团队，选择加入团队</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="#">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">face</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">我的团队</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>管理团队成员、设置团队成员贡献度</p>
+											<p>查看已创建学期，并维护学期信息</p>
 										</div>
 									</div>
 								</div>

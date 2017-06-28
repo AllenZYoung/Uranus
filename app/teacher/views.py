@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, Http404
 from app.models import *
 from app.teacher.forms import *
 from app.teacher.utils import *
 from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
+from django.conf import settings
 
 
 # Create your views here.
@@ -35,7 +36,7 @@ def create_homework(request):
         form = HomeworkForm(request.POST)
         if form.is_valid():
             add_homework(form, course_id, request.user.username)
-            return HttpResponseRedirect('/homework/')
+            return HttpResponseRedirect('/teacher/homework?course_id='+course_id)
         else:
             error_message = '数据不合法'
             return render(request, 'teacher/create_homework.html',
@@ -45,11 +46,6 @@ def create_homework(request):
 @login_required(login_url='app:login')
 def edit_course(request):
     return HttpResponse('edit course')
-
-
-@login_required(login_url='app:login')
-def edit_homework(request):
-    return HttpResponse('edit homework')
 
 
 @login_required(login_url='app:login')
@@ -174,8 +170,8 @@ def edit_homework(request):
     if request.method == 'GET':
         workmeta_id = request.GET.get('workmeta_id', None)
         workmeta = get_object_or_404(WorkMeta, id=workmeta_id)
-        homework_form = HomeworkForm(content=workmeta.content, proportion=workmeta.proportion, submits=workmeta.submits,
-                                     startTime=workmeta.startTime, endTime=workmeta.endTime)
+        homework_form = HomeworkForm()
+        homework_form.set_data(workmeta)
         return render(request, 'teacher/edit_homework.html',
                       {'workmeta_id': workmeta_id, 'homework_form': homework_form})
     else:
@@ -241,7 +237,7 @@ def generate_team_score_table(request):
                   {'team_list': team_list, 'score_list': score_list})
 
 
-#下载小组得分表
+#下载小组得分excel
 def download_team_score_list():
     file = get_team_score_excel_file_abspath()
     response = StreamingHttpResponse(file_iterator(file))
@@ -259,11 +255,14 @@ def download_stu_score_list(request):
     return response
 
 
-#显示所有的当前学期的作业
+#显示所有学生已提交的的当前学期的作业
 def show_works(request):
     course_id = request.GET.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
-    works = WorkMeta.objects.filter(course_id=course_id)
+    workmetas=WorkMeta.objects.filter(course_id=course_id)
+    works=[]
+    for workmeta in workmetas:
+        works.extend(Work.objects.filter(workMeta=workmeta))
     return render(request,'teacher/show_works.html',{'course':course,'works':works})
 
 
@@ -275,3 +274,12 @@ def work_detail(request):
     return render(request,'teacher/work_detail.html',{'work':work,'attachments':attachments})
 
 
+#下载上传的资源
+def dwnload_file(request,path):
+    file_path=os.path.join(settings.MEDIA_ROOT,path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

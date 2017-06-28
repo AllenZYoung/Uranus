@@ -8,9 +8,9 @@
     <label>课程名称: {{ course.name }}</label><br/>
     <form action="{% url 'teacher:create_homework' %}" method="post">
         {% csrf_token %}
-        {{ homework_form }}
+        {{ homework_form.as_p }}
         <input type="hidden" name="course_id" value="{{ course.id }}">
-        <button type="submit" value="确认"></button>
+        <input type="submit" value="确认"/>
     </form>
     {% if error_message %}
         <label>{{ error_message }}</label>

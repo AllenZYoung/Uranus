@@ -1,6 +1,9 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 
 from app.forms import *
@@ -43,9 +46,3 @@ def logout(request):
         auth_logout(request)
         return render(request, 'logout.html')
 
-
-# Added by kahsolt
-def sampleDBView(request):
-    from app.test.sampleDB import sampleDB
-    sampleDB()
-    return render(request, 'test/sampleDB.html')

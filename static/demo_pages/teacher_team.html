@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程管理</title>
+	<title>学生团队管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -38,22 +38,34 @@
 
 			<div class="logo">
 				<a href="#" class="simple-text">
-					教务
+					教师
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
 	                <li>
-	                    <a href="semester_admin.html">
-	                        <i class="material-icons">today</i>
-	                        <p>学期管理</p>
+	                    <a href="teacher_course.html">
+	                        <i class="material-icons">dashboard</i>
+	                        <p>课程管理</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="teacher_task.html">
+	                        <i class="material-icons">content_copy</i>
+	                        <p>作业管理</p>
 	                    </a>
 	                </li>
 	                <li class="active">
-	                    <a href="course_admin.html">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
+	                    <a href="teacher_team.html">
+	                        <i class="material-icons">face</i>
+	                        <p>学生团队管理</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="teacher_pastcourse.html">
+	                        <i class="material-icons">receipt</i>
+	                        <p>往期课程</p>
 	                    </a>
 	                </li>
 	            </ul>
@@ -70,7 +82,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="course_admin.html">课程管理</a>
+						<a class="navbar-brand" href="teacher_team.html">学生团队管理</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -91,37 +103,37 @@
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-md-6 col-sm-6">
+						<div class="col-lg-3 col-md-6 col-sm-6">
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">face</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">创建课程</h3>
+										<h3 class="title">审核团队</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>创建一个新的课程</p>
+											<p>批准或驳回团队申请</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-						<div class="col-md-6 col-sm-6">
+						<div class="col-lg-3 col-md-6 col-sm-6">
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">face</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">课程信息</h3>
+										<h3 class="title">学生团队</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看已创建课程，并维护课程信息</p>
+											<p>查看当期课程内已完成组队的小组，如有需要可以进行微调</p>
 										</div>
 									</div>
 								</div>
@@ -131,15 +143,15 @@
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">person</i>
+										<i class="material-icons">face</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">导入学生</h3>
+										<h3 class="title">团队评价</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>对已有课程导入学生</p>
+											<p>课程结束后对各学生团队进行评价打分</p>
 										</div>
 									</div>
 								</div>
