@@ -108,7 +108,7 @@ def get_team_score_excel_file_abspath():
 def get_stu_score_excel_file_abspath():
     now_term = get_now_term()
 
-    # 各人得分的excel命名规范：termYear_termsemester_team_score_list.xlsx
+    # 各人得分的excel命名规范：termYear_termsemester_stu_score_list.xlsx
     file_path = os.path.join(os.path.abspath('.'), 'downloads', 'stuScores')
     file_name = '' + now_term.year + now_term.semester + 'stu_score_list.xlsx'
     file = file_path + file_name

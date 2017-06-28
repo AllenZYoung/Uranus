@@ -9,18 +9,20 @@ from django.forms import fields
 # define your custom forms here
 
 class FileForm(forms.Form):
-    filefield = forms.FileField(required=True, label='请选择文件')
+    # filefield = forms.FileField(required=True, label='请选择文件')
+    pass
 
 
 class TermForm(forms.Form):
-    year = forms.CharField(required=True, label='学期年份')
-    SEMESTER_CHOICES = (
-        ('spring', '春季学期'),
-        ('autumn', '秋季学期'),
-    )
-    semester = forms.CharField(required=True, widget=forms.Select(choices=SEMESTER_CHOICES), label='')
-    startWeek = forms.CharField(required=True, label='开始周次')
-    endWeek = forms.CharField(required=True, label='结束周次')
+    # year = forms.CharField(required=True, label='学期年份')
+    # SEMESTER_CHOICES = (
+    #     ('spring', '春季学期'),
+    #     ('autumn', '秋季学期'),
+    # )
+    # semester = forms.CharField(required=True, widget=forms.Select(choices=SEMESTER_CHOICES), label='')
+    # startWeek = forms.CharField(required=True, label='开始周次')
+    # endWeek = forms.CharField(required=True, label='结束周次')
+    pass
 
 
 class CourseForm(forms.Form):

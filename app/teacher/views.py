@@ -237,7 +237,7 @@ def generate_team_score_table(request):
                   {'team_list': team_list, 'score_list': score_list})
 
 
-#下载小组得分表
+#下载小组得分excel
 def download_team_score_list():
     file = get_team_score_excel_file_abspath()
     response = StreamingHttpResponse(file_iterator(file))
