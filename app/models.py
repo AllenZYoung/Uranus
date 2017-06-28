@@ -2,6 +2,8 @@
 # Date: 2017-06-26
 # Principle: Maintain tables as least as possible!
 
+import os
+
 from django.db import models
 from datetime import datetime
 
@@ -26,6 +28,9 @@ class User(models.Model):
     tel = models.CharField(max_length=16, null=True, help_text='电话')
     email = models.EmailField(max_length=64, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 # [学期]
 class Term(models.Model):
@@ -39,6 +44,10 @@ class Term(models.Model):
     startWeek = models.PositiveSmallIntegerField(null=True, help_text='课程开始的周次')
     endWeek = models.PositiveSmallIntegerField(null=True)
 
+    def __str__(self):
+        sem = self.semester == 'spring' and '春季学期' or '秋季学期'
+        return '%d年%s' %(self.year, sem)
+
 
 # [团队元信息]
 class TeamMeta(models.Model):
@@ -46,6 +55,9 @@ class TeamMeta(models.Model):
     maxNum = models.PositiveSmallIntegerField(default=10)
     startTime = models.DateTimeField(default=datetime.now(), help_text='允许组队的开始时间')
     endTime = models.DateTimeField(default=datetime.now())
+
+    def __str__(self):
+        return '%d~%d人团队' %(self.minNum, self.maxNum)
 
 
 # [课程]==[学期]&[团队元信息]
@@ -66,11 +78,17 @@ class Course(models.Model):
     startTime = models.DateTimeField(default=datetime.now())
     endTime = models.DateTimeField(default=datetime.now())
 
+    def __str__(self):
+        return self.name
+
 
 # <选课>==[课程]&[用户:学生/教师账户]
 class Enroll(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User)
+
+    def __str__(self):
+        return '%s <- %s' %(self.course.name, self.user.name)
 
 
 # [团队]==[课程]&[用户:学生账户]
@@ -88,6 +106,8 @@ class Team(models.Model):
     status = models.CharField(max_length=16, choices=STATUS, default='incomplete')
     info = models.TextField(help_text='通过欢迎信息/驳回理由', null=True)
 
+    def __str__(self):
+        return '%d: %s' %(self.serialNum, self.name)
 
 # <团队成员>==[团队]&[用户:学生账户]
 class Member(models.Model):
@@ -99,6 +119,9 @@ class Member(models.Model):
     )
     role = models.CharField(max_length=16, choices=ROLE, default='member')
     contribution = models.FloatField(help_text='成员贡献度:0.4~1.2', null=True)
+
+    def __str__(self):
+        return '%d: %s <- %s' %(self.team.serialNum, self.team.name, self.user.name)
 
 
 # [作业任务]~~<附件>
@@ -112,6 +135,9 @@ class WorkMeta(models.Model):
     startTime = models.DateTimeField(default=datetime.now())
     endTime = models.DateTimeField(default=datetime.now())
 
+    def __str__(self):
+        return self.title
+
 
 # [作业提交]~~<附件>
 class Work(models.Model):
@@ -121,6 +147,9 @@ class Work(models.Model):
     review = models.TextField(help_text='教师简评', null=True)
     score = models.FloatField(help_text='得分: 0.0~10.0', null=True)
     time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s <- %d: %s' %(self.workMeta.title, self.team.serialNum, self.team.name)
 
 
 # [资源文件]
@@ -136,6 +165,9 @@ class File(models.Model):
     type = models.CharField(max_length=16, choices=TYPE, default='text')
     time = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return os.path.split(self.file.url)
+
 
 # <附件>==[作业任务|作业提交]&[资源文件]
 class Attachment(models.Model):
@@ -148,12 +180,17 @@ class Attachment(models.Model):
     )
     type = models.CharField(max_length=16, choices=TYPE, default='workmeta')
 
+    def __str__(self):
+        w = self.workMeta is not None and self.workMeta.title or self.work.workMeta.title
+        return '%s <- %s' %(w, os.path.split(self.file.url))
 
 # [签到]
 class Attendance(models.Model):
     user = models.ForeignKey(User, help_text='学生')
     time = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.user.name
 
 # [公告]
 class Notice(models.Model):
@@ -162,3 +199,6 @@ class Notice(models.Model):
     title = models.CharField(max_length=128)
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
