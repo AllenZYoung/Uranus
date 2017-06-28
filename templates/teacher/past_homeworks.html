@@ -13,6 +13,8 @@
             <th>最大提交次数</th>
             <th>时间</th>
         </tr>
+        <p>{{ error_message }}</p>
+
         {% for workmeta in workmetas %}
             <tr>
                 <td>{{ workmeta.course.name }}</td>

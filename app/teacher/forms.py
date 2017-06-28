@@ -37,3 +37,28 @@ class CommentAndScoreForm(forms.Form):
     # homework_id = forms.IntegerField()
     score = forms.FloatField()
     review = forms.CharField()
+
+
+class EditCourseForm(forms.Form):
+    name = forms.CharField(label='课程名称')
+    info = forms.CharField(label='课程要求/其他说明')
+    syllabus = forms.CharField(label='课程大纲', widget=forms.Textarea)
+    classroom = forms.CharField(label='教室')
+    STATUS = (
+        ('unstarted', '未开始'),
+        ('ongoing', '正在进行'),
+        ('ended', '已结束'),
+    )
+    status=forms.ChoiceField(choices=STATUS,label='课程状态')
+
+    def set_init_data(self, course):
+        self.fields['name'].initial = course.name
+        self.fields['info'].initial = course.info
+        self.fields['syllabus'].initial = course.syllabus
+        self.fields['classroom'].initial = course.classroom
+        self.fields['status'].initial=course.status
+
+    def __init__(self, *args, **kwargs):
+        super(EditCourseForm,self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

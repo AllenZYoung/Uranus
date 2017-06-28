@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load app_tags %}
     <meta charset="UTF-8">
     <title>score list of gtoups</title>
 </head>
 <body>
     <table>
         <tr>
+            <td>团队编号</td>
             <td>团队名称</td>
             <td>团队得分</td>
         </tr>
-        {% num = len(team_list) %}
-        {% num_list = range(num) %}
         {% for i in num_list %}
-             {% team_name = team_list[i].name %}
-             {% score = score_list[i] %}
+            {% with team=team_list|index:i %}
             <tr>
-                <td>{{ team_name }}</td>
-                <td>{{ score }}</td>
+                <td>{{ team.serialNum }}</td>
+                <td>{{ team.name }}</td>
+                <td>{{ score_list|index:i }}</td>
             </tr>
+            {% endwith %}
         {% endfor %}
     </table>
 

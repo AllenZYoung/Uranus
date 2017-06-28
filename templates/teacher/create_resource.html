@@ -22,9 +22,14 @@
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <style>
+        html, body {
+            height:100%
+        }
+    </style>
 </head>
 <body>
-        <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
+        <div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
 			<!--
 		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -123,6 +128,7 @@
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <button class="btn btn-success" type="submit">发布课程资源</button>
+                                                 <p>{{ error_message }}</p>
                                             </div>
                                         </div>
                                     </div>

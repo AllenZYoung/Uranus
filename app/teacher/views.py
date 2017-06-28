@@ -7,6 +7,7 @@ from app.teacher.utils import *
 from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
 from django.conf import settings
+from app.templatetags import app_tags
 
 
 # Create your views here.
@@ -46,14 +47,31 @@ def create_homework(request):
 
 @login_required(login_url='app:login')
 def edit_course(request):
-    return HttpResponse('edit course')
+    if request.method == 'GET':
+        course_id = request.GET.get('course_id', None)
+        course = get_object_or_404(Course, id=course_id)
+        form=EditCourseForm()
+        form.set_init_data(course)
+        return render(request,'teacher/edit_course.html',{'form':form,'course':course})
+    else:
+        course_id=request.POST.get('course_id',None)
+        course = get_object_or_404(Course, id=course_id)
+        form = EditCourseForm(request.POST)
+        if form.is_valid():
+            course.name=form.cleaned_data['name']
+            course.info=form.cleaned_data['info']
+            course.syllabus=form.cleaned_data['syllabus']
+            course.classroom=form.cleaned_data['classroom']
+            course.status=form.cleaned_data['status']
+            course.save()
+            return redirect('/teacher/course_info?course_id='+course_id)
+        else:
+            return render(request,'teacher/edit_course.html',{'form':form,'course':course,'error_message':'数据不合法!'})
 
 
 @login_required(login_url='app:login')
 def course_info(request):
     course_id = request.GET.get('course_id', None)
-    if course_id is None:
-        return HttpResponse('course_id=None')
     course = get_object_or_404(Course, id=course_id)
     user = request.user
     enrolls = Enroll.objects.filter(course_id=course_id)
@@ -105,7 +123,6 @@ def create_resource(request):
             return HttpResponse('course_id=None')
         course = Course.objects.get(id=course_id)
         user = request.user
-        #upload_file_form = UploadFileForm()
         teacher = User.objects.get(username=user.username)
         return render(request, 'teacher/create_resource.html',
                       {'course': course, 'teacher': teacher,})
@@ -119,12 +136,19 @@ def create_resource(request):
         #     return HttpResponse('form is not valid')
         course_id=request.POST.get('course_id',None)
         course=get_object_or_404(Course,id=course_id)
-        file=request.FILES['file']
+        user = request.user
+        teacher = User.objects.get(username=user.username)
+        try:
+            file = request.FILES['file']
+        except:
+            return render(request, 'teacher/create_resource.html',
+                          {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         if file is None:
-            return HttpResponse('file is empty!')
+            return render(request, 'teacher/create_resource.html',
+                      {'course': course, 'teacher': teacher,'error_message':'文件为空!'})
         else:
             handle_uploaded_file(request, course_id, file)
-            return HttpResponse('upload file success')
+            return redirect('/teacher/resources?course_id='+course_id)
 
 
 @login_required(login_url='app:login')
@@ -151,13 +175,14 @@ def preview_source_online(request):
 @login_required(login_url='app:login')
 def delete_file(request):
     file_id = request.GET.get("file_id", None)
-    if file_id is None:
-        return HttpResponse('file_id is None')
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
     file=get_object_or_404(File,id=file_id)
     location=os.path.join(settings.MEDIA_ROOT,file.file.path)
-    os.remove(location)
+    if os.path.isfile(location):
+        os.remove(location)
     file.delete()
-    return HttpResponse('delete file success')
+    return redirect('/teacher/resources/?course_id='+course_id)
 
 
 @login_required(login_url='app:login')
@@ -191,7 +216,9 @@ def edit_homework(request):
 def past_homeworks(request):
     user = request.user
     workmetas=get_past_homeworks(user.username)
-    return render(request,'teacher/past_homeworks.html',{'workmetas':workmetas})
+    if len(workmetas) == 0:
+        error_message = '当前没有往期作业数据'
+    return render(request,'teacher/past_homeworks.html',{'workmetas':workmetas,'error_message':error_message})
 
 
 
@@ -202,16 +229,16 @@ def download_stu_homework(request):
 
 
 # 生成个人得分表
+@login_required(login_url='app:login')
 def generate_stu_score_table(request):
-    member_score_dict = compute_member_score()
-    stu_list = get_members_list_in_now_term()
-
+    stu_score_dict = compute_stu_score()
+    stu_list = get_stu_list_in_now_course()
     #第一次计算出每个学生的得分后保存到excel表，以便老师下载
     file = get_stu_score_excel_file_abspath()
     if not os.path.isfile(file):
-        create_team_score_excel(file, stu_list, member_score_dict)
-    return render(request, 'teacher/member_score_list.html',
-                  {'member_score_dict': member_score_dict, 'stu_list': stu_list})
+        create_stu_score_excel(file, stu_list, stu_score_dict)
+    return render(request, 'teacher/stu_score_list.html',
+                  {'stu_score_dict': stu_score_dict, 'stu_list': stu_list})
 
 
 
@@ -219,34 +246,38 @@ def generate_stu_score_table(request):
 @login_required(login_url='app:login')
 def generate_team_score_table(request):
     team_list, score_list, team_score = compute_team_score()
-
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     file = get_team_score_excel_file_abspath()
     if not os.path.isfile(file):
-        create_team_score_excel(file, team_list, team_score)
+        create_team_score_excel(file, team_list, score_list)
+    num_list = range(len(team_list))
 
     return render(request, 'teacher/team_score_list.html',
-                  {'team_list': team_list, 'score_list': score_list})
+                  {'team_list': team_list, 'score_list': score_list, 'num_list': num_list})
 
 
 #下载小组得分excel
 @login_required(login_url='app:login')
-def download_team_score_list():
+def download_team_score_list(request):
     file = get_team_score_excel_file_abspath()
-    response = StreamingHttpResponse(file_iterator(file))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
-    return response
+    if os.path.exists(file):
+        response = StreamingHttpResponse(file_iterator(file))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename='+os.path.basename(file)
+        return response
+    return Http404
 
 
 # 下载所有学生的分数excel
 @login_required(login_url='app:login')
 def download_stu_score_list(request):
     file = get_stu_score_excel_file_abspath()
-    response = StreamingHttpResponse(file_iterator(file))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
-    return response
+    if os.path.exists(file):
+        response = StreamingHttpResponse(file_iterator(file))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename='+os.path.basename(file)
+        return response
+    return Http404
 
 
 #显示当前已布置的作业
