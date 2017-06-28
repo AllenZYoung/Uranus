@@ -5,12 +5,13 @@
     <title>Hello Teacher</title>
 </head>
 <body>
-<label>{{ teacher.name }}</label>
+    <label>{{ teacher.name }}</label><br/>
+    <a href="/user/profile/">个人中心</a><br/>
         {% if course %}
 
             <label>课程管理</label><br/>
             <a href="{% url 'teacher:course_info' %}?course_id={{ course.id }}">课程基本信息</a><br/>
-            <a href="{% url 'teacher:create_resource' %}?course_id={{ course.id }}">发布基本信息</a><br/>
+            <a href="{% url 'teacher:create_resource' %}?course_id={{ course.id }}">发布基本资源</a><br/>
             <a href="{% url 'teacher:resources' %}?course_id={{ course.id }}">修改课程资源</a><br/>
 
             <label>作业管理</label><br/>
@@ -18,8 +19,6 @@
             <a href="{% url 'teacher:homework' %}?course_id={{ course.id }}">调整作业</a><br/>
             <a href="{% url 'teacher:show_works' %}?course_id={{ course.id }}">评价作业</a><br/>
             <a href="{% url 'teacher:past_homeworks' %}">往期作业</a><br/>
-            <label>课程管理</label><br/>
-
             <label>课程管理</label><br/>
         {% else %}
             <p>您当前时间没有可用课程</p>

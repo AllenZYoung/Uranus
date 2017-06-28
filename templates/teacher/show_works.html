@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>当前作业</title>
+    <title>评价作业</title>
 </head>
 <body>
     <table>
         <tr>
             <th>作业名称</th>
-            <th>作业内容</th>
+            <th>提交团队</th>
         </tr>
         {% for work in works %}
             <tr>
                 <td>
-                    <a href="{% url 'teacher:work_detail' %}?work_id={{ work.id }}">{{ work.title }}</a>
+                    <a href="{% url 'teacher:work_detail' %}?work_id={{ work.id }}">{{ work.workMeta.title }}</a>
                 </td>
-                <td>{{ work.content }}</td>
+                <td>{{ work.team.name }}</td>
             </tr>
         {% endfor %}
     </table>
