@@ -16,7 +16,7 @@
                 <td>{{ work.workmeta.content}}</td>
                 <td>
                     {% for attachment in work.attachments %}
-                        <a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a>
+                        <a href="/teacher{{ attachment.file.file.url }}">{{ attachment.file.file.name }}</a><br/>
                     {% endfor %}
                 </td>
                 <td>

@@ -55,20 +55,21 @@ def students_to_course(students_id, course_id):
         enroll.save()
 
 
-def add_homework(homework_form, course_id, username):
+def add_homework(homework_form, course_id, username,file):
     content = homework_form.cleaned_data['content']
     proportion = homework_form.cleaned_data['proportion']
     submits = homework_form.cleaned_data['submits']
     startTime = homework_form.cleaned_data['startTime']
     endTime = homework_form.cleaned_data['endTime']
     title=homework_form.cleaned_data['title']
-    teacher=get_object_or_404(User,username=username)
+    teacher = get_object_or_404(User, username=username)
     workmeta = WorkMeta(course_id=course_id, user=teacher, content=content,title=title,
                         proportion=proportion, submits=submits, startTime=startTime, endTime=endTime)
     workmeta.save()
-    file = homework_form.cleaned_data['attachment']
     if file is not None:
-        attachment = Attachment(file=file, workmeta=workmeta, type='workmeta')
+        f=File(course_id=course_id,user=teacher,file=file,type='text',time=datetime.now())
+        f.save()
+        attachment = Attachment(file=f, workMeta=workmeta, type='workmeta')
         attachment.save()
 
 

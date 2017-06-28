@@ -35,7 +35,8 @@ def create_homework(request):
         course = get_object_or_404(Course, id=course_id)
         form = HomeworkForm(request.POST)
         if form.is_valid():
-            add_homework(form, course_id, request.user.username)
+            file=request.FILES['attachment']
+            add_homework(form, course_id, request.user.username,file)
             return HttpResponseRedirect('/teacher/homework?course_id='+course_id)
         else:
             error_message = '数据不合法'
@@ -272,7 +273,7 @@ def work_detail(request):
 
 #下载上传的资源
 @login_required(login_url='app:login')
-def dwnload_file(request,path):
+def download_file(request,path):
     file_path=os.path.join(settings.MEDIA_ROOT,path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
