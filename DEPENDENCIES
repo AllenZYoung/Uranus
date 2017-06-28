@@ -6,3 +6,7 @@ MySQL>=5.7(Mariadb>=10.0)
 Django==1.11.2
 PyMySQL>=0.7.11
 openpyxl>=2.4.8
+matploylib>=2.0
+requests>=1.8
+opencv-python>=3.2
+numpy>=1.13.0

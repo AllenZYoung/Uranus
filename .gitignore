@@ -1,4 +1,6 @@
 .idea/
 *.pyc
 */migrations/*
-*/__pycache__/
+*__pycache__*
+*.DS_Store
+uploads/file/*

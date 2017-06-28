@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布课程资源</title>
+</head>
+<body>
+    <label>课程名称: {{ course.name }}</label>
+    <form method="POST" action="{% url 'teacher:create_resource' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ upload_file_form }}
+        <input type="hidden" name="course_id" value="{{ course.id }}">
+        <button type="submit">上传</button>
+    </form>
+</body>
+</html>

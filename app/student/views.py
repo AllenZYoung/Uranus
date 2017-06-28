@@ -4,15 +4,23 @@ from django.contrib.auth.decorators import login_required
 from app.models import File, User, Work, WorkMeta
 from django.conf import settings
 import os
-
+from django.shortcuts import get_object_or_404
+from . import utils
+from .utils import set_members_evaluations
 #TODO 学生登录和注销（一般而言，要与教师、教务统一）
+
+
 
 # Create your views here.
 def index(request):
-    return HttpResponse('student page')
+    return render(request,'student/course_student.html')
 
 #@login_required(login_url='app:login')
 def member_evaluation(request): # （团队负责人）学生的成员评价页面
+    if request.method == 'GET':
+        student_id = request.GET.get('student_id',None)
+        student = User.objects.get(username=student_id)
+        set_members_evaluations(student)
     return HttpResponse('Member Evaluation here.')
 
 #@login_required(login_url='app:login')
@@ -54,19 +62,9 @@ def download(request):
 def view_admitted_work(request):
     team_id = 1
     course_id = 1
-    submitted=[]
-    unsubmitted=[]
-    submitted_id = set()
-    # 未完成
-    for work in Work.objects.filter(team_id=team_id):
-        submitted.append(WorkMeta.objects.get(id=work.workMeta_id))
-        submitted_id.add(work.workMeta_id)
-    # 没有提交的作业
-    for workMeta in WorkMeta.objects.filter(course_id=course_id):
-        if workMeta.id not in submitted_id:
-            unsubmitted.append(workMeta)
-    return render(request, 'student/admitted_work.html', {'submitted': submitted,
-                                                          'unsubmitted': unsubmitted,})
+    submittings = utils.get_submittings(team_id, course_id)
+    return render(request, 'student/admitted_work.html', {'submitted': submittings['submitted'],
+                                                          'unsubmitted': submittings['unsubmitted'],})
 
 
 # Added by kahsolt 2017-06-27

@@ -31,7 +31,6 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-
 # [学期]
 class Term(models.Model):
     info = models.TextField(help_text='学期说明信息')
@@ -182,7 +181,7 @@ class Attachment(models.Model):
 
     def __str__(self):
         w = self.workMeta is not None and self.workMeta.title or self.work.workMeta.title
-        return '%s <- %s' %(w, os.path.split(self.file.url))
+        return '%s <- %s' %(w, os.path.split(self.file.file.url))
 
 # [签到]
 class Attendance(models.Model):
