@@ -19,11 +19,37 @@ from . import utils
 def index(request):
     return render(request, 'student/course_student.html')
 
-
 # todo 该函数很不完善
 @login_required(login_url='app:login')
 def member_evaluation(request):  # （团队负责人）学生的团队管理，即成员评价页面
-    pass
+    if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
+        student_id = request.user
+        member_model = Member.objects.filter(user__username__contains=student_id).first()
+        team = member_model.team
+        member_list = Member.objects.filter(team=team)
+        contribution_form = ContributionForm()
+        return render(request, ''
+                               'student/student_member_contribution.html',
+                      {'contribution_form': contribution_form, 'team': team, 'member_list': member_list})
+    elif request.method == 'POST':  # 改变每个人的权重（贡献度）
+        student_id = request.POST.get('name', None)
+        f = ContributionForm(request.POST)
+        # 此处表单没写好，注意。@果冻
+        if f.is_valid():
+            # set_members_evaluations(student_id)
+            member_model = Member.objects.filter(user__username__contains=student_id)
+            team = Team.objects.filter(member_model.team).first()
+            member_list = Member.objects.filter(team=team)
+            for member in member_list:
+                if member.user == f.cleaned_data['user']:
+                    member.contribution = f.cleaned_data['contribution']
+                    member.save()
+        else:
+            error_message = 'Some error here!'
+            return render(request, 'student/student_member_contribution.html',
+                          {'contribution_form': contribution_form, 'error_message': error_message})
+
+
 
 
 
