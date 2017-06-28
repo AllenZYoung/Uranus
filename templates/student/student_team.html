@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程管理</title>
+	<title>团队管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -44,8 +44,8 @@
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li class="active">
-	                    <a href={% url 'student:index'%}>
+	                <li>
+	                    <a href={% url 'student:index' %}>
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
@@ -56,7 +56,7 @@
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href={% url 'student:teampage' %}>
 	                        <i class="material-icons">face</i>
 	                        <p>团队管理</p>
@@ -76,7 +76,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="student_course.html">课程管理</a>
+						<a class="navbar-brand" href="student_team.html">团队管理</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -98,36 +98,54 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:my_course' %}">
+							<a href="student_team_build.html">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">face</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">课程基本信息</h3>
+										<h3 class="title">发起团队</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看课程相关基本信息，如课程要求、课程大纲等</p>
+											<p>发起团队将作为团队负责人创建一个团队</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
 						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:resources' %}">
+							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">face</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">课程资源</h3>
+										<h3 class="title">加入团队</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看下载课程资源</p>
+											<p>查看已有团队，选择加入团队</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<a href={% url 'student:member_evaluation' %}>
+								<div class="card card-stats">
+									<div class="card-header" data-background-color="orange">
+										<i class="material-icons">face</i>
+									</div>
+									<div class="card-content">
+										<p class="category"><br></p>
+										<h3 class="title">我的团队</h3>
+									</div>
+									<div class="card-footer">
+										<div class="stats">
+											<p>管理团队成员、设置团队成员贡献度</p>
 										</div>
 									</div>
 								</div>
