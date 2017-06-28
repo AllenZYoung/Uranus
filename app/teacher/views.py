@@ -247,7 +247,6 @@ def download_team_score_list():
     response = StreamingHttpResponse(file_iterator(file))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
-
     return response
 
 
@@ -257,7 +256,6 @@ def download_stu_score_list(request):
     response = StreamingHttpResponse(file_iterator(file))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
-
     return response
 
 
