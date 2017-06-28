@@ -105,7 +105,8 @@ def download(request):
         f.close()
 
     file_name = os.path.basename(request.path)
-    file_path = os.path.join(settings.MEDIA_ROOT, 'file', file_name)
+    parent_dir = os.path.basename(os.path.dirname(request.path))
+    file_path = os.path.join(settings.MEDIA_ROOT, 'file', parent_dir, file_name)
     response = StreamingHttpResponse(read_file(file_path))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
@@ -150,7 +151,7 @@ def workView(request):
             wid = request.GET['work_id']
             work = Work.objects.get(id=wid)
             files = Attachment.objects.filter(workMeta_id=work.workMeta_id)
-            return render(request, 'student/work.html', {'work': work,
+            return render(request, 'student/student_task_details.html', {'work': work,
                                                          'workMeta': work.workMeta,
                                                          'files': files,
                                                          'is_work': True,
@@ -158,7 +159,7 @@ def workView(request):
         else:
             wid = request.GET['workmeta_id']
             workMeta = WorkMeta.objects.get(id=wid)
-            return render(request, 'student/work.html', {'workMeta': workMeta,
+            return render(request, 'student/student_task_details.html', {'workMeta': workMeta,
                                                          'is_work': False,
                                                          'form': form})
     else:

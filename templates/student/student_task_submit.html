@@ -46,19 +46,19 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href='{% url 'student:index' %}'>
+                    <a href='./'>
                         <i class="material-icons">dashboard</i>
                         <p>课程管理</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="student_task.html">
+                    <a href="workpage">
                         <i class="material-icons">content_copy</i>
                         <p>作业管理</p>
                     </a>
                 </li>
                 <li>
-                    <a href="student_team.html">
+                    <a href="teampage">
                         <i class="material-icons">face</i>
                         <p>团队管理</p>
                     </a>
@@ -77,7 +77,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href={% url 'student:workpage' %}>返回</a>
+                    <a class="navbar-brand" href='workpage'>返回</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -106,32 +106,15 @@
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table table-hover">
-                                    {#                                    <thead>#}
-                                    {#                                    <th>编号</th>#}
-                                    {#                                    <th>作业名称</th>#}
-                                    {#                                    <th>开始时间</th>#}
-                                    {#                                    <th>结束时间</th>#}
-                                    {#                                    <th>提交作业</th>#}
-                                    {#                                    </thead>#}
-                                    {#                                    <tbody>#}
-                                    {#                                    {% for meta in submitted %}#}
-                                    {#                                        <tr>#}
-                                    {#                                            <td><a href="work?workmeta_id={{ meta.id }}">{{ meta.workMeta.title }}</a>#}
-                                    {#                                            </td>#}
-                                    {#                                            <td>{{ meta.workMeta.startTime }}</td>#}
-                                    {#                                            <td>{{ meta.workMeta.endTime }}</td>#}
-                                    {#                                        </tr>#}
-                                    {#                                    {% endfor %}#}
-                                    {#                                    </tbody>#}
                                     <th>作业名称</th>
                                     <th>开始时间</th>
                                     <th>结束时间</th>
-                                    {% for meta in submitted %}
+                                    {% for meta in unsubmitted %}
                                         <tr>
-                                            <td><a href="work?workmeta_id={{ meta.id }}">{{ meta.workMeta.title }}</a>
+                                            <td><a href="work?workmeta_id={{ meta.id }}">{{ meta.title }}</a>
                                             </td>
-                                            <td>{{ meta.workMeta.startTime }}</td>
-                                            <td>{{ meta.workMeta.endTime }}</td>
+                                            <td>{{ meta.startTime }}</td>
+                                            <td>{{ meta.endTime }}</td>
                                         </tr>
                                     {% endfor %}
                                 </table>
