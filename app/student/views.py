@@ -8,18 +8,58 @@ from .forms import ContributionForm, UploadFileForm
 from .models import Member, User, Team
 from django.shortcuts import get_object_or_404
 from . import utils
+from ..utils.teamUtils import setContribution
 
 
 # Create your views here.
 
 @login_required(login_url='app:login')
 def index(request):
-    return render(request, 'student/course_student.html')
+    return render(request, 'student/student_course.html')
+
 
 # todo 该函数很不完善
 @login_required(login_url='app:login')
 def member_evaluation(request):  # （团队负责人）学生的团队管理，即成员评价页面
-    pass
+    if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
+        student_id = request.user
+        member_model = Member.objects.filter(user__username__contains=student_id).first()
+        team = member_model.team
+        member_list = Member.objects.filter(team=team)
+        contribution_form = ContributionForm()
+        return render(request, ''
+                               'student/student_team_manage.html',
+                      {'contribution_form': contribution_form, 'team': team, 'member_list': member_list})
+    elif request.method == 'POST':  # 改变每个人的权重（贡献度）
+        student_id = request.user
+        f = ContributionForm(request.POST)
+        # 此处表单没写好，注意。@果冻
+        print(f.cleaned_data['contribution'])
+        if f.is_valid():
+            print("Contribution form valid!")
+            # set_members_evaluations(student_id)
+            member_model = Member.objects.filter(user__username__contains=student_id).first()
+            team = member_model.team
+            member_list = Member.objects.filter(team=team)
+            # i = 0
+            for member in member_list:
+                contribution = f.cleaned_data['contribution']
+                # print(f.cleaned_data['contribution'])
+                print(member.user, contribution)
+                setContribution(member.user, contribution)
+                # i+=1
+        else:
+            print("Contribution form NOT valid")
+            error_message = 'Some error here!'
+            return render(request, 'student/student_member_contribution.html',
+                          {'error_message': error_message})
+
+
+# @login_required(login_url='app:login')
+def work_submit(request):  # （团队负责人）学生的作业提交页面
+    course_id = request.GET.get('course_id', None)
+
+    return HttpResponse('Submit your group\'s homework here.')
 
 
 # @login_required(login_url='app:login')
@@ -31,7 +71,7 @@ def view_resources(request):
         file_meta.append({'file_name': file.file,
                           'user_name': user.name,
                           'date': file.time})
-    return render(request, 'student/resources.html', {'file_meta': file_meta, })
+    return render(request, 'student/student_course_resources.html', {'file_meta': file_meta, })
 
 
 # @login_required(login_url='app:login')
@@ -73,7 +113,7 @@ def view_unsubmitted_work(request):
 
 
 # added by wanggd 2017-06-28
-#@login_required(login_url='app:login')
+# @login_required(login_url='app:login')
 def workView(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -104,3 +144,13 @@ def workView(request):
                                                          'form': form})
     else:
         return HttpResponse('404 NOT FOUND')
+
+
+# pass
+# return render(request,'student/student_task_details.html')
+
+
+# @login_required(login_url='app:login')
+
+def workRoot(request):
+    return render(request, 'student/student_task.html')

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>submitted work list</title>
+</head>
+<body>
+
+    <table>
+        <th>
+            <td>作业附件</td>
+            <td>提交团队</td>
+            <td>操作</td>
+        </th>
+        {% for work in works %}
+        <tr>
+            {% with team=work.team %}
+            {% with attachment=attachment_team_dict.team %}
+            <td><a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a></td>
+            <td>{{ team.name }}</td>
+            <td><a href="{% url 'teacher:add_comment_score' %}?work_id={{ work.id }}&work_meta_id={{ work_meta_id }}">评论</a></td>
+            {% endwith %}
+            {% endwith %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

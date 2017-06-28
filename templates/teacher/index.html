@@ -6,7 +6,7 @@
 </head>
 <body>
     <label>{{ teacher.name }}</label><br/>
-    <a href="/user/profile/">个人中心</a><br/>
+    <a href="{% url 'app:profile' %}">个人中心</a><br/>
         {% if course %}
 
             <label>课程管理</label><br/>

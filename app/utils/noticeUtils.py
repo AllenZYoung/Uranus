@@ -6,11 +6,8 @@ def listNotice(course):
     if not course:
         return False, '参数对象错误'
 
-    ret = []
     notices = Notice.objects.filter(course=course).order_by('-time')
-    for notice in notices:
-        ret.append((notice.title, notice.content, notice.time))
-    return ret
+    return notices
 
 
 def addNotice(title, content, user):

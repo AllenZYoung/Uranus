@@ -6,4 +6,4 @@ Uranus - 协同型课程教务系统
 
 测试集成部署
 ----
-[http://uranus.kahsolt.tk:8000](http://uranus.kahsolt.tk:8000/)
+[http://uranus.kahsolt.tk](http://uranus.kahsolt.tk/)
