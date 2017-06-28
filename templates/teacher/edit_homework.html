@@ -12,7 +12,7 @@
 <form action="{% url 'teacher:edit_homework' %}" method="post">
 
     {% csrf_token %}
-    {{ homework_form }}
+    {{ homework_form.as_p }}
     <input type="hidden" name="workmeta_id" value="{{ workmeta_id }}">
     <button type="submit">确认修改</button>
 </form>

@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>学生团队管理</title>
+	<title>作业管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -45,25 +45,25 @@
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
 	                <li>
-	                    <a href="course_teacher.html">
+	                    <a href="teacher_course.html">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
-	                <li>
-	                    <a href="task_teacher.html">
+	                <li class="active">
+	                    <a href="teacher_task.html">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
-	                <li class="active">
-	                    <a href="team_teacher.html">
+	                <li>
+	                    <a href="teacher_team.html">
 	                        <i class="material-icons">face</i>
 	                        <p>学生团队管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="pastcourse_teacher.html">
+	                    <a href="teacher_pastcourse.html">
 	                        <i class="material-icons">receipt</i>
 	                        <p>往期课程</p>
 	                    </a>
@@ -82,7 +82,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="team_teacher.html">学生团队管理</a>
+						<a class="navbar-brand" href="teacher_task.html">作业管理</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -103,37 +103,39 @@
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-3 col-md-6 col-sm-6">
+						<div class="col-md-6 col-sm-6">
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">face</i>
+										<i class="material-icons">content_copy</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">审核团队</h3>
+										<h3 class="title">发布作业</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>批准或驳回团队申请</p>
+											<p>
+												在课程内向学生布置作业
+											</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6">
+						<div class="col-md-6 col-sm-6">
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
-										<i class="material-icons">face</i>
+										<i class="material-icons">content_copy</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">学生团队</h3>
+										<h3 class="title">调整作业</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看当期课程内已完成组队的小组，如有需要可以进行微调</p>
+											<p>调整作业内容、要求、截止日期等</p>
 										</div>
 									</div>
 								</div>
@@ -143,15 +145,33 @@
 							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">face</i>
+										<i class="material-icons">content_copy</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">团队评价</h3>
+										<h3 class="title">评价作业</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>课程结束后对各学生团队进行评价打分</p>
+											<p>评价已截止的作业</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<a href="#">
+								<div class="card card-stats">
+									<div class="card-header" data-background-color="red">
+										<i class="material-icons">content_copy</i>
+									</div>
+									<div class="card-content">
+										<p class="category"><br></p>
+										<h3 class="title">往期作业</h3>
+									</div>
+									<div class="card-footer">
+										<div class="stats">
+											<p>查看本学期课程内往期所布置作业，以及团队提交</p>
 										</div>
 									</div>
 								</div>

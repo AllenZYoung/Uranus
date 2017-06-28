@@ -62,7 +62,9 @@ def add_homework(homework_form, course_id, username):
     submits = homework_form.cleaned_data['submits']
     startTime = homework_form.cleaned_data['startTime']
     endTime = homework_form.cleaned_data['endTime']
-    workmeta = WorkMeta(course_id=course_id, username=username, content=content,
+    title=homework_form.cleaned_data['title']
+    teacher=get_object_or_404(User,username=username)
+    workmeta = WorkMeta(course_id=course_id, user=teacher, content=content,title=title,
                         proportion=proportion, submits=submits, startTime=startTime, endTime=endTime)
     workmeta.save()
     file = homework_form.cleaned_data['attachment']
