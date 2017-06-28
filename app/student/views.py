@@ -9,6 +9,7 @@ from .models import Member, User, Team
 from django.shortcuts import get_object_or_404
 from . import utils
 from ..utils.teamUtils import setContribution
+from .models import Course, Enroll, User
 
 
 # Create your views here.
@@ -16,6 +17,18 @@ from ..utils.teamUtils import setContribution
 @login_required(login_url='app:login')
 def index(request):
     return render(request, 'student/student_course.html')
+
+
+@login_required(login_url='app:login')  # 显示学生的课程信息
+def my_course(request):
+    course_id = request.GET.get('course_id', None)
+    if course_id is None:
+        print('course_id=None')
+    student = request.user
+    enroll = Enroll.objects.filter(user__username__contains=student).first()
+    course = enroll.course
+    print(course)
+    return render(request, 'student/student_course_info.html', {'course': course})
 
 
 # todo 该函数很不完善
@@ -101,7 +114,8 @@ def view_submitted_work(request):
     print(1)
     submittings = utils.get_submittings(team_id, course_id)
     print(submittings)
-    return render(request, 'student/submitted_work.html', {'submitted': submittings['submitted'], })
+    return render(request, 'student/student_task_view.html', {'submitted': submittings['submitted'], })
+
 
 # @login_required(login_url='app:login')
 def view_unsubmitted_work(request):
@@ -109,7 +123,7 @@ def view_unsubmitted_work(request):
     course_id = 1
     submittings = utils.get_submittings(team_id, course_id)
     print(submittings)
-    return render(request, 'student/unsubmitted_work.html', {'unsubmitted': submittings['unsubmitted'], })
+    return render(request, 'student/student_task_submit.html', {'unsubmitted': submittings['unsubmitted'], })
 
 
 # added by wanggd 2017-06-28
@@ -154,3 +168,7 @@ def workView(request):
 
 def workRoot(request):
     return render(request, 'student/student_task.html')
+
+
+def teamRoot(request):
+    return render(request, 'student/student_team.html')

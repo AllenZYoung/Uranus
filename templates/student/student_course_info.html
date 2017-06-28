@@ -76,7 +76,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="student_course.html">课程管理</a>
+						<a class="navbar-brand" href={% url 'student:index' %}>返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -94,57 +94,66 @@
 				</div>
 			</nav>
 
-			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:my_course' %}">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">dashboard</i>
+	        <div class="content">
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="card card-plain">
+	                            <div class="card-header" data-background-color="blue">
+	                                <h4 class="title">课程基本信息</h4>
+	                                <p class="category"></p>
+	                            </div>
+	                            <div class="card-content">
+                    				<div class="tim-typo">
+										<p><span class="tim-note">课程名称</span>
+                                            {{ course.name }}
+										</p>
 									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">课程基本信息</h3>
+									<div class="tim-typo">
+										<p><span class="tim-note">课程要求/其他说明</span>
+											{{ course.info }}
+										</p>
 									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看课程相关基本信息，如课程要求、课程大纲等</p>
-										</div>
+									<div class="tim-typo">
+										<p><span class="tim-note">课程大纲</span>
+											{{ course.syllabus }}
+										</p>
 									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:resources' %}">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="green">
-										<i class="material-icons">dashboard</i>
+									<div class="tim-typo">
+										<p><span class="tim-note">教室</span>
+											{{ course.classroom }}
+										</p>
 									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">课程资源</h3>
+									<div class="tim-typo">
+										<p><span class="tim-note">状态</span>
+											{{ course.status }}
+										</p>
 									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看下载课程资源</p>
-										</div>
+									<div class="tim-typo">
+										<p><span class="tim-note">开课时间</span>
+											{{ course.startTime }}
+										</p>
 									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+									<div class="tim-typo">
+										<p><span class="tim-note">结束时间</span>
+											{{ course.endTime }}
+										</p>
+									</div>
 
-			<footer class="footer">
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+
+	        <footer class="footer">
 				<div class="container-fluid">
 					<p class="copyright pull-right">
 						URANUS@2017
 					</p>
 				</div>
 			</footer>
-		</div>
+	    </div>
 	</div>
 
 </body>
@@ -168,14 +177,5 @@
 
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="/static/assets/js/demo.js"></script>
-
-	<script type="text/javascript">
-    	$(document).ready(function(){
-
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
-
-    	});
-	</script>
 
 </html>
