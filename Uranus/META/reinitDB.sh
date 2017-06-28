@@ -1,4 +1,4 @@
-URANUS="`pwd`/../.."
+URANUS="`pwd`/.."
 PY3="/usr/bin/env python3"
 
 echo "[Step:0] Shell: Switching pwd to $URANUS"
