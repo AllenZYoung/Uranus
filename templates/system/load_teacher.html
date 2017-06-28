@@ -93,9 +93,9 @@
 	                <div class="row">
 	                    <div class="col-md-12">
 	                        <div class="card card-plain">
-	                            <div class="card-header" data-background-color="red">
-	                                <h4 class="title">导入学生</h4>
-	                                <p class="category">为课程导入学生</p>
+	                            <div class="card-header" data-background-color="orange">
+	                                <h4 class="title">导入老师</h4>
+	                                <p class="category">为课程导入老师</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
 	                                <table class="table table-hover">
@@ -104,8 +104,8 @@
 	                                    	<th>学期</th>
 	                                    	<th>课程名</th>
 	                                    	<th>课程是否结束</th>
-	                                    	<th>是否已导入学生</th>
-	                                    	<th>导入学生</th>
+	                                    	<th>是否已导入老师</th>
+	                                    	<th>导入老师</th>
 	                                    </thead>
 	                                    <tbody>
                                             {% for course_dic in info %}
@@ -140,24 +140,25 @@
                                                             <button class="btn btn-inverse" disabled="disabled">不可操作</button>
                                                         {% else %}
                                                             {% if course_dic.flag %}
-                                                                <form method="Post" action="/system/uploadStudents" enctype="multipart/form-data" >
+                                                                <form method="Post" action="/system/uploadTeachers" enctype="multipart/form-data" >
                                                                     <input name="courseId" type="hidden"  value='{{ course_dic.course.id }}' >
                                                                     {% csrf_token %}
                                                                     {{ form.filefield }}
-                                                                    <button class="btn btn-danger">重新导入</button>
+                                                                    <button class="btn btn-warning">重新导入</button>
                                                                </form>
                                                             {% else %}
-                                                               <form method="Post" action="/system/uploadStudents" enctype="multipart/form-data" >
+                                                               <form method="Post" action="/system/uploadTeachers" enctype="multipart/form-data" >
                                                                     <input name="courseId" type="hidden"  value='{{ course_dic.course.id }}' >
                                                                     {% csrf_token %}
                                                                     {{ form.filefield }}
-                                                                    <button class="btn btn-danger">导入</button>
+                                                                    <button class="btn btn-warning">导入</button>
                                                                </form>
                                                             {% endif %}
                                                         {% endif %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}
+
 	                                    </tbody>
 	                                </table>
 	                            </div>
