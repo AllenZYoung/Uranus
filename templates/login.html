@@ -180,6 +180,9 @@
 <body>
 <div class="login">
     <h1>URANUS课程平台</h1>
+    {% if error_message %}
+            <p>{{ error_message }}</p>
+    {% endif %}
     <form action="" method="post" novalidate="novalidate">
         <label >{{ form.username.label }}</label> {{ form.username }}
 

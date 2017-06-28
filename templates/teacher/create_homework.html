@@ -6,7 +6,7 @@
 </head>
 <body>
     <label>课程名称: {{ course.name }}</label><br/>
-    <form action="{% url 'teacher:create_homework' %}" method="post">
+    <form action="{% url 'teacher:create_homework' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ homework_form.as_p }}
         <input type="hidden" name="course_id" value="{{ course.id }}">
