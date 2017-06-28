@@ -141,6 +141,7 @@ def preview_source_online(request):
 def add_comment_score(request):
     if request.method == 'GET':
         homework_id = request.GET.get('homework_id')
+        # homework_id = 1
         homework = get_object_or_404(Work, id=homework_id)
         form = CommentAndScoreForm()
         form.initial['homework_id'] = homework_id
@@ -150,10 +151,11 @@ def add_comment_score(request):
     else:
         form = CommentAndScoreForm(request.POST)
         if form.is_valid():
-            homework = models.Work.objects.filter(pk=form.cleaned_data['homework_id']) \
-                .update(comment=form.cleaned_data['comment'], score=form.cleaned_data['score'])
+            homework = Work.objects.filter(pk=form.cleaned_data['homework_id']) \
+                .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
+            return HttpResponse('succeed to add comment and score!')
         else:
-            return HttpResponse('fail to add comment and score')
+            return HttpResponse('fail to add comment and score!')
 
 
 @login_required(login_url='app:login')

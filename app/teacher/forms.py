@@ -22,22 +22,17 @@ class HomeworkForm(forms.Form):
 
 
     def set_data(self,workmeta):
-        self.content = workmeta.content
-        self.proportion = workmeta.proportion
-        self.submits = workmeta.submits
-        self.startTime = workmeta.startTime
-        self.endTime = workmeta.endTime
-    # def __init__(self, content='', proportion=0.1, submits=3, startTime=datetime.now(), endTime=datetime.now()):
-    #     super().__init__()
-    #     self.content = content
-    #     self.proportion = proportion
-    #     self.submits = submits
-    #     self.startTime = startTime
-    #     self.endTime = endTime
+        self.fields['title'].initial = workmeta.title
+        self.fields['content'].initial=workmeta.content
+        self.fields['proportion'].initial = workmeta.proportion
+        self.fields['submits'].initial = workmeta.submits
+        self.fields['startTime'].initial= workmeta.startTime
+        self.fields['endTime'].initial = workmeta.endTime
+
 
 
 # comment and score form
 class CommentAndScoreForm(forms.Form):
     homework_id = forms.CharField()
-    score = forms.IntegerField(help_text='score')
-    comment = forms.CharField(help_text='comment')
+    score = forms.IntegerField()
+    review = forms.CharField()

@@ -5,6 +5,26 @@
     <title>作业详情</title>
 </head>
 <body>
-    <h3>{{ work.workMeta.title }}</h3>
+    作业题目
+    <h3>{{ workMeta.title }}</h3>
+    作业内容
+    <h3>{{ workMeta.content }}</h3>
+    {% if is_work %}
+        评论<h3>{{ work.review }}</h3>
+        下载<br>
+        <table border="1">
+            <th>文件名</th>
+            <th>上传者</th>
+            <th>上传时间</th>
+            {% for meta in files %}
+            <tr>
+                <td><a href="../s/{{ meta.file.file }}">{{ meta.file.file }}</a></td>
+                <td>{{ meta.file.user.name }}</td>
+                <td>{{ meta.file.time }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+            {% endif %}
+
 </body>
 </html>
