@@ -19,43 +19,25 @@
         </tr>
     {% endfor %}
 </table>
-{% extends 'base.html' %}
-{% load customer_tags %}
 
 {% block page-header %}
-客户详细信息
+    客户详细信息
 {% endblock %}
 
 {% block page-content %}
-    <form class="form-horizontal" action="" method="post"> {% csrf_token %}   ＃添加一个form表单，用于向后端提交数据
+    <form class="form" action="{% url 'student:member_evaluation' %}" method="post">
         {# 循环每个字段 #}
-        {% for students in member_list %}
-            <div class="form-group">
-                {# 字段名称 #}
-                {# 如果字段为必填,标签前面加*提示 #}
-                {% if field.field.required %}
-                    <label class="col-sm-2 control-label">*{{ field.label }}</label>
-                {# 如果字段非必填 #}
-                {% else %}
-                    {# 字体变细 #}
-                    <label class="col-sm-2 control-label " style="font-weight:normal">{{ field.label }}</label>
-                {% endif %}
-                <div class="col-sm-10">
-                    {# 字段内容 #}
-                    {{ field }}
-                    {# 如果存在错误 #}
-                    {% if field.errors %}
-                        {% for error in field.errors %}
-                            <ul>
-                                <li style="color: lightblue">{{ error }}</li>
-                            </ul>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
+
+        {% for member in member_list %}
+            <p>
+            {{ member.user }}
+            {{ member.role }}
+            {{ contribution_form.contribution }}
+            </p>
         {% endfor %}
+        {% csrf_token %}
         {# 添加提交按钮 #}
-        <input class="btn btn-success pull-right" type="submit" value="Submit">
+        <input class="btn btn-success pull-right" type="submit" value="修改">
     </form>
 {% endblock %}
 
