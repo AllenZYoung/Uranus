@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="../../static/assets/img/apple-icon.png" />
-	<link rel="icon" type="image/png" href="../../static/assets/img/favicon.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
+	<link rel="icon" type="image/png" href="../assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
 	<title>课程管理</title>
@@ -29,7 +29,7 @@
 
 	<div class="wrapper">
 
-	    <div class="sidebar" data-color="blue" data-image="../../static/assets/img/sidebar-1.jpg">
+	    <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
 			<!--
 		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -70,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="admin_course.html">返回</a>
+						<a class="navbar-brand" href="admin_course.html">课程管理</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -89,63 +89,83 @@
 			</nav>
 
 			<div class="content">
-	            <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-md-12">
-	                        <div class="card card-plain">
-	                            <div class="card-header" data-background-color="red">
-	                                <h4 class="title">导入学生</h4>
-	                                <p class="category">为这门课程导入学生</p>
-	                            </div>
-	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
-	                                    <thead>
-	                                        <th>年份</th>
-	                                    	<th>学期</th>
-	                                    	<th>课程名</th>
-	                                    	<th>课程是否结束</th>
-	                                    	<th>是否已导入学生</th>
-	                                    	<th>导入老师</th>
-	                                    </thead>
-	                                    <tbody>
-	                                        <tr>
-	                                        	<td>2017</td>
-	                                        	<td>春季</td>
-	                                        	<td>软件工程过程</td>
-	                                        	<td>未结束</td>
-	                                        	<td>否</td>
-	                                        	<td>
-	                                        		<button class="btn btn-danger">导入</button>
-	                                        	</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>2016</td>
-	                                        	<td>春季</td>
-	                                        	<td>软件工程过程</td>
-	                                        	<td>未结束</td>
-	                                        	<td>是</td>
-	                                        	<td>
-	                                        		<button class="btn btn-danger">重新导入</button>
-	                                        	</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>2016</td>
-	                                        	<td>春季</td>
-	                                        	<td>软件工程过程</td>
-	                                        	<td>已结束</td>
-	                                        	<td>是</td>
-	                                        	<td>
-	                                        		<button class="btn btn-inverse" disabled="disabled">不可操作</button>
-	                                        	</td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6 col-sm-6">
+							<a href="/system/createCourse">
+								<div class="card card-stats">
+									<div class="card-header" data-background-color="blue">
+										<i class="material-icons">dashboard</i>
+									</div>
+									<div class="card-content">
+										<p class="category"><br></p>
+										<h3 class="title">创建课程</h3>
+									</div>
+									<div class="card-footer">
+										<div class="stats">
+											<p>创建一个新的课程</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<a href="/system/showCourse">
+								<div class="card card-stats">
+									<div class="card-header" data-background-color="green">
+										<i class="material-icons">dashboard</i>
+									</div>
+									<div class="card-content">
+										<p class="category"><br></p>
+										<h3 class="title">课程信息</h3>
+									</div>
+									<div class="card-footer">
+										<div class="stats">
+											<p>查看已创建课程，并维护课程信息</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<a href="/system/loadTeacher">
+								<div class="card card-stats">
+									<div class="card-header" data-background-color="orange">
+										<i class="material-icons">person</i>
+									</div>
+									<div class="card-content">
+										<p class="category"><br></p>
+										<h3 class="title">导入老师</h3>
+									</div>
+									<div class="card-footer">
+										<div class="stats">
+											<p>对已有课程导入老师</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 col-sm-6">
+							<a href="/system/loadStudents">
+								<div class="card card-stats">
+									<div class="card-header" data-background-color="red">
+										<i class="material-icons">person</i>
+									</div>
+									<div class="card-content">
+										<p class="category"><br></p>
+										<h3 class="title">导入学生</h3>
+									</div>
+									<div class="card-footer">
+										<div class="stats">
+											<p>对已有课程导入学生</p>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<footer class="footer">
 				<div class="container-fluid">
@@ -177,7 +197,7 @@
 	<script src="../../static/assets/js/material-dashboard.js"></script>
 
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-	<script src="../assets/js/demo.js"></script>
+	<script src="../../static/static/assets/js/demo.js"></script>
 
 	<script type="text/javascript">
     	$(document).ready(function(){
