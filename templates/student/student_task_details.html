@@ -77,13 +77,19 @@
 							<span class="icon-bar"></span>
 						</button>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 						<a class="navbar-brand" href="unsubmits">返回</a>
 =======
+=======
+>>>>>>> Stashed changes
 						{% if is_work %}
 							<a class="navbar-brand" href="submits">返回</a>
 						{% else %}
 							<a class="navbar-brand" href="unsubmits">返回</a>
 						{% endif %}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 					</div>
 					<div class="collapse navbar-collapse">
@@ -114,17 +120,24 @@
 	                            <div class="card-content">
 	                                <div class="tim-typo">
 										<p><span class="tim-note">作业内容</span>
+<<<<<<< Updated upstream
 											{{ workMeta.content }}
+=======
+											<h3>{{ workMeta.content }}</h3>
+>>>>>>> Stashed changes
 										</p>
 									</div>
 									{% if not is_work %}
 									<div class="tim-typo">
 										<span class="tim-note">上传作业</span>
+<<<<<<< Updated upstream
 										<form method="Post" action="" enctype="multipart/form-data" >
 											{% csrf_token %}
             								{{ form }}
 											<button type="submit" class="btn btn-info pull-right">提交</button>
 										</form>
+=======
+>>>>>>> Stashed changes
 										{% if not is_work %}
 											<form method="Post" action="" enctype="multipart/form-data" >
 												{% csrf_token %}
@@ -148,6 +161,9 @@
 												{% endfor %}
 											</table>
 										{% endif %}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     				</div>
 									{% else %}

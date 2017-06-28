@@ -125,16 +125,6 @@
 	                                        		</td>
 												</tr>
 												{% endfor %}
-											{% for meta in file_meta %}
-											<tr>
-												<td><a href="s/resources/{{ meta.file_name }}">{{ meta.file_name }}</a></td>
-												<td>{{ meta.file.type }}</td>
-												<td>{{ meta.user_name }}</td>
-												<td>{{ meta.date }}</td>
-												<td><a href="s/resources/{{ meta.file_name }}">
-													<button class="btn btn-success" onclick="demo.showNotification('top','right')">下载</button></a></td>
-											</tr>
-											{% endfor %}
 	                                    </tbody>
 	                                </table>
 	                            </div>
