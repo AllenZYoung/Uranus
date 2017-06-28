@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>课程名字</th><th>教室</th><th>学分</th><th>开始时间</th><th>结束时间</th><th>课程状态</th>
+    </tr>
+    {% for course in courses %}
+        <tr>
+            <td>{{ course.name }}</td>
+            <td>{{ course.classroom }}</td>
+            <td>{{ course.credit }}</td>
+            <td>{{ course.startTime  }}</td>
+            <td>{{ course.endTime }}</td>
+            <td>{{ course.status }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.forms.widgets import SelectDateWidget
+from django.forms.widgets import SelectDateWidget,Textarea
 from app import models
+
+from django.forms import fields
 
 
 # define your custom forms here
@@ -23,22 +25,40 @@ class TermForm(forms.Form):
 
 class CourseForm(forms.Form):
     name = forms.CharField(required=True, label='课程名字', max_length=64)
-    TERMS_CHOICES = []
-#     terms = models.Term.objects.all()
-#     if (terms):
-#         for term in terms:
-#             if term.semester == 'spring':
-#                 TERMS_CHOICES.append((term.id, str(term.year) + ' ' + '春季学期'))
-#             else:
-#                 TERMS_CHOICES.append((term.id, str(term.year) + ' ' + '秋季学期'))
-#         term = forms.CharField(required=True, widget=forms.Select(choices=TERMS_CHOICES))
-#     classroom = forms.CharField(required=True, label='教室', max_length=64)
-#     credit = forms.IntegerField(required=True, label='学分')
-#     startTime = forms.DateTimeField(required=False, label='开始时间', widget=SelectDateWidget)
-#     endTime = forms.DateTimeField(required=False, label='结束时间', widget=SelectDateWidget)
+    classroom = forms.CharField(required=True, label='教室', max_length=64)
+    credit = forms.IntegerField(required=True, label='学分')
+    startTime = forms.DateTimeField(required=False, label='开始时间', widget=SelectDateWidget)
+    endTime = forms.DateTimeField(required=False, label='结束时间', widget=SelectDateWidget)
 
-class EditTermForm(forms.Form):
-    name = ' '
 
-class EditCourseForm(forms.Form):
-    name = ''
+
+
+
+
+class EditTermForm(forms.ModelForm):
+    startWeek = forms.CharField(label='课程开始周次')
+    info = forms.CharField(label='说明信息',required=False)
+    def __init__(self, *args, **kwargs):
+        super(EditTermForm, self).__init__(*args, **kwargs)
+        self.fields['year'].widget.attrs['readonly'] = True
+        self.fields['semester'].widget.attrs['readonly'] = True
+        self.fields['startWeek'].is_hiden= True
+        self.fields['endWeek'].label='课程结束周次'
+
+
+
+    class Meta:
+        model = models.Term
+        fields = ['year','semester','startWeek','endWeek','info']
+        widgets = {
+            'semester': forms.TextInput(),
+            'startWeek':forms.TextInput(),
+        }
+
+
+class EditCourseForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EditCourseForm, self).__init__(*args, **kwargs)
+    class Meta:
+        model = models.Course
+        fields = ['name','term','classroom','credit','status','startTime','endTime']
