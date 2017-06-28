@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from app.utils.sampleDB import sampleDB
+from app.test.sampleDB import sampleDB
 
 
 def index(request):

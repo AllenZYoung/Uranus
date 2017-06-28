@@ -24,18 +24,18 @@ class TermForm(forms.Form):
 class CourseForm(forms.Form):
     name = forms.CharField(required=True, label='课程名字', max_length=64)
     TERMS_CHOICES = []
-    terms = models.Term.objects.all()
-    if (terms):
-        for term in terms:
-            if term.semester == 'spring':
-                TERMS_CHOICES.append((term.id, str(term.year) + ' ' + '春季学期'))
-            else:
-                TERMS_CHOICES.append((term.id, str(term.year) + ' ' + '秋季学期'))
-        term = forms.CharField(required=True, widget=forms.Select(choices=TERMS_CHOICES))
-    classroom = forms.CharField(required=True, label='教室', max_length=64)
-    credit = forms.IntegerField(required=True, label='学分')
-    startTime = forms.DateTimeField(required=False, label='开始时间', widget=SelectDateWidget)
-    endTime = forms.DateTimeField(required=False, label='结束时间', widget=SelectDateWidget)
+#     terms = models.Term.objects.all()
+#     if (terms):
+#         for term in terms:
+#             if term.semester == 'spring':
+#                 TERMS_CHOICES.append((term.id, str(term.year) + ' ' + '春季学期'))
+#             else:
+#                 TERMS_CHOICES.append((term.id, str(term.year) + ' ' + '秋季学期'))
+#         term = forms.CharField(required=True, widget=forms.Select(choices=TERMS_CHOICES))
+#     classroom = forms.CharField(required=True, label='教室', max_length=64)
+#     credit = forms.IntegerField(required=True, label='学分')
+#     startTime = forms.DateTimeField(required=False, label='开始时间', widget=SelectDateWidget)
+#     endTime = forms.DateTimeField(required=False, label='结束时间', widget=SelectDateWidget)
 
 class EditTermForm(forms.Form):
     name = ' '
