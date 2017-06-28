@@ -17,5 +17,9 @@ class UserChangeForm(forms.Form):
     passwd = forms.CharField(max_length=32, required=False, label='密码', widget=forms.PasswordInput)
     second_passwd = forms.CharField(max_length=32, required=False, label='再次输入密码', widget=forms.PasswordInput)
 
-
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field_name is not 'attachment':
+                field.widget.attrs['class'] = 'form-control'
 

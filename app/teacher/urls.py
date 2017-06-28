@@ -6,7 +6,6 @@ app_name = 'teacher'
 urlpatterns = [
     url(r'^$', views.course, name='index'),
     url(r'^create_homework/', views.create_homework, name='create_homework'),
-    #url(r'^edit_course/', views.edit_course, name='edit_course'),
     url(r'^edit_homework/', views.edit_homework, name='edit_homework'),
     url(r'^course_info/', views.course_info, name='course_info'),
     url(r'^edit_course/', views.edit_course, name='edit_course'),
@@ -25,9 +24,8 @@ urlpatterns = [
     url(r'^show_works/',views.show_works,name='show_works'),
     url(r'^work_detail/',views.work_detail,name='work_detail'),
     url(r'^uploads/(?P<path>.*)$',views.download_file,name='download_file'),
-    url(r'^ourse/',views.course,name='course'),
+    url(r'^course/',views.course,name='course'),
     url(r'^task/',views.task,name='task'),
-    url(r'^postcourse/',views.postcourse,name='postcourse'),
     url(r'^submitted_work_list/', views.submitted_work_list, name='submitted_work_list'),
 
 
