@@ -7,7 +7,6 @@
 <body>
     <p>上传学生表</p>
     <form method="Post" action="" enctype="multipart/form-data" >
-        <input type="file" name="filefield">
         {{ form.filefield }}
         {% csrf_token %}
         <input type="submit" value="提交"/>
