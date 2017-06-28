@@ -12,6 +12,6 @@
     <label>电话: {{ user.tel }}</label><br>
     <label>邮箱: {{ user.email }}</label><br>
 
-    <a href="/user/change_info"><button>编辑个人信息</button></a>
+    <a href="{% url 'app:change_info' %}"><button>编辑个人信息</button></a>
 </body>
 </html>

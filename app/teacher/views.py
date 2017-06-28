@@ -20,7 +20,7 @@ def index(request):
         if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course
     teacher = User.objects.get(username=user.username)
-    return render(request, 'teacher/teacher_index.html', {'teacher': teacher, 'course': course})
+    return render(request, 'teacher/index.html', {'teacher': teacher, 'course': course})
 
 
 @login_required(login_url='app:login')
@@ -104,18 +104,26 @@ def create_resource(request):
             return HttpResponse('course_id=None')
         course = Course.objects.get(id=course_id)
         user = request.user
-        upload_file_form = UploadFileForm()
+        #upload_file_form = UploadFileForm()
         teacher = User.objects.get(username=user.username)
         return render(request, 'teacher/create_resource.html',
-                      {'course': course, 'teacher': teacher, 'upload_file_form': upload_file_form})
+                      {'course': course, 'teacher': teacher,})
     else:
-        course_id = request.POST.get('course_id', None)
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request,course_id,form)
-            return HttpResponse('upload file success')
+        # course_id = request.POST.get('course_id', None)
+        # form = UploadFileForm(request.POST, request.FILES)
+        # if form.is_valid():
+        #     handle_uploaded_file(request,course_id,form)
+        #     return HttpResponse('upload file success')
+        # else:
+        #     return HttpResponse('form is not valid')
+        course_id=request.POST.get('course_id',None)
+        course=get_object_or_404(Course,id=course_id)
+        file=request.FILES['file']
+        if file is None:
+            return HttpResponse('file is empty!')
         else:
-            return HttpResponse('form is not valid')
+            handle_uploaded_file(request, course_id, file)
+            return HttpResponse('upload file success')
 
 
 @login_required(login_url='app:login')
@@ -163,7 +171,10 @@ def delete_file(request):
     file_id = request.GET.get("file_id", None)
     if file_id is None:
         return HttpResponse('file_id is None')
-    File.objects.get(id=file_id).delete()
+    file=get_object_or_404(File,id=file_id)
+    location=os.path.join(settings.MEDIA_ROOT,file.file.path)
+    os.remove(location)
+    file.delete()
     return HttpResponse('delete file success')
 
 
@@ -285,3 +296,27 @@ def dwnload_file(request,path):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+def course(request):
+    user = request.user
+    enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
+    course = None
+    present = datetime.now()
+    for enroll in enrolls:
+        if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
+            course = enroll.course
+    teacher = User.objects.get(username=user.username)
+    return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course})
+
+
+def postcourse(request):
+    pass
+
+
+def task(request):
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
+    user = request.user
+    teacher = User.objects.get(username=user.username)
+    return render(request, 'teacher/task.html', {'teacher': teacher, 'course': course})

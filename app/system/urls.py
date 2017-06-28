@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^showCourse$', views.show_course, name='showCourse'),
     url(r'^editTerm$', views.edit_term, name='editTerm'),
     url(r'editCourse$', views.edit_course, name='editCourse'),
+    url(r'^loadStudents$', views.load_student, name='loadCourse'),
 ]
