@@ -76,21 +76,11 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-						<a class="navbar-brand" href="unsubmits">返回</a>
-=======
-=======
->>>>>>> Stashed changes
 						{% if is_work %}
 							<a class="navbar-brand" href="submits">返回</a>
 						{% else %}
 							<a class="navbar-brand" href="unsubmits">返回</a>
 						{% endif %}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -120,51 +110,17 @@
 	                            <div class="card-content">
 	                                <div class="tim-typo">
 										<p><span class="tim-note">作业内容</span>
-<<<<<<< Updated upstream
 											{{ workMeta.content }}
-=======
-											<h3>{{ workMeta.content }}</h3>
->>>>>>> Stashed changes
 										</p>
 									</div>
 									{% if not is_work %}
 									<div class="tim-typo">
 										<span class="tim-note">上传作业</span>
-<<<<<<< Updated upstream
 										<form method="Post" action="" enctype="multipart/form-data" >
 											{% csrf_token %}
             								{{ form }}
 											<button type="submit" class="btn btn-info pull-right">提交</button>
 										</form>
-=======
->>>>>>> Stashed changes
-										{% if not is_work %}
-											<form method="Post" action="" enctype="multipart/form-data" >
-												{% csrf_token %}
-												{{ form }}
-												<input type="submit" value="提交"/>
-											</form>
-    									{% endif %}
-										{% if is_work %}
-											评论<h3>{{ work.review }}</h3>
-											下载<br>
-											<table border="1">
-												<th>文件名</th>
-												<th>上传者</th>
-												<th>上传时间</th>
-												{% for meta in files %}
-												<tr>
-													<td><a href="s/student/{{ meta.file.file }}">{{ meta.file.file }}</a></td>
-													<td>{{ meta.file.user.name }}</td>
-													<td>{{ meta.file.time }}</td>
-												</tr>
-												{% endfor %}
-											</table>
-										{% endif %}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
                     				</div>
 									{% else %}
 									<div class="tim-typo">
