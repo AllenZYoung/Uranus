@@ -49,7 +49,7 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
                                'student/student_team_manage.html',
                       {'team': team, 'member_list': member_list,'form':form})
 
-    elif (request.method == 'POST' and isTeamLeader(student)): # 设置贡献度（权重）
+    elif request.method == 'POST' : # 设置贡献度（权重）
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             print("form is VALID!")
