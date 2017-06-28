@@ -98,9 +98,10 @@ def get_team_score_excel_file_abspath():
 
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     # 各个团队得分的excel命名规范：termYear_termsemester_team_score_list.xlsx
-    file_path = os.path.join(os.path.abspath('.'), 'downloads', 'teamScores')
-    file_name = '' + now_term.year + now_term.semester + 'team_score_list.xlsx'
-    file = file_path + file_name
+    file_father_path = os.path.join(os.path.abspath('.'), 'downloads')
+    file_path = os.path.join(file_father_path, 'teamScores')
+    file_name = '' + str(now_term.year) + str(now_term.semester) + '_team_score_list.xlsx'
+    file = os.path.join(file_path, file_name)
     return file
 
 
@@ -109,9 +110,10 @@ def get_stu_score_excel_file_abspath():
     now_term = get_now_term()
 
     # 各人得分的excel命名规范：termYear_termsemester_stu_score_list.xlsx
-    file_path = os.path.join(os.path.abspath('.'), 'downloads', 'stuScores')
-    file_name = '' + now_term.year + now_term.semester + 'stu_score_list.xlsx'
-    file = file_path + file_name
+    file_father_path = os.path.join(os.path.abspath('.'), 'downloads')
+    file_path = os.path.join(file_father_path, 'stuScores')
+    file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_score_list.xlsx'
+    file = os.path.join(file_path, file_name)
     return file
 
 
@@ -119,39 +121,41 @@ def get_stu_score_excel_file_abspath():
 def create_team_score_excel(file, team_list, score_list):
     work_book = Workbook()
     ws = work_book.get_active_sheet()
-    ws.cell(row=0, column=0).value = '团队id'
-    ws.cell(row=0, column=1).value = '团队名称'
-    ws.cell(row=0, column=2).value = '分数'
+    ws.cell(row=1, column=1).value = '团队id'
+    ws.cell(row=1, column=2).value = '团队名称'
+    ws.cell(row=1, column=3).value = '分数'
 
     for i in range(0,len(team_list)):
-        num = i+1;
-        ws.cell(row=num, column=0).value = num
-        ws.cell(row=num, column=1).value = team_list[i].name
-        ws.cell(row=num, column=2).value = score_list[i]
+        num = i+2;
+        ws.cell(row=num, column=1).value = team_list[i].serialNum
+        ws.cell(row=num, column=2).value = team_list[i].name
+        ws.cell(row=num, column=3).value = score_list[i]
     work_book.save(filename=file)
 
 
-def create_team_score_excel(file, stu_list, member_score_dict):
+def create_stu_score_excel(file, stu_list, stu_score_dict):
     work_book = Workbook()
     ws = work_book.get_active_sheet()
-    ws.cell(row=0, column=0).value = '学号'
-    ws.cell(row=0, column=1).value = '姓名'
-    ws.cell(row=0, column=2).value = '分数'
+    ws.cell(row=1, column=1).value = '学号'
+    ws.cell(row=1, column=2).value = '姓名'
+    ws.cell(row=1, column=3).value = '分数'
 
-    num = 1;
+    print(stu_list)
+    print(stu_score_dict)
+    num = 2;
     for stu in stu_list:
-        ws.cell(row=num, column=0).value = stu.username
-        ws.cell(row=num, column=1).value = stu.name
-        ws.cell(row=num, column=2).value = member_score_dict[stu]
-        ++num
+        ws.cell(row=num, column=1).value = stu.username
+        ws.cell(row=num, column=2).value = stu.name
+        ws.cell(row=num, column=3).value = stu_score_dict[stu]
+        num += 1
     work_book.save(filename=file)
 
 
 
 #计算团队得分
 def compute_team_score():
-    now_term = get_now_term()
-    team_list = get_team_list_in_now_term()
+    # now_term = get_now_term()
+    team_list = get_team_list_in_now_course()
     score_list = []
     team_score = {}
     for team in team_list:
@@ -159,45 +163,50 @@ def compute_team_score():
         score = 0
         for work in work_list:
             score += work.score * work.workMeta.proportion
-            team_score[team] = score
+        team_score[team] = score
         score_list.append(score)
     return team_list, score_list, team_score
 
 
 # 计算个人总得分 dict: key=team_member, value=score
-def compute_member_score():
+def compute_stu_score():
     x, y, team_score = compute_team_score()
-    member_score = {}
+    stu_score = {}
     for team in team_score:
         team_member = Member.objects.filter(team=team)
         for member in team_member:
             score = team_score[team] * member.contribution
-            member_score[member] = score
-    return member_score
+            stu_score[member.user] = score
+    return stu_score
 
 
 
 # 获取当前学期的所有team,并排序
-def get_team_list_in_now_term():
-    now_term = get_now_term()
-    team_list = Team.objects.filter(course__term=now_term).order_by('id')
+def get_team_list_in_now_course():
+    now_time = datetime.now()
+    now_course = Course.objects.get(startTime__lt=now_time, endTime__gt=now_time)
+    if now_course:
+        team_list = Team.objects.filter(course=now_course).order_by('serialNum')
     return team_list
 
 
 # 获取当前学期所有参加的学生，并按学号排序
-def get_members_list_in_now_term():
-    team_list = get_team_list_in_now_term()
+def get_stu_list_in_now_course():
+    team_list = get_team_list_in_now_course()
     members_list = []
     for team in team_list:
         team_member = Member.objects.filter(team=team)
         members_list.extend(team_member)
-    members_list = sorted(members_list, key=lambda x : x.username)
-    return members_list
+    stu_list = []
+    for member in members_list:
+        stu_list.append(member.user)
+    stu_list = sorted(stu_list, key=lambda x : x.username)
+    return stu_list
 
 
 # 读取file文件
 def file_iterator(file_name, chunk_size=512):
-    with open(file_name) as f:
+    with open(file_name, 'rb') as f:
         while True:
             c = f.read(chunk_size)
             if c:

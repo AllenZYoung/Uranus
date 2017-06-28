@@ -7,6 +7,7 @@ from app.teacher.utils import *
 from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
 from django.conf import settings
+from app.templatetags import app_tags
 
 
 # Create your views here.
@@ -228,16 +229,16 @@ def download_stu_homework(request):
 
 
 # 生成个人得分表
+@login_required(login_url='app:login')
 def generate_stu_score_table(request):
-    member_score_dict = compute_member_score()
-    stu_list = get_members_list_in_now_term()
-
+    stu_score_dict = compute_stu_score()
+    stu_list = get_stu_list_in_now_course()
     #第一次计算出每个学生的得分后保存到excel表，以便老师下载
     file = get_stu_score_excel_file_abspath()
     if not os.path.isfile(file):
-        create_team_score_excel(file, stu_list, member_score_dict)
-    return render(request, 'teacher/member_score_list.html',
-                  {'member_score_dict': member_score_dict, 'stu_list': stu_list})
+        create_stu_score_excel(file, stu_list, stu_score_dict)
+    return render(request, 'teacher/stu_score_list.html',
+                  {'stu_score_dict': stu_score_dict, 'stu_list': stu_list})
 
 
 
@@ -245,34 +246,38 @@ def generate_stu_score_table(request):
 @login_required(login_url='app:login')
 def generate_team_score_table(request):
     team_list, score_list, team_score = compute_team_score()
-
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     file = get_team_score_excel_file_abspath()
     if not os.path.isfile(file):
-        create_team_score_excel(file, team_list, team_score)
+        create_team_score_excel(file, team_list, score_list)
+    num_list = range(len(team_list))
 
     return render(request, 'teacher/team_score_list.html',
-                  {'team_list': team_list, 'score_list': score_list})
+                  {'team_list': team_list, 'score_list': score_list, 'num_list': num_list})
 
 
 #下载小组得分excel
 @login_required(login_url='app:login')
-def download_team_score_list():
+def download_team_score_list(request):
     file = get_team_score_excel_file_abspath()
-    response = StreamingHttpResponse(file_iterator(file))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
-    return response
+    if os.path.exists(file):
+        response = StreamingHttpResponse(file_iterator(file))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename='+os.path.basename(file)
+        return response
+    return Http404
 
 
 # 下载所有学生的分数excel
 @login_required(login_url='app:login')
 def download_stu_score_list(request):
     file = get_stu_score_excel_file_abspath()
-    response = StreamingHttpResponse(file_iterator(file))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file)
-    return response
+    if os.path.exists(file):
+        response = StreamingHttpResponse(file_iterator(file))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename='+os.path.basename(file)
+        return response
+    return Http404
 
 
 #显示当前已布置的作业

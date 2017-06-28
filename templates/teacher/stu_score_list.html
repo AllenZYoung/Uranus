@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load app_tags %}
     <meta charset="UTF-8">
     <title>member score list</title>
 </head>
@@ -16,12 +17,7 @@
             <tr>
             <td>{{ stu.username }}</td>
             <td>{{ stu.name }}</td>
-                {% if stu in member_score_dict.keys %}
-                    {% score=member_score_dict[stu] %}
-                <td>{{ score }}</td>
-                {% else %}
-                <td>0</td>
-                {% endif %}
+                <td>{{ stu_score_dict|key:stu }}</td>
             </tr>
         {% endfor%}
     </table>
