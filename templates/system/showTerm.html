@@ -7,17 +7,14 @@
 <body>
 <table>
     <tr>
-        <th>年份</th>
-        <th>学期</th>
-       <th>开始周次</th>
-       <th>结束周次</th>
+        <th>年份</th><th>学期</th><th>开始周次</th><th>结束周次</th>
     </tr>
     {% for term in terms %}
         <tr>
-            <th>{{ term.year }}</th>
-            <th>{{ term.semester }}</th>
-            <th>{{ term.startWeek }}</th>
-            <th>{{ term.endWeek }}</th>
+            <td>{{ term.year }}</td>
+            <td>{{ term.semester }}</td>
+            <td>{{ term.startWeek }}</td>
+            <td>{{ term.endWeek }}</td>
         </tr>
     {% endfor %}
 </table>

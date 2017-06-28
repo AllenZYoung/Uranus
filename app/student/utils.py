@@ -26,11 +26,12 @@ def submit_homework_file(form):  # 提交某个作业（的文件）
     pass
 
 #TODO this function, some puzzled questions here
-def set_members_evaluations(team_leader):  # 为团队成员设置贡献度（可以理解为权重）
-    member_relation = Member.objects.filter(user__username__contains=team_leader.name)
-    # team = Team.objects.filter(member_relation.team).first()
-    team = member_relation.objects.filter()
-
+# def set_members_evaluations(team_leader):  # 为团队成员设置贡献度（可以理解为权重）
+#     member_model = Member.objects.filter(user__username__contains=team_leader)
+#     team = Team.objects.filter(member_model.team).first()
+#     member_list = Member.objects.filter(team=team)
+#     for member in member_list:
+#         member.contribution =
 
 
 # 获得对应团队，对应课程的提交情况，包括已提交和未提交
