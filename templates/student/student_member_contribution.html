@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置团队贡献度</title>
+</head>
+<body>
+<table title={{ team.name }}>
+    <tr>
+        <th>姓名</th>
+        <th>角色</th>
+        <th>贡献度</th>
+    </tr>
+    {% for member in member_list %}
+        <tr>
+            <td>{{ member.user }}</td>
+            <td>{{ member.role }}</td>
+            <td>{{ member.contribution }}</td>
+        </tr>
+    {% endfor %}
+</table>
+<form action="{% url 'student:member_evaluation' %}" method="post">
+    {% csrf_token %}
+    {% for member in member_list %}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{ field.label }}</label>
+            <div class="col-sm-10">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    <input style="margin-left: 50%" class="btn btn-primary btn-rg active" type="submit" value="提交"/>
+</form>
+
+</body>
+</html>
