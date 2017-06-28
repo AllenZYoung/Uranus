@@ -46,14 +46,31 @@ def create_homework(request):
 
 @login_required(login_url='app:login')
 def edit_course(request):
-    return HttpResponse('edit course')
+    if request.method == 'GET':
+        course_id = request.GET.get('course_id', None)
+        course = get_object_or_404(Course, id=course_id)
+        form=EditCourseForm()
+        form.set_init_data(course)
+        return render(request,'teacher/edit_course.html',{'form':form,'course':course})
+    else:
+        course_id=request.POST.get('course_id',None)
+        course = get_object_or_404(Course, id=course_id)
+        form = EditCourseForm(request.POST)
+        if form.is_valid():
+            course.name=form.cleaned_data['name']
+            course.info=form.cleaned_data['info']
+            course.syllabus=form.cleaned_data['syllabus']
+            course.classroom=form.cleaned_data['classroom']
+            course.status=form.cleaned_data['status']
+            course.save()
+            return redirect('/teacher/course_info?course_id='+course_id)
+        else:
+            return render(request,'teacher/edit_course.html',{'form':form,'course':course,'error_message':'数据不合法!'})
 
 
 @login_required(login_url='app:login')
 def course_info(request):
     course_id = request.GET.get('course_id', None)
-    if course_id is None:
-        return HttpResponse('course_id=None')
     course = get_object_or_404(Course, id=course_id)
     user = request.user
     enrolls = Enroll.objects.filter(course_id=course_id)
@@ -105,7 +122,6 @@ def create_resource(request):
             return HttpResponse('course_id=None')
         course = Course.objects.get(id=course_id)
         user = request.user
-        #upload_file_form = UploadFileForm()
         teacher = User.objects.get(username=user.username)
         return render(request, 'teacher/create_resource.html',
                       {'course': course, 'teacher': teacher,})
@@ -119,12 +135,19 @@ def create_resource(request):
         #     return HttpResponse('form is not valid')
         course_id=request.POST.get('course_id',None)
         course=get_object_or_404(Course,id=course_id)
-        file=request.FILES['file']
+        user = request.user
+        teacher = User.objects.get(username=user.username)
+        try:
+            file = request.FILES['file']
+        except:
+            return render(request, 'teacher/create_resource.html',
+                          {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         if file is None:
-            return HttpResponse('file is empty!')
+            return render(request, 'teacher/create_resource.html',
+                      {'course': course, 'teacher': teacher,'error_message':'文件为空!'})
         else:
             handle_uploaded_file(request, course_id, file)
-            return HttpResponse('upload file success')
+            return redirect('/teacher/resources?course_id='+course_id)
 
 
 @login_required(login_url='app:login')
@@ -151,13 +174,14 @@ def preview_source_online(request):
 @login_required(login_url='app:login')
 def delete_file(request):
     file_id = request.GET.get("file_id", None)
-    if file_id is None:
-        return HttpResponse('file_id is None')
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
     file=get_object_or_404(File,id=file_id)
     location=os.path.join(settings.MEDIA_ROOT,file.file.path)
-    os.remove(location)
+    if os.path.isfile(location):
+        os.remove(location)
     file.delete()
-    return HttpResponse('delete file success')
+    return redirect('/teacher/resources/?course_id='+course_id)
 
 
 @login_required(login_url='app:login')
@@ -191,7 +215,9 @@ def edit_homework(request):
 def past_homeworks(request):
     user = request.user
     workmetas=get_past_homeworks(user.username)
-    return render(request,'teacher/past_homeworks.html',{'workmetas':workmetas})
+    if len(workmetas) == 0:
+        error_message = '当前没有往期作业数据'
+    return render(request,'teacher/past_homeworks.html',{'workmetas':workmetas,'error_message':error_message})
 
 
 

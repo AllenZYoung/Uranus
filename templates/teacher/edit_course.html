@@ -1,38 +1,8 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>课程资源</title>#}
-{#</head>#}
-{#<body>#}
-{#<table>#}
-{#    <tr>#}
-{#        <th>类型</th>#}
-{#        <th>资源名称</th>#}
-{#        <th>上传时间</th>#}
-{#        <th>删除资源</th>#}
-{#    </tr>#}
-{#    {% for file in files %}#}
-{#        <tr>#}
-{#            <td>{{ file.type }}</td>#}
-{#            <td>#}
-{#                <a href="/teacher{{ file.file.url }}">{{ file.file.name }}</a>#}
-{#            </td>#}
-{#            <td>{{ file.time }}</td>#}
-{#            <td>#}
-{#                <a href="{% url 'teacher:delete_file' %}?file_id={{ file.id }}">删除</a>#}
-{#            </td>#}
-{#        </tr>#}
-{#    {% endfor %}#}
-{#</table>#}
-{#</body>#}
-{#</html>#}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>删除课程资源</title>
+    <title>课程基本信息</title>
     {% load static %}
     <link rel="apple-touch-icon" sizes="76x76" href="{%  static 'assets/img/apple-icon.png' %}" />
 	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
@@ -112,7 +82,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="{% url 'teacher:course' %}">返回</a>
+						<a class="navbar-brand" href="{% url 'teacher:course_info' %}?course_id={{ course.id }}">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -132,47 +102,84 @@
 			</nav>
 
 			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card" data-color="blue">
-								<div class="card-header" data-background-color="orange">
-	                                <h4 class="title">删除课程资源</h4>
-									<p class="category">删除相应的课程资源</p>
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="card card-plain">
+	                            <div class="card-header" data-background-color="blue">
+	                                <h4 class="title">编辑课程信息</h4>
+	                                <p class="category">编辑课程相关基本信息，如课程要求、课程大纲等</p>
 	                            </div>
-	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
-	                                    <thead>
-	                                    	<th>资源名称</th>
-	                                    	<th>文件类型</th>
-	                                    	<th>上传时间</th>
-	                                    	<th>上传者</th>
-	                                    	<th>操作</th>
-	                                    </thead>
-	                                    <tbody>
-                                        {% for file in files %}
-                                            <tr>
-                                                <td>{{ file.file.name }}</td>
-                                                <td>{{ file.get_type_display }}</td>
-                                                <td>{{ file.time }}</td>
-                                                <td>{{ file.user.name }}</td>
-                                                <td>
-                                                    <a href="{% url 'teacher:delete_file' %}?file_id={{ file.id }}&course_id={{ course.id }}">
-                                                        <button class="btn btn-warning">删除</button>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-	                                    </tbody>
-	                                </table>
-	                            </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+	                            <div class="card-content">
+                                     {% if error_message %}
+                                        <p>{{ error_message }}</p>
+                                    {% endif %}
+	                                <form action="{% url 'teacher:edit_course' %}" method="post">
+                                        {% csrf_token %}
+	                                    <div class="row">
+	                                        <div class="col-md-6">
+												<div class="form-group">
+													<label class="col-md-12">课程名称</label>
+													<div>
+														{{ form.name }}
+													</div>
+												</div>
+	                                        </div>
+	                                    </div>
 
-			<footer class="footer">
+	                                    <div class="row">
+	                                        <div class="col-md-12">
+												<div class="form-info">
+													<label class="col-md-12">课程要求/其他说明</label>
+													<div>
+														{{ form.info }}
+													</div>
+												</div>
+	                                        </div>
+	                                    </div>
+
+	                                    <div class="row">
+	                                        <div class="col-md-12">
+												<div class="form-info">
+													<label class="col-md-12">课程大纲</label>
+													<div>
+														{{ form.syllabus }}
+													</div>
+												</div>
+	                                        </div>
+	                                    </div>
+
+	                                    <div class="row">
+	                                        <div class="col-md-4">
+												<div class="form-info">
+													<label class="col-md-12">教室</label>
+													<div>
+														{{ form.classroom }}
+													</div>
+												</div>
+	                                        </div>
+	                                        <div class="col-md-4">
+												<div class="form-group">
+													<label class="col-md-12">状态</label>
+													<div>
+														{{ form.status }}
+													</div>
+												</div>
+	                                        </div>
+	                                    </div>
+
+	                                    <button type="submit" class="btn btn-info pull-right">提交</button>
+                                        <input type="hidden" name="course_id" value="{{ course.id }}">
+	                                    <div class="clearfix"></div>
+	                                </form>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+
+	        <footer class="footer">
 				<div class="container-fluid">
 					<p class="copyright pull-right">
 						URANUS@2017
