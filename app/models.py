@@ -12,8 +12,8 @@ from datetime import datetime
 class User(models.Model):
     username = models.CharField(unique=True, max_length=32, help_text='学号/工号')
     password = models.CharField(max_length=64)
-    name = models.CharField(max_length=32, null=True, help_text='实名')
-    classID = models.CharField(max_length=16, null=True, help_text='班号')
+    name = models.CharField(max_length=32, null=True, blank=True, help_text='实名')
+    classID = models.CharField(max_length=16, null=True, blank=True, help_text='班号')
     ROLE = (
         ('student', '学生'),
         ('teacher', '教师'),
@@ -25,23 +25,23 @@ class User(models.Model):
         ('female', '女'),
     )
     gender = models.CharField(max_length=8, choices=GENDER, default='male')
-    tel = models.CharField(max_length=16, null=True, help_text='电话')
-    email = models.EmailField(max_length=64, null=True)
+    tel = models.CharField(max_length=16, null=True, blank=True, help_text='电话')
+    email = models.EmailField(max_length=64, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name or self.username
 
 # [学期]
 class Term(models.Model):
-    info = models.TextField(help_text='学期说明信息')
+    info = models.TextField(blank=True, help_text='学期说明信息')
     year = models.IntegerField(default=datetime.now().year)
     SEMESTER = (
         ('spring', '春季学期'),
         ('autumn', '秋季学期'),
     )
     semester = models.CharField(max_length=8, choices=SEMESTER, default='spring')
-    startWeek = models.PositiveSmallIntegerField(null=True, help_text='课程开始的周次')
-    endWeek = models.PositiveSmallIntegerField(null=True)
+    startWeek = models.PositiveSmallIntegerField(null=True, blank=True, help_text='课程开始的周次')
+    endWeek = models.PositiveSmallIntegerField(null=True, blank=True)
 
     def __str__(self):
         sem = self.semester == 'spring' and '春季学期' or '秋季学期'
@@ -52,8 +52,8 @@ class Term(models.Model):
 class TeamMeta(models.Model):
     minNum = models.PositiveSmallIntegerField(default=1)
     maxNum = models.PositiveSmallIntegerField(default=10)
-    startTime = models.DateTimeField(default=datetime.now(), help_text='允许组队的开始时间')
-    endTime = models.DateTimeField(default=datetime.now())
+    startTime = models.DateTimeField(blank=True, default=datetime.now(), help_text='允许组队的开始时间')
+    endTime = models.DateTimeField(blank=True, default=datetime.now())
 
     def __str__(self):
         return '%d~%d人团队' %(self.minNum, self.maxNum)
@@ -62,11 +62,11 @@ class TeamMeta(models.Model):
 # [课程]==[学期]&[团队元信息]
 class Course(models.Model):
     term = models.ForeignKey(Term)            # 学期
-    teamMeta = models.ForeignKey(TeamMeta, null=True)    # 团队元信息
+    teamMeta = models.ForeignKey(TeamMeta, null=True, blank=True)    # 团队元信息
     name = models.CharField(max_length=64)
-    info = models.TextField(null=True,help_text='课程要求/其他说明')
-    syllabus = models.TextField(null=True, help_text='课程大纲')
-    classroom = models.CharField(max_length=64, null=True, help_text='上课地点')
+    info = models.TextField(null=True, blank=True, help_text='课程要求/其他说明')
+    syllabus = models.TextField(null=True, blank=True help_text='课程大纲')
+    classroom = models.CharField(max_length=64, null=True, blank=True, help_text='上课地点')
     credit = models.PositiveSmallIntegerField(default=0)
     STATUS = (
         ('unstarted', '未开始'),
@@ -74,8 +74,8 @@ class Course(models.Model):
         ('ended', '已结束'),
     )
     status = models.CharField(max_length=16, choices=STATUS, default='unstarted')
-    startTime = models.DateTimeField(default=datetime.now())
-    endTime = models.DateTimeField(default=datetime.now())
+    startTime = models.DateTimeField(blank=True, default=datetime.now())
+    endTime = models.DateTimeField(blank=True, default=datetime.now())
 
     def __str__(self):
         return self.name
@@ -87,14 +87,14 @@ class Enroll(models.Model):
     user = models.ForeignKey(User)
 
     def __str__(self):
-        return '%s <- %s' %(self.course.name, self.user.name)
+        return '%s <- %s' %(self.course.name, self.user.name or self.user.username)
 
 
 # [团队]==[课程]&[用户:学生账户]
 class Team(models.Model):
     course = models.ForeignKey(Course)
     serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号') # 'id' is a reserved word...
-    name = models.CharField(max_length=32, null=True, help_text='可选的自定义名字')
+    name = models.CharField(max_length=32, null=True, blank=True, help_text='可选的自定义名字')
     STATUS = (
         ('incomplete', '未完成组队'),
         ('unsubmitted', '未提交'),
@@ -103,7 +103,7 @@ class Team(models.Model):
         ('rejected', '已驳回')
     )
     status = models.CharField(max_length=16, choices=STATUS, default='incomplete')
-    info = models.TextField(help_text='通过欢迎信息/驳回理由', null=True)
+    info = models.TextField(help_text='通过欢迎信息/驳回理由', null=True, blank=True)
 
     def __str__(self):
         return '%d: %s' %(self.serialNum, self.name)
@@ -117,10 +117,10 @@ class Member(models.Model):
         ('member', '队员'),
     )
     role = models.CharField(max_length=16, choices=ROLE, default='member')
-    contribution = models.FloatField(help_text='成员贡献度:0.4~1.2', null=True)
+    contribution = models.FloatField(help_text='成员贡献度:0.4~1.2', null=True, blank=True)
 
     def __str__(self):
-        return '%d: %s <- %s' %(self.team.serialNum, self.team.name, self.user.name)
+        return '%d: %s <- %s' %(self.team.serialNum, self.team.name or 'NoTeamName', self.user.name or self.user.username)
 
 
 # [作业任务]~~<附件>
@@ -128,11 +128,11 @@ class WorkMeta(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='发布者:教师')
     title = models.CharField(max_length=128, help_text='作业标题')
-    content = models.TextField(null=True)
-    proportion = models.FloatField(help_text='总分折算占比:0.0~1.0', null=True)
+    content = models.TextField(null=True, blank=True)
+    proportion = models.FloatField(help_text='总分折算占比:0.0~1.0', null=True, blank=True)
     submits = models.SmallIntegerField(default=-1, help_text='可提交次数，默认-1为无限')
-    startTime = models.DateTimeField(default=datetime.now())
-    endTime = models.DateTimeField(default=datetime.now())
+    startTime = models.DateTimeField(blank=True, default=datetime.now())
+    endTime = models.DateTimeField(blank=True, default=datetime.now())
 
     def __str__(self):
         return self.title
@@ -142,13 +142,13 @@ class WorkMeta(models.Model):
 class Work(models.Model):
     workMeta = models.ForeignKey(WorkMeta, help_text='作业任务元信息')
     team = models.ForeignKey(Team, help_text='提交者:团队')
-    content = models.TextField(null=True)
-    review = models.TextField(help_text='教师简评', null=True)
-    score = models.FloatField(help_text='得分: 0.0~10.0', null=True)
-    time = models.DateTimeField(auto_now_add=True)
+    content = models.TextField(null=True, blank=True)
+    review = models.TextField(help_text='教师简评', null=True, blank=True)
+    score = models.FloatField(help_text='得分: 0.0~10.0', null=True, blank=True)
+    time = models.DateTimeField(blank=True, auto_now_add=True)
 
     def __str__(self):
-        return '%s <- %d: %s' %(self.workMeta.title, self.team.serialNum, self.team.name)
+        return '%s <- %d: %s' %(self.workMeta.title, self.team.serialNum, self.team.name or 'NoTeamName')
 
 
 # [资源文件]
@@ -162,7 +162,7 @@ class File(models.Model):
         ('media', '视频'),
     )
     type = models.CharField(max_length=16, choices=TYPE, default='text')
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(blank=True, auto_now_add=True)
 
     def __str__(self):
         return os.path.split(self.file.url)
@@ -186,10 +186,10 @@ class Attachment(models.Model):
 # [签到]
 class Attendance(models.Model):
     user = models.ForeignKey(User, help_text='学生')
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(blank=True, auto_now_add=True)
 
     def __str__(self):
-        return self.user.name
+        return self.user.name or self.user.username
 
 # [公告]
 class Notice(models.Model):
@@ -197,7 +197,7 @@ class Notice(models.Model):
     user = models.ForeignKey(User, help_text='发布者')
     title = models.CharField(max_length=128)
     content = models.TextField()
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(blank=True, auto_now_add=True)
 
     def __str__(self):
         return self.title
