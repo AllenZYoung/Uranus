@@ -162,8 +162,11 @@ def homework(request):
 # @login_required(login_url='app:login')
 def preview_source_online(request):
     file = request.GET.get('file')
+    print('file='+file)
     file_path = os.path.join('uploads', file)
+    print('file_path='+file_path)
     url = fileUtils.docPreviewUrl(file_path)
+    print(url)
     return redirect(url)
 
 
