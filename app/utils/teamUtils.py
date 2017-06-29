@@ -1,6 +1,9 @@
 from django.db.models import Max
 from app.models import *
 
+# 关于团队管理的工具集
+# by kahsolt
+
 
 # 发起组队
 def createTeam(user, name):
@@ -179,23 +182,3 @@ def setContribution(user, contribution):
     Member.objects.filter(user=user).update(contribution=contribution)
     print("setContribution DONE!")
     return curContrib + contribution
-
-
-def isTeamLeader(student):
-    '''
-    确定一个学生是否为该团队的负责人
-    :param team: 
-    :param student: 
-    :return: bool value
-    '''
-    check = False
-    if not isinstance(student, User):
-        print('参数对象错误')
-        return False, '参数对象错误'
-    memberships = Member.objects.filter(user=student).first()
-    if memberships.role == 'leader' or memberships.role == '队长':
-        check = True
-    return check
-
-
-

@@ -4,6 +4,8 @@ from Uranus.settings import STATIC_URL
 URL_API = 'https://view.officeapps.live.com/op/view.aspx?src='
 URL_BASE = 'http://uranus.kahsolt.tk' + STATIC_URL
 
+# 关于文件资源和URL的工具集
+# by kahsolt
 
 # 文档在线预览url：doc/ppt/xls
 def docPreviewUrl(path):

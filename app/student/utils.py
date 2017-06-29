@@ -2,16 +2,15 @@
 
 from django.contrib.auth.models import User
 from app import models
-from app.models import Work, WorkMeta,Member,Team,User, Course, Enroll, Member
+from app.models import *
 from django.shortcuts import get_object_or_404
-from .models import User,Team, TeamMeta, Member, File, Attachment
 from django.conf import settings
 import datetime
 import pytz
 import os
 from openpyxl.reader.excel import load_workbook
-from ..utils.teamUtils import setContribution, isTeamLeader
-
+from app.utils.teamUtils import setContribution
+from app.utils.authUtils import isTeamLeader
 
 
 def auth_user(form):  # 瞎写的东西

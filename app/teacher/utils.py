@@ -97,7 +97,7 @@ def get_team_score_excel_file_abspath():
 
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     # 各个团队得分的excel命名规范：termYear_termsemester_team_score_list.xlsx
-    file_father_path = os.path.join(BASE_DIR, 'downloads')
+    file_father_path = os.path.join(BASE_DIR, 'reports')
     file_path = os.path.join(file_father_path, 'teamScores')
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_team_score_list.xlsx'
     file = os.path.join(file_path, file_name)
@@ -109,7 +109,7 @@ def get_stu_score_excel_file_abspath():
     now_term = get_now_term()
 
     # 各人得分的excel命名规范：termYear_termsemester_stu_score_list.xlsx
-    file_father_path = os.path.join(BASE_DIR, 'downloads')
+    file_father_path = os.path.join(BASE_DIR, 'reports')
     file_path = os.path.join(file_father_path, 'stuScores')
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_score_list.xlsx'
     file = os.path.join(file_path, file_name)

@@ -1,0 +1,25 @@
+Uranus
+    app         [py业务层]
+        attendance  (签到)
+        student
+        system
+        teacher
+        templatetags    <?考虑移动到根目录下去>
+        utils       (py低级数据访问层)
+    resource    [资源文件目录]
+        photos
+        reports     (报表下载)
+        uploads     (文件上传：作业附件/讲义资源)
+            attachment
+            handout
+            import
+                skeleton    (导入Excel模板)
+    static      [静态文件目录]
+        assets
+    templates   [html视图层]
+    Uranus
+        INSTALL     (数据库初始化脚本)
+        DEPRECATED  (未知或弃用的文件)
+
+特别注意：
+    静态文件目录(static)和资源文件目录(resource)的结构，详见其子目录下的README.txt!!

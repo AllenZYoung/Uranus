@@ -9,7 +9,9 @@ from app.teacher.entities import *
 from django.conf import settings
 from app.templatetags import app_tags
 from app.utils import fileUtils
+from app.utils.logUtils import *
 from Uranus.settings import BASE_DIR
+
 
 # Create your views here.
 @login_required(login_url='app:login')
@@ -162,14 +164,10 @@ def homework(request):
 # @login_required(login_url='app:login')
 def preview_source_online(request):
     file = request.GET.get('file')
-    print('file='+file)
-    file_path = file
-    print('file_path='+file_path)
-    url = fileUtils.docPreviewUrl(file_path)
-    print(url)
+    log('file_path='+file)
+    url = fileUtils.docPreviewUrl(file)
+    log('preview_source_online', url)
     return redirect(url)
-
-
 
 
 @login_required(login_url='app:login')
@@ -334,7 +332,7 @@ def course(request):
     user = request.user
     enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
     course = None
-    present = datetime.now()
+    present = datetime.datetime.now()
     for enroll in enrolls:
         if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course

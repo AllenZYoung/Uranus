@@ -5,12 +5,11 @@ from app.models import File, User, Work, WorkMeta, Attachment
 from django.conf import settings
 import os
 from .forms import ContributionForm, UploadFileForm
-from .models import Member, User, Team
 from django.shortcuts import get_object_or_404
 from . import utils
 from .utils import *
-from .models import Course, Enroll, User
-from  django.core.exceptions import ObjectDoesNotExist
+from app.models import Course, Enroll, User
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 

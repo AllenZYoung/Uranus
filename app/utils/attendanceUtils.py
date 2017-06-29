@@ -1,6 +1,9 @@
 from app.models import *
 from datetime import datetime
 
+# 关于签到的工具集
+# by kahsolt
+
 
 def showToday():
     startTime = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 9, 0, 0, 0)

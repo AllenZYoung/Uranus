@@ -1,5 +1,8 @@
 from app.models import *
 
+# 关于公告牌的工具集
+# by kahsolt
+
 
 def listNotice(course):
     course = Course(course)
