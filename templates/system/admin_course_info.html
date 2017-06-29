@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="../../static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>学期管理</title>
+	<title>课程管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -37,20 +37,20 @@
 		    -->
 
 			<div class="logo">
-				<a href="" class="simple-text">
+				<a href="/system" class="simple-text">
 					教务
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li class="active">
+	                <li>
 	                    <a href="/system/term">
 	                        <i class="material-icons">today</i>
 	                        <p>学期管理</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href="/system/course">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
@@ -70,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="/system/term">学期管理</a>
+						<a class="navbar-brand" href="course">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -89,47 +89,63 @@
 			</nav>
 
 			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-6 col-sm-6">
-							<a href="/system/createTerm">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="blue">
-									<i class="material-icons">today</i>
-								</div>
-								<div class="card-content">
-									<p class="category"><br></p>
-									<h3 class="title">创建学期</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<p>创建一个新的学期，以开始课程</p>
-									</div>
-								</div>
-							</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="/system/showTerm">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="green">
-										<i class="material-icons">today</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">学期信息</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看已创建学期，并维护学期信息</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="card card-plain">
+	                            <div class="card-header" data-background-color="green">
+	                                <h4 class="title">课程信息</h4>
+	                                <p class="category">查看并维护课程信息</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table table-hover">
+	                                    <thead>
+	                                        <th>课程名称</th>
+	                                    	<th>年份</th>
+	                                    	<th>学期</th>
+	                                    	<th>学分</th>
+	                                    	<th>上课地点</th>
+	                                    	<th>状态</th>
+	                                    	<th>开始时间</th>
+	                                    	<th>结束时间</th>
+	                                    	<th>修改</th>
+	                                    </thead>
+	                                    <tbody>
+                                            {% for course_dic in info %}
+                                                <tr>
+                                                    <td>{{ course_dic.course.name }}</td>
+                                                    <td>{{ course_dic.course.term.year }}</td>
+                                                    <td>{{ course_dic.course.term.semester }}</td>
+                                                    <td>{{ course_dic.course.credit }}</td>
+                                                    <td>{{ course_dic.course.classroom }}</td>
+                                                    <td>
+                                                        {% if course_dic.course.status == 'unstarted' %}
+                                                             未开始
+                                                        {% elif course_dic.course.status == 'ongoing' %}
+                                                            正在进行
+                                                        {% else %}
+                                                            已结束
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ course_dic.course.startTime  }}</td>
+                                                    <td>{{ course_dic.course.endTime }}</td>
+                                                    <td>
+                                                        {% if course_dic.course.status == 'ended' %}
+                                                            <button class="btn btn-inverse" disabled="disabled">不可操作</button>
+                                                        {% else %}
+                                                            <a class="btn btn-success" href="editCourse?id={{ course_dic.course.id }}">修改</a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
 
 			<footer class="footer">
 				<div class="container-fluid">

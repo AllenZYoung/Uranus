@@ -180,6 +180,7 @@ def setContribution(user, contribution):
     print("setContribution DONE!")
     return curContrib + contribution
 
+
 def isTeamLeader(student):
     '''
     确定一个学生是否为该团队的负责人
