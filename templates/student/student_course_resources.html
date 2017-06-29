@@ -51,13 +51,13 @@
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="student_task.html">
+	                    <a href="workpage">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="student_team.html">
+	                    <a href="teampage">
 	                        <i class="material-icons">face</i>
 	                        <p>团队管理</p>
 	                    </a>
@@ -113,15 +113,18 @@
 	                                    	<th>下载资源</th>
 	                                    </thead>
 	                                    <tbody>
-	                                        <tr>
-	                                        	<td>需求文档</td>
-	                                        	<td>docx</td>
-	                                        	<td>2017.06.24</td>
-	                                        	<td>林广艳</td>
-	                                        	<td>
-	                                        		<button class="btn btn-success" onclick="demo.showNotification('top','right')">下载</button>
-	                                        	</td>
-	                                        </tr>
+												{% for meta in file_meta %}
+												<tr>
+													<td><a href="s/resources/{{ meta.file_name }}">{{ meta.file_name }}</a></td>
+													<td>{{ meta.type }}</td>
+													<td>{{ meta.user_name }}</td>
+													<td>{{ meta.date }}</td>
+													<td>
+														<a href="s/resources/{{ meta.file_name }}">
+	                                        			<button class="btn btn-success" onclick="demo.showNotification('top','right')">下载</button></a>
+	                                        		</td>
+												</tr>
+												{% endfor %}
 	                                    </tbody>
 	                                </table>
 	                            </div>

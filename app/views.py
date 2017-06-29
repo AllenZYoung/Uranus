@@ -63,7 +63,7 @@ def login(request):
 
 def logout(request):
         auth_logout(request)
-        return render(request, 'logout.html')
+        return redirect('/user/login')
 
 
 @login_required(login_url='app:login')
@@ -94,7 +94,7 @@ def change_info(request):
                 user.tel=tel
             if email is not None:
                 user.email=email
-            if passwd is not None:
+            if passwd is not None and len(passwd) > 0:
                 user.password=passwd
                 request.user.set_password(passwd)
                 request.user.save()

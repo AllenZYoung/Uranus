@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成功</title>
+</head>
+<body>
+<div style="color: red;font-family: 等线;font-size: 20px;text-align: center;">评价成功!</div>
+{#<a href="{% url 'publisher:login' %}">立即登录</a>#}
+<div id="ShowDiv" style="color: black;font-family: 等线;font-size: 15px;text-align: center;margin-top: 20px;"></div>
+
+</body>
+<script language="javascript">
+var secs = 3; //倒计时的秒数
+alert(window.location.protocol);
+var URL = window.location.protocol + '//' + window.location.host + '/' + "{{ name_space }}" + '/' + "{{ forward_url }}" + "{{ params }}";
+{#    "{% url '{{ name_space }}': '{{ name_space }}'%}" + {{ params }};#}
+function Load(){
+    for(var i=secs;i>=0;i--)
+    {
+       window.setTimeout('doUpdate(' + i + ')', (secs-i) * 1000);
+    }
+}
+function doUpdate(num)
+{
+    document.getElementById('ShowDiv').innerHTML = "将在<span style='color: red;font-size: 20px;'>"
+            + num + "</span>秒后自动跳转到登录页面..." ;
+    if(num == 0) { window.location = URL; }
+}
+Load();
+</script>
+</html>
