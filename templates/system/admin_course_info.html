@@ -115,7 +115,14 @@
                                                 <tr>
                                                     <td>{{ course_dic.course.name }}</td>
                                                     <td>{{ course_dic.course.term.year }}</td>
-                                                    <td>{{ course_dic.course.term.semester }}</td>
+                                                    <td>
+                                                        
+                                                         {% if course_dic.course.term.semester == 'spring' %}
+                                                            春季
+                                                        {% else %}
+                                                            秋季
+                                                        {% endif %}
+                                                    </td>
                                                     <td>{{ course_dic.course.credit }}</td>
                                                     <td>{{ course_dic.course.classroom }}</td>
                                                     <td>
