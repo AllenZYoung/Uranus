@@ -129,21 +129,34 @@
 										</p>
 									</div>
 
-									<div class="tim-typo">
-										<p><span class="tim-note">下载</span>
-											 <table border="1">
-												<th>文件名</th>
-												<th>上传者</th>
-												<th>上传时间</th>
+                                    <div class="tim-typo">
+										<p><span class="tim-note">评分</span>
+											 {{ work.score }}
+										</p>
+									</div>
+
+									<div class="row">
+                                        <div class="col-md-12">
+											 <table class="table table-hover">
+												<thead>
+                                                    <th>文件名</th>
+                                                    <th>上传者</th>
+                                                    <th>上传时间</th>
+                                                    <th>下载</th>
+                                                </thead>
+                                                <tbody>
+
 												{% for meta in files %}
 												<tr>
-													<td><a href="s/student/{{ meta.file.file }}">{{ meta.file.file }}</a></td>
+													<td><a href="s/{{ meta.file.file }}">{{ meta.file.file }}</a></td>
 													<td>{{ meta.file.user.name }}</td>
 													<td>{{ meta.file.time }}</td>
+                                                    <td><a href="s/{{ meta.file.file }}"><button class="btn btn-info">下载</button></a></td>
 												</tr>
 												{% endfor %}
+                                                </tbody>
         									</table>
-										</p>
+                                            </div>
 									</div>
 									{% endif %}
 	                            </div>

@@ -163,7 +163,6 @@ demo = {
 
 	showNotification: function(from, align){
     	color = Math.floor((Math.random() * 4) + 1);
-
     	$.notify({
         	icon: "notifications",
         	message: "下载成功"
