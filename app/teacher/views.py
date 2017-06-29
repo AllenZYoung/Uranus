@@ -8,7 +8,8 @@ from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
 from django.conf import settings
 from app.templatetags import app_tags
-
+from app.utils import fileUtils
+from Uranus.settings import BASE_DIR
 
 # Create your views here.
 @login_required(login_url='app:login')
@@ -160,7 +161,13 @@ def homework(request):
 # 在线预览课程资源
 # @login_required(login_url='app:login')
 def preview_source_online(request):
-    return render(request, 'teacher/sourcePreview.html')
+    file = request.GET.get('file')
+    print('file='+file)
+    file_path = file
+    print('file_path='+file_path)
+    url = fileUtils.docPreviewUrl(file_path)
+    print(url)
+    return redirect(url)
 
 
 
@@ -231,27 +238,6 @@ def past_homeworks(request):
 
 
 
-# @login_required(login_url='app:login')
-def download(request):
-    def read_file(fn, buf_size=262144):
-        f = open(fn, 'rb')
-        while True:
-            c = f.read(buf_size)
-            if c:
-                yield c
-            else:
-                break
-        f.close()
-
-    file_name = os.path.basename(request.path)
-    parent_dir = os.path.basename(os.path.dirname(request.path))
-    file_path = os.path.join(settings.MEDIA_ROOT, 'file', parent_dir, file_name)
-    response = StreamingHttpResponse(read_file(file_path))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
-    return response
-
-
 
 # 生成个人得分表
 @login_required(login_url='app:login')
@@ -262,8 +248,8 @@ def generate_stu_score_table(request):
     stu_list = get_stu_list_in_now_course()
     #第一次计算出每个学生的得分后保存到excel表，以便老师下载
     file = get_stu_score_excel_file_abspath()
-    if not os.path.isfile(file):
-        create_stu_score_excel(file, stu_list, stu_score_dict)
+    # if not os.path.isfile(file):
+    create_stu_score_excel(file, stu_list, stu_score_dict)
     return render(request, 'teacher/stu_score_list.html',
                   {'stu_score_dict': stu_score_dict, 'stu_list': stu_list,'course':course})
 
@@ -277,8 +263,8 @@ def generate_team_score_table(request):
     team_list, score_list, team_score = compute_team_score()
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     file = get_team_score_excel_file_abspath()
-    if not os.path.isfile(file):
-        create_team_score_excel(file, team_list, score_list)
+    # if not os.path.isfile(file):
+    create_team_score_excel(file, team_list, score_list)
     num_list = range(len(team_list))
 
     return render(request, 'teacher/team_score_list.html',
@@ -386,11 +372,12 @@ def submitted_work_list(request):
 # 设置分数和评论
 @login_required(login_url='app:login')
 def add_comment_score(request):
+    work_meta_id = request.GET.get('work_meta_id')
+    course_id = request.GET.get('course_id')
+    homework_id = request.GET.get('work_id')
+    homework = get_object_or_404(Work, id=homework_id)
+    attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
     if request.method == 'GET':
-        work_meta_id = request.GET.get('work_meta_id')
-        homework_id = request.GET.get('work_id')
-        homework = get_object_or_404(Work, id=homework_id)
-        attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
         form = CommentAndScoreForm()
         # form.initial['homework_id'] = homework_id
         # form.fields['homework_id'].widget = forms.HiddenInput()
@@ -406,11 +393,14 @@ def add_comment_score(request):
         if form.is_valid():
             homework = Work.objects.filter(pk=homework_id) \
                 .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
-            return render(request, 'teacher/success.html',
-                          {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
-            # return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id)
+            # return render(request, 'teacher/success.html',
+            #               {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
+            return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id+'&course_id='+course_id)
         else:
-            return HttpResponse('fail to add comment and score!')
+            error_message = '评论失败！'
+            return render(request, 'teacher/add_comment_score.html',
+                          {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
+                           'attachments': attachments, 'error_message': error_message})
 
 
 @login_required(login_url='app:login')

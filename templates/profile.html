@@ -38,7 +38,13 @@
 
 			<div class="logo">
 				<a href="#" class="simple-text">
-					教师
+                    {% if user.role == 'student' %}
+                        学生
+                    {% elif user.role == 'teacher' %}
+                        教师
+                    {% else %}
+                        教务
+                    {% endif %}
 				</a>
 			</div>
 

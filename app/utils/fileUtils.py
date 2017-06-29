@@ -25,7 +25,7 @@ if __name__ == '__main__':
     print('PreviewOnline Links Like:')
     print(docPreviewUrl('stu.xlsx'))
     print(docPreviewUrl('file/作业1.docx'))
-    print(docPreviewUrl('file/5.ppt'))
+    print(docPreviewUrl('file/8第四章Camellia.ppt'))
     print('Download Links Like:')
     print(fileDownloadUrl('user/学生.xlsx'))
     print(fileDownloadUrl('file/作业1.docx'))

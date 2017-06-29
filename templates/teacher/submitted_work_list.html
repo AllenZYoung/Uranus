@@ -134,13 +134,14 @@
                                             {% with attachments=attachment_team_dict|key:team %}
                                                 <td>
                                                     {% for attach in attachments %}
-                                                    <a href="s/{{ attach.file.file }}">{{ attach.file.file }}</a>
+                                                    <a href="/teacher{{ attach.file.file.url }}">{{ attach.file.file.name }}</a>&nbsp;&nbsp;
+                                                        <a href="{% url 'teacher:preview_source_online' %}?file={{ attach.file.file }}" target="_blank">[预览]</a>
                                                         <br>
                                                     {% endfor %}
                                                 </td>
                                                 <td>{{ team.name }}</td>
                                                 <td>
-                                                    <a href="{% url 'teacher:add_comment_score' %}?work_id={{ work.id }}&work_meta_id={{ work_meta_id }}">
+                                                    <a href="{% url 'teacher:add_comment_score' %}?work_id={{ work.id }}&work_meta_id={{ work_meta_id }}&course_id={{ course.id }}">
                                                         <button class="btn btn-warning">评分与评价</button>
                                                     </a>
                                                 </td>
