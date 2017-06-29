@@ -23,7 +23,7 @@ def index(request):  # 也可以看做是“courseRoot函数”
 def my_course(request):
     course_id = request.GET.get('course_id', None)
     if course_id is None:
-        print('course_id=None')
+        render(request,'pages-error-404.html')
     student = request.user
     enroll = Enroll.objects.filter(user__username__contains=student).first()
     course = enroll.course
@@ -58,17 +58,17 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
                     handle_uploaded_contribution(request, f=request.FILES['file'])
                 except ObjectDoesNotExist as e:
                     error_message = "XLS obeject not exists"
-                    return HttpResponse('error')
+                    return render(request,'pages-error-404.html')
                 return render(request, 'student/student_team_manage.html', {'form': form})
             else:
                 error_message = '文件格式错误，请上传Excel文件（.xlsl)'
                 form = UploadFileForm()
-                return HttpResponse("Your submit is GG")
+                return render(request,'pages-error-404.html')
                 # return render(request, 'student/student_team_manage.html', {'form': form, 'errorMessage': error_message})
         else:
             error_message = '请添加文件'
             form = UploadFileForm()
-            return HttpResponse("Your submit is GG")
+            return render(request,'pages-error-404.html')
             # return render_to_response('student/student_team_manage.html', {'form': form, 'errorMessage': error_message})
     form = UploadFileForm()
     return render(request, 'student/student_team_manage.html', {'form': form})
@@ -159,7 +159,7 @@ def workView(request):
                                                                          'is_work': False,
                                                                          'form': form})
     else:
-        return HttpResponse('404 NOT FOUND')
+        return render(request,'pages-error-404.html')
 
 
 # pass
