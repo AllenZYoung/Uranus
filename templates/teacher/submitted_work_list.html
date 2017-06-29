@@ -134,7 +134,8 @@
                                             {% with attachments=attachment_team_dict|key:team %}
                                                 <td>
                                                     {% for attach in attachments %}
-                                                    <a href="s/{{ attach.file.file }}">{{ attach.file.file }}</a>
+                                                    <a href="/teacher{{ attach.file.file.url }}">{{ attach.file.file }}</a>
+                                                        <a href="{% url 'teacher:preview_source_online' %}?file={{ attach.file.file }}" target="_blank">预览</a>
                                                         <br>
                                                     {% endfor %}
                                                 </td>

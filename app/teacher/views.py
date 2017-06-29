@@ -8,7 +8,8 @@ from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
 from django.conf import settings
 from app.templatetags import app_tags
-
+from app.utils import fileUtils
+from Uranus.settings import BASE_DIR
 
 # Create your views here.
 @login_required(login_url='app:login')
@@ -160,7 +161,11 @@ def homework(request):
 # 在线预览课程资源
 # @login_required(login_url='app:login')
 def preview_source_online(request):
-    return render(request, 'teacher/sourcePreview.html')
+    base_dir = BASE_DIR
+    file = request.GET.get('file')
+    file_path = os.path.join(base_dir, 'uploads', 'file', file)
+    url = fileUtils.docPreviewUrl(file_path)
+    return redirect(url)
 
 
 
@@ -229,27 +234,6 @@ def past_homeworks(request):
         error_message = '当前没有往期作业数据'
     return render(request,'teacher/past_homeworks.html',{'course':course,'workmetas':workmetas,'error_message':error_message})
 
-
-
-# @login_required(login_url='app:login')
-def download(request):
-    def read_file(fn, buf_size=262144):
-        f = open(fn, 'rb')
-        while True:
-            c = f.read(buf_size)
-            if c:
-                yield c
-            else:
-                break
-        f.close()
-
-    file_name = os.path.basename(request.path)
-    parent_dir = os.path.basename(os.path.dirname(request.path))
-    file_path = os.path.join(settings.MEDIA_ROOT, 'file', parent_dir, file_name)
-    response = StreamingHttpResponse(read_file(file_path))
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
-    return response
 
 
 
@@ -386,11 +370,11 @@ def submitted_work_list(request):
 # 设置分数和评论
 @login_required(login_url='app:login')
 def add_comment_score(request):
+    work_meta_id = request.GET.get('work_meta_id')
+    homework_id = request.GET.get('work_id')
+    homework = get_object_or_404(Work, id=homework_id)
+    attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
     if request.method == 'GET':
-        work_meta_id = request.GET.get('work_meta_id')
-        homework_id = request.GET.get('work_id')
-        homework = get_object_or_404(Work, id=homework_id)
-        attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
         form = CommentAndScoreForm()
         # form.initial['homework_id'] = homework_id
         # form.fields['homework_id'].widget = forms.HiddenInput()
@@ -406,11 +390,14 @@ def add_comment_score(request):
         if form.is_valid():
             homework = Work.objects.filter(pk=homework_id) \
                 .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
-            return render(request, 'teacher/success.html',
-                          {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
-            # return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id)
+            # return render(request, 'teacher/success.html',
+            #               {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
+            return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id)
         else:
-            return HttpResponse('fail to add comment and score!')
+            error_message = '评论失败！'
+            return render(request, 'teacher/add_comment_score.html',
+                          {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
+                           'attachments': attachments, 'error_message': error_message})
 
 
 @login_required(login_url='app:login')
