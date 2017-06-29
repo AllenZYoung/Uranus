@@ -16,7 +16,8 @@ class _LOG_LEVEL():
 LOG_FILE = os.path.join(BASE_DIR, 'Uranus/Uranus.log')
 LOG_LEVEL = _LOG_LEVEL()
 
-def log(src='your_function_name', msg='message_string', level=LOG_LEVEL.INFO):
+
+def log(src='functionName_or_shortDescription', msg='message_string', level=LOG_LEVEL.INFO):
     time = datetime.datetime.now()
     out = '[%s] %s\r\n<%s>: %s' %(level, time, src, msg)
     with open(LOG_FILE, 'a+') as logger:
