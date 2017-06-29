@@ -19,7 +19,7 @@ def handle_uploaded_user(request,course_id, f=None, user_role='student'):
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
     path = os.path.join(os.path.abspath('.'),'uploads','user')
     filepath = path + '/' + filedate + '_' + f.name
-    with open(filepath, 'ab') as de:
+    with open(filepath, 'wb+') as de:
         for chunk in f.chunks():
             de.write(chunk)
     wb = load_workbook(filepath)
