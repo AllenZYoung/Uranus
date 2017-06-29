@@ -3,12 +3,10 @@
 */migrations/*
 *__pycache__*
 *.DS_Store
-uploads/file/*
+uploads/*
+Uranus/DEPRECATED
 
 templates/teacher/pastcourse_teacher.html
-
 templates/teacher/task_teacher.html
-
 templates/teacher/team_teacher.html
-
 templates/teacher/course_teacher.html
