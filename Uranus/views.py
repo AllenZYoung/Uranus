@@ -8,8 +8,7 @@ from django.shortcuts import render, redirect
 def index(request):
     return redirect('/user/login')
 
-<<<<<<< Updated upstream
-=======
+
     # str='<h1>Uranus Project</h1>'
     # str+='<br/><div>'
     # str+='<h3>安装样例数据库</h3>'
@@ -25,4 +24,4 @@ def sampleDBView(request):
    # sampleDB()
     return render(request, 'test/sampleDB.html')
 
->>>>>>> Stashed changes
+
