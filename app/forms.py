@@ -14,8 +14,8 @@ class LoginForm(forms.Form):
 class UserChangeForm(forms.Form):
     tel = forms.CharField(max_length=16, required=False, label='电话')
     email = forms.EmailField(required=False, label='邮箱')
-    passwd = forms.CharField(max_length=32, required=False, label='密码', widget=forms.PasswordInput)
-    second_passwd = forms.CharField(max_length=32, required=False, label='再次输入密码', widget=forms.PasswordInput)
+    passwd = forms.CharField(max_length=32, required=False, label='密码', widget=forms.PasswordInput(attrs={'placeholder': '不填写则不更改密码', }))
+    second_passwd = forms.CharField(max_length=32, required=False, label='再次输入密码',)
 
     def __init__(self, *args, **kwargs):
         super(UserChangeForm, self).__init__(*args, **kwargs)

@@ -26,3 +26,4 @@ urlpatterns = [
     url(r'^teacher/', include('app.teacher.urls', namespace='teacher')),
     url(r'^system/', include('app.system.urls', namespace='system')),
 ]
+handler404 = 'app.views.bad_request'
