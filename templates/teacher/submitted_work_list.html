@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load app_tags %}
     <meta charset="UTF-8">
     <title>作业基本信息</title>
     {% load static %}
@@ -123,8 +124,12 @@
                                 {% for work in works %}
                                     <tr>
                                         {% with team=work.team %}
-                                            {% with attachment=attachment_team_dict.team %}
-                                                <td><a href="{{ attachment.file.url }}">{{ attachment.file.name }}</a>
+                                            {% with attachments=attachment_team_dict|key:team %}
+                                                <td>
+                                                    {% for attach in attachments %}
+                                                    <a href="{{ attach.file.file }}">{{ attach.file.file }}</a>
+                                                        <br>
+                                                    {% endfor %}
                                                 </td>
                                                 <td>{{ team.name }}</td>
                                                 <td>
