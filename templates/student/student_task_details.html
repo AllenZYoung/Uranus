@@ -114,14 +114,17 @@
 										</p>
 									</div>
 									{% if not is_work %}
-									<div class="tim-typo">
-										<span class="tim-note">上传作业</span>
-										<form method="Post" action="" enctype="multipart/form-data" >
-											{% csrf_token %}
-            								{{ form }}
-											<button type="submit" class="btn btn-info pull-right">提交</button>
-										</form>
-                    				</div>
+									{% if member.role == 'leader' %}
+										<div class="tim-typo">
+											<span class="tim-note">上传作业</span>
+											<form method="Post" action="" enctype="multipart/form-data" >
+												{% csrf_token %}
+												{{ form }}
+												<input name='workMeta_id' type="hidden" value='{{ workMeta.id }}'/>
+												<button type="submit" class="btn btn-info pull-right">提交</button>
+											</form>
+										</div>
+									{% endif %}
 									{% else %}
 									<div class="tim-typo">
 										<p><span class="tim-note">评论</span>

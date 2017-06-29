@@ -2,7 +2,7 @@
 
 from django.contrib.auth.models import User
 from app import models
-from app.models import Work, WorkMeta,Member,Team,User
+from app.models import Work, WorkMeta,Member,Team,User, Course, Enroll, Member
 from django.shortcuts import get_object_or_404
 from .models import User,Team, TeamMeta, Member, File, Attachment
 from django.conf import settings
@@ -30,13 +30,17 @@ def auth_user(form):  # 瞎写的东西
 
 # 提交某个作业（的文件），只能是负责人提交
 def submit_homework_file(request):
-    team_id = course_id = user_id = team_id = workMeta_id = 1
+    workMeta_id = request.POST.get('workMeta_id')
+    user=get_object_or_404(User, username=request.user.username)
+    enroll = Enroll.objects.get(user=user)
+    member = get_object_or_404(Member, user=user)
+    print(member.role)
     f = request.FILES['file']
-    file = File(file=f, course_id=course_id, user_id=user_id)
+    file = File(file=f, course=enroll.course, user_id=user.id)
     file.save()
-    work = Work(team_id=team_id, workMeta_id=workMeta_id)
+    work = Work(team=member.team, workMeta_id=workMeta_id)
     work.save()
-    Attachment(file_id=file.id, work_id=work.id, workMeta_id=workMeta_id).save()
+    Attachment(file=file, work=work, workMeta_id=workMeta_id).save()
     return True
 
 

@@ -1,4 +1,4 @@
-from django.shortcuts import render,render_to_response
+from django.shortcuts import render,render_to_response, redirect
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
 from app.models import File, User, Work, WorkMeta, Attachment
@@ -84,7 +84,7 @@ def work_submit(request):  # （团队负责人）学生的作业提交页面
     return HttpResponse('Submit your group\'s homework here.')
 
 
-# @login_required(login_url='app:login')
+@login_required(login_url='app:login')
 def view_resources(request):
     files = File.objects.all()
     file_meta = []
@@ -117,29 +117,39 @@ def download(request):
 
 @login_required(login_url='app:login')
 def view_submitted_work(request):
-    team_id = 1
-    course_id = 1
-    submittings = utils.get_submittings(team_id, course_id)
+    user=get_object_or_404(User, username=request.user.username)
+    enroll = Enroll.objects.get(user=user)
+    try:
+        member = get_object_or_404(Member, user=user)
+    except:
+        return HttpResponse('No team joined')
+    submittings = utils.get_submittings(member.team.id, enroll.course.id)
     return render(request, 'student/student_task_view.html', {'submitted': submittings['submitted'], })
 
 
 @login_required(login_url='app:login')
 def view_unsubmitted_work(request):
-    team_id = 1
-    course_id = 1
-    submittings = utils.get_submittings(team_id, course_id)
+    user=get_object_or_404(User, username=request.user.username)
+    enroll = Enroll.objects.get(user=user)
+    try:
+        member = get_object_or_404(Member, user=user)
+    except:
+        return HttpResponse('No team joined')
+    submittings = utils.get_submittings(member.team.id, enroll.course.id)
     return render(request, 'student/student_task_submit.html', {'unsubmitted': submittings['unsubmitted'], })
 
 
 # added by wanggd 2017-06-28
 @login_required(login_url='app:login')
 def workView(request):
+    user = get_object_or_404(User, username=request.user.username)
+    member = get_object_or_404(Member, user=user)
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             ret = utils.submit_homework_file(request)
             if ret:
-                return HttpResponse('Sumbit successfully')
+                return redirect('/student/submits')
             else:
                 return HttpResponse('Sumbit failed')
         else:
@@ -153,13 +163,15 @@ def workView(request):
             return render(request, 'student/student_task_details.html', {'work': work,
                                                                          'workMeta': work.workMeta,
                                                                          'files': files,
-                                                                         'is_work': True})
+                                                                         'is_work': True,
+                                                                         'member': member,})
         else:
             wid = request.GET['workmeta_id']
             workMeta = WorkMeta.objects.get(id=wid)
             return render(request, 'student/student_task_details.html', {'workMeta': workMeta,
                                                                          'is_work': False,
-                                                                         'form': form})
+                                                                         'form': form,
+                                                                         'member': member,})
     else:
         return render(request,'pages-error-404.html')
 
