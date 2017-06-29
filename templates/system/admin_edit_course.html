@@ -80,7 +80,7 @@
 	 							   <p class="hidden-lg hidden-md">Profile</p>
 		 						</a>
 		 						<ul class="dropdown-menu">
-									<li><a href="#">注销登录</a></li>
+									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -98,33 +98,36 @@
 									<p class="category">修改所选课程信息</p>
 	                            </div>
                                 <form method="post" action="">
+                                    {% csrf_token %}
+                                     <input type="text" name='courseId' hidden="True" readonly="True" value="{{ courseId }}">
                                     <div class="card-content">
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <label for="">学期</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" readonly="True" class="form-control" value="{{ termInfo }}">
+                                                <span hidden="True">{{ form.term }}</span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="">课程名称</label>
-                                                <input type="text" class="form-control">
+                                                {{ form.name }}
                                             </div>
                                             <div class="col-md-1">
                                                 <label for="">学分</label>
-                                                <input type="text" class="form-control">
+                                                {{ form.credit }}
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="">上课地点</label>
-                                                <input type="text" class="form-control">
+                                                {{ form.classroom }}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="">开始时间</label>
-                                                <input type="text" class="form-control">
+                                                {{ form.startTime }}
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="">结束时间</label>
-                                                <input type="text" class="form-control">
+                                                {{ form.endTime }}
                                             </div>
                                         </div>
                                         <div class="row">

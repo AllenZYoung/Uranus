@@ -37,14 +37,14 @@
 		    -->
 
 			<div class="logo">
-				<a href="" class="simple-text">
+				<a href="/system" class="simple-text">
 					教务
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li class="active">
+	                <li  class="active">
 	                    <a href="/system/term">
 	                        <i class="material-icons">today</i>
 	                        <p>学期管理</p>
@@ -70,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="/system/term">学期管理</a>
+						<a class="navbar-brand" href="term">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -89,47 +89,49 @@
 			</nav>
 
 			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-6 col-sm-6">
-							<a href="/system/createTerm">
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="blue">
-									<i class="material-icons">today</i>
-								</div>
-								<div class="card-content">
-									<p class="category"><br></p>
-									<h3 class="title">创建学期</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<p>创建一个新的学期，以开始课程</p>
-									</div>
-								</div>
-							</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="/system/showTerm">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="green">
-										<i class="material-icons">today</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">学期信息</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看已创建学期，并维护学期信息</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="card card-plain">
+	                            <div class="card-header" data-background-color="green">
+	                                <h4 class="title">学期信息</h4>
+	                                <p class="category">查看并维护学期信息</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table table-hover">
+	                                    <thead>
+	                                    	<th>年份</th>
+	                                    	<th>学期（春／秋）</th>
+	                                    	<th>开始周次</th>
+	                                    	<th>结束周次</th>
+	                                    	<th>修改</th>
+	                                    </thead>
+	                                    <tbody>
+                                            {% for term in terms %}
+                                                <tr>
+                                                    <td>{{ term.year }}</td>
+                                                    <td>
+                                                        {% if term.semester == 'spring' %}
+                                                            春季
+                                                        {% else %}
+                                                            秋季
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ term.startWeek }}</td>
+                                                    <td>{{ term.endWeek }}</td>
+                                                    <td>
+                                                        <a class="btn btn-success" href="editTerm?id={{ term.id }}">修改</a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
 
 			<footer class="footer">
 				<div class="container-fluid">

@@ -33,6 +33,11 @@ def handle_uploaded_user(request,course_id, f=None, user_role='student'):
         user_id = table.cell(row=i,column=1).value
         #数据库已存在相同的信息，应跳过
         if isItemRepeated(user_id):
+            model_enroll = models.Enroll(
+                course = models.Course.objects.get(id=course_id),
+                user = models.User.objects.get(username=user_id)
+            )
+            model_enroll.save()
             continue
         user_sex = table.cell(row=i, column=3).value
         sex = 'male'
