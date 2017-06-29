@@ -15,7 +15,7 @@ def docPreviewUrl(path):
 
 # 文件下载url
 def fileDownloadUrl(path):
-    url = urllib.parse.quote(path)
+    url = urllib.parse.quote(paoth)
     url = URL_BASE + url
     return url
 
