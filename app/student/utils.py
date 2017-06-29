@@ -32,11 +32,7 @@ def auth_user(form):  # 瞎写的东西
 def submit_homework_file(request):
     team_id = course_id = user_id = team_id = workMeta_id = 1
     f = request.FILES['file']
-    upload_path = os.path.join(settings.MEDIA_ROOT, 'file\student', f.name)
-    with open(upload_path, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-    file = File(file=f.name, course_id=course_id, user_id=user_id)
+    file = File(file=f, course_id=course_id, user_id=user_id)
     file.save()
     work = Work(team_id=team_id, workMeta_id=workMeta_id)
     work.save()
@@ -74,7 +70,8 @@ def get_submittings(team_id, course_id):
     # 没有提交的作业
     for workMeta in WorkMeta.objects.filter(course_id=course_id):
         if workMeta.id not in submitted_id:
-            submittings['unsubmitted'].append(workMeta)
+            if check_submit_time(workMeta):
+                submittings['unsubmitted'].append(workMeta)
     return submittings
 
 def handle_uploaded_contribution(request, f=None):
@@ -103,3 +100,7 @@ def handle_uploaded_contribution(request, f=None):
         # else:
         #     return None
         setContribution(student,student_contribution)
+
+def check_submit_time(workMeta):
+    return workMeta.startTime < datetime.datetime.now(tz=pytz.utc) < workMeta.endTime
+

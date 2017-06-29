@@ -88,11 +88,10 @@ def work_submit(request):  # （团队负责人）学生的作业提交页面
 def view_resources(request):
     files = File.objects.all()
     file_meta = []
+    attachment_id = [a.file_id for a in Attachment.objects.all()]
     for file in files:
-        user = User.objects.get(id=file.user_id)
-        file_meta.append({'file_name': file.file,
-                          'user_name': user.name,
-                          'date': file.time})
+        if file.id not in attachment_id:
+            file_meta.append(file)
     return render(request, 'student/student_course_resources.html', {'file_meta': file_meta, })
 
 
@@ -109,8 +108,7 @@ def download(request):
         f.close()
 
     file_name = os.path.basename(request.path)
-    parent_dir = os.path.basename(os.path.dirname(request.path))
-    file_path = os.path.join(settings.MEDIA_ROOT, 'file', parent_dir, file_name)
+    file_path = os.path.join(settings.MEDIA_ROOT, 'file', file_name)
     response = StreamingHttpResponse(read_file(file_path))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
