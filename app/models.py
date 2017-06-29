@@ -65,7 +65,7 @@ class Course(models.Model):
     teamMeta = models.ForeignKey(TeamMeta, null=True, blank=True)    # 团队元信息
     name = models.CharField(max_length=64)
     info = models.TextField(null=True, blank=True, help_text='课程要求/其他说明')
-    syllabus = models.TextField(null=True, blank=True help_text='课程大纲')
+    syllabus = models.TextField(null=True, blank=True, help_text='课程大纲')
     classroom = models.CharField(max_length=64, null=True, blank=True, help_text='上课地点')
     credit = models.PositiveSmallIntegerField(default=0)
     STATUS = (
