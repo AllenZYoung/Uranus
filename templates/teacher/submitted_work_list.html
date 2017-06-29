@@ -123,11 +123,12 @@
 
                                 {% for work in works %}
                                     <tr>
+{#                                        <a href="https://view.officeapps.live.com/op/view.aspx?src=http%3A//uranus.kahsolt.tk/static/file/5.ppt" id="wordPath">file5.ppt</a>#}
                                         {% with team=work.team %}
                                             {% with attachments=attachment_team_dict|key:team %}
                                                 <td>
                                                     {% for attach in attachments %}
-                                                    <a href="{{ attach.file.file }}">{{ attach.file.file }}</a>
+                                                    <a href="s/{{ attach.file.file }}">{{ attach.file.file }}</a>
                                                         <br>
                                                     {% endfor %}
                                                 </td>

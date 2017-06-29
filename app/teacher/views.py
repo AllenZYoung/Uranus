@@ -162,8 +162,7 @@ def homework(request):
 # 在线预览课程资源
 # @login_required(login_url='app:login')
 def preview_source_online(request):
-    pass
-    # return render(request, 'teacher/sourcePreview.html')
+    return render(request, 'teacher/sourcePreview.html')
 
 
 
@@ -234,9 +233,25 @@ def past_homeworks(request):
 
 
 
-# 下载学生作业
-def download_stu_homework(request):
-    pass
+# @login_required(login_url='app:login')
+def download(request):
+    def read_file(fn, buf_size=262144):
+        f = open(fn, 'rb')
+        while True:
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+        f.close()
+
+    file_name = os.path.basename(request.path)
+    parent_dir = os.path.basename(os.path.dirname(request.path))
+    file_path = os.path.join(settings.MEDIA_ROOT, 'file', parent_dir, file_name)
+    response = StreamingHttpResponse(read_file(file_path))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
+    return response
 
 
 
