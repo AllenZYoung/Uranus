@@ -17,7 +17,7 @@ def isItemRepeated(user_id):
 def handle_uploaded_user(request,course_id, f=None, user_role='student'):
     datenow = datetime.datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = os.path.join(os.path.abspath('.'),'uploads','user')
+    path = '/srv/http/Uranus/uploads/user'
     filepath = path + '/' + filedate + '_' + f.name
     with open(filepath, 'wb+') as de:
         for chunk in f.chunks():
