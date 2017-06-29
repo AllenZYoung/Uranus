@@ -163,7 +163,7 @@ def homework(request):
 def preview_source_online(request):
     file = request.GET.get('file')
     print('file='+file)
-    file_path = os.path.join('uploads', file)
+    file_path = os.path.join(file)
     print('file_path='+file_path)
     url = fileUtils.docPreviewUrl(file_path)
     print(url)

@@ -7,7 +7,7 @@ URL_BASE = 'http://uranus.kahsolt.tk' + STATIC_URL
 
 # 文档在线预览url：doc/ppt/xls
 def docPreviewUrl(path):
-    url = path
+    url = URL_BASE + path
     url = urllib.parse.quote(url)
     url = URL_API + url
     return url
@@ -15,7 +15,7 @@ def docPreviewUrl(path):
 
 # 文件下载url
 def fileDownloadUrl(path):
-    url = urllib.parse.quote(paoth)
+    url = urllib.parse.quote(path)
     url = URL_BASE + url
     return url
 
