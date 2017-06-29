@@ -1,199 +1,201 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png" />
-	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png"/>
+    <link rel="icon" type="image/png" href="/static/assets/img/favicon.png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-	<title>团队管理</title>
+    <title>团队管理</title>
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
 
     <!-- Bootstrap core CSS     -->
-    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet"/>
 
     <!--  Material Dashboard CSS    -->
     <link href="/static/assets/css/material-dashboard.css" rel="stylesheet"/>
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="/static/assets/css/demo.css" rel="stylesheet" />
+    <link href="/static/assets/css/demo.css" rel="stylesheet"/>
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+          type='text/css'>
 </head>
 
 <body>
 
-	<div class="wrapper">
+<div class="wrapper">
 
-	    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
-			<!--
-		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
+        <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-		        Tip 2: you can also add an image using data-image tag
-		    -->
+            Tip 2: you can also add an image using data-image tag
+        -->
 
-			<div class="logo">
-				<a href="#" class="simple-text">
-					学生
-				</a>
-			</div>
+        <div class="logo">
+            <a href="#" class="simple-text">
+                学生
+            </a>
+        </div>
 
-	    	<div class="sidebar-wrapper">
-	            <ul class="nav">
-	                <li>
-	                    <a href={% url 'student:index' %}>
-	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href={% url 'student:workpage' %}>
-	                        <i class="material-icons">content_copy</i>
-	                        <p>作业管理</p>
-	                    </a>
-	                </li>
-	                <li class="active">
-	                    <a href={% url 'student:teampage' %}>
-	                        <i class="material-icons">face</i>
-	                        <p>团队管理</p>
-	                    </a>
-	                </li>
-	            </ul>
-	    	</div>
-	    </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li>
+                    <a href={% url 'student:index' %}>
+                        <i class="material-icons">dashboard</i>
+                        <p>课程管理</p>
+                    </a>
+                </li>
+                <li>
+                    <a href={% url 'student:workpage' %}>
+                        <i class="material-icons">content_copy</i>
+                        <p>作业管理</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href={% url 'student:teampage' %}>
+                        <i class="material-icons">face</i>
+                        <p>团队管理</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-	    <div class="main-panel">
-			<nav class="navbar navbar-transparent navbar-absolute">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="student_team.html">团队管理</a>
-					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-		 						</a>
-		 						<ul class="dropdown-menu">
-									<li><a href="#">注销登录</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
+    <div class="main-panel">
+        <nav class="navbar navbar-transparent navbar-absolute">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="student_team.html">团队管理</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">person</i>
+                                <p class="hidden-lg hidden-md">Profile</p>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'app:logout' %}">注销登录</a></li>
+                                <li><a href="{% url 'app:profile' %}">个人中心</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-6 col-sm-6">
-							<a href="student_team_build.html">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">face</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">发起团队</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>发起团队将作为团队负责人创建一个团队</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="#">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="green">
-										<i class="material-icons">face</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">加入团队</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看已有团队，选择加入团队</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href={% url 'student:member_evaluation' %}>
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">face</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">我的团队</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>管理团队成员、设置团队成员贡献度</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <a href="student_team_build.html">
+                            <div class="card card-stats">
+                                <div class="card-header" data-background-color="blue">
+                                    <i class="material-icons">face</i>
+                                </div>
+                                <div class="card-content">
+                                    <p class="category"><br></p>
+                                    <h3 class="title">发起团队</h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                        <p>发起团队将作为团队负责人创建一个团队</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <a href="#">
+                            <div class="card card-stats">
+                                <div class="card-header" data-background-color="green">
+                                    <i class="material-icons">face</i>
+                                </div>
+                                <div class="card-content">
+                                    <p class="category"><br></p>
+                                    <h3 class="title">加入团队</h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                        <p>查看已有团队，选择加入团队</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <a href={% url 'student:member_evaluation' %}>
+                            <div class="card card-stats">
+                                <div class="card-header" data-background-color="orange">
+                                    <i class="material-icons">face</i>
+                                </div>
+                                <div class="card-content">
+                                    <p class="category"><br></p>
+                                    <h3 class="title">我的团队</h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                        <p>管理团队成员、设置团队成员贡献度</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<footer class="footer">
-				<div class="container-fluid">
-					<p class="copyright pull-right">
-						URANUS@2017
-					</p>
-				</div>
-			</footer>
-		</div>
-	</div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <p class="copyright pull-right">
+                    URANUS@2017
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
 
 </body>
 
-	<!--   Core JS Files   -->
-	<script src="/static/assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
-	<script src="/static/assets/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/static/assets/js/material.min.js" type="text/javascript"></script>
+<!--   Core JS Files   -->
+<script src="/static/assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
+<script src="/static/assets/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/assets/js/material.min.js" type="text/javascript"></script>
 
-	<!--  Charts Plugin -->
-	<script src="/static/assets/js/chartist.min.js"></script>
+<!--  Charts Plugin -->
+<script src="/static/assets/js/chartist.min.js"></script>
 
-	<!--  Notifications Plugin    -->
-	<script src="/static/assets/js/bootstrap-notify.js"></script>
+<!--  Notifications Plugin    -->
+<script src="/static/assets/js/bootstrap-notify.js"></script>
 
-	<!--  Google Maps Plugin    -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
-	<!-- Material Dashboard javascript methods -->
-	<script src="/static/assets/js/material-dashboard.js"></script>
+<!-- Material Dashboard javascript methods -->
+<script src="/static/assets/js/material-dashboard.js"></script>
 
-	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-	<script src="/static/assets/js/demo.js"></script>
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="/static/assets/js/demo.js"></script>
 
-	<script type="text/javascript">
-    	$(document).ready(function(){
+<script type="text/javascript">
+    $(document).ready(function () {
 
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
 
-    	});
-	</script>
+    });
+</script>
 
 </html>
