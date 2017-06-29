@@ -10,36 +10,4 @@
 </body>
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 
-<script>
-    var readWord = function () {
-        var wordPath = $('#wordPath').attr('href');
-        if (wordPath == null || wordPath == "") {
-            return fasle;
-        }
-//文件类型判断
-        var ext = wordPath.lastIndexOf(".");
-        var substring = wordPath.substring(ext + 1).toLowerCase();
-        if (substring != "doc" && substring != "docx") {
-            alert("非法格式！请上传*.doc,*.docx的文件!");
-            return false;
-        }
-//将word转换为html代码串
-        var htmlPath = getTempFileName("html");
-        var wordApp = new ActiveXObject("WPS.Application");
-        var objWordDraft = wordApp.Documents.Open(wordPath);
-        objWordDraft.Activate();
-        objWordDraft.SaveAs(htmlPath, 10);
-        objWordDraft.Close();
-        wordApp.quit();
-        wordApp = null;
-        var htmlCode = readTxtFileVB(htmlPath);
-        //设置父窗口编辑区
-        htmlCode = replaceImageSrc(htmlCode);
-        editor.insertHtml(htmlCode);
-
-        //删除临时文件
-        deleteFile(htmlPath);
-        return true;
-    }
-</script>
 </html>

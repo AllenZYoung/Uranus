@@ -110,7 +110,7 @@ def resources(request):
     course_id = request.GET.get('course_id', None)
     if course_id is None:
         return HttpResponse('course_id=None')
-    course = Course.objects.get(id=course_id)
+    course = get_object_or_404(Course, id=course_id)
     user = request.user
     teacher = User.objects.get(username=user.username)
     files = File.objects.filter(course_id=course_id)
@@ -122,9 +122,7 @@ def resources(request):
 def create_resource(request):
     if request.method == 'GET':
         course_id = request.GET.get('course_id', None)
-        if course_id is None:
-            return HttpResponse('course_id=None')
-        course = Course.objects.get(id=course_id)
+        course=get_object_or_404(Course,id=course_id)
         user = request.user
         teacher = User.objects.get(username=user.username)
         return render(request, 'teacher/create_resource.html',
@@ -162,8 +160,7 @@ def homework(request):
 # 在线预览课程资源
 # @login_required(login_url='app:login')
 def preview_source_online(request):
-    pass
-    # return render(request, 'teacher/sourcePreview.html')
+    return render(request, 'teacher/sourcePreview.html')
 
 
 
@@ -234,15 +231,33 @@ def past_homeworks(request):
 
 
 
-# 下载学生作业
-def download_stu_homework(request):
-    pass
+# @login_required(login_url='app:login')
+def download(request):
+    def read_file(fn, buf_size=262144):
+        f = open(fn, 'rb')
+        while True:
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+        f.close()
+
+    file_name = os.path.basename(request.path)
+    parent_dir = os.path.basename(os.path.dirname(request.path))
+    file_path = os.path.join(settings.MEDIA_ROOT, 'file', parent_dir, file_name)
+    response = StreamingHttpResponse(read_file(file_path))
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)
+    return response
 
 
 
 # 生成个人得分表
 @login_required(login_url='app:login')
 def generate_stu_score_table(request):
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
     stu_score_dict = compute_stu_score()
     stu_list = get_stu_list_in_now_course()
     #第一次计算出每个学生的得分后保存到excel表，以便老师下载
@@ -250,13 +265,15 @@ def generate_stu_score_table(request):
     if not os.path.isfile(file):
         create_stu_score_excel(file, stu_list, stu_score_dict)
     return render(request, 'teacher/stu_score_list.html',
-                  {'stu_score_dict': stu_score_dict, 'stu_list': stu_list})
+                  {'stu_score_dict': stu_score_dict, 'stu_list': stu_list,'course':course})
 
 
 
 #生成小组最终成绩
 @login_required(login_url='app:login')
 def generate_team_score_table(request):
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
     team_list, score_list, team_score = compute_team_score()
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     file = get_team_score_excel_file_abspath()
@@ -265,7 +282,7 @@ def generate_team_score_table(request):
     num_list = range(len(team_list))
 
     return render(request, 'teacher/team_score_list.html',
-                  {'team_list': team_list, 'score_list': score_list, 'num_list': num_list})
+                  {'team_list': team_list, 'score_list': score_list, 'num_list': num_list,'course':course})
 
 
 #下载小组得分excel
@@ -326,7 +343,7 @@ def download_file(request,path):
     raise Http404
 
 
-
+@login_required(login_url='app:login')
 def course(request):
     user = request.user
     enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
@@ -339,6 +356,7 @@ def course(request):
     return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course})
 
 
+@login_required(login_url='app:login')
 def task(request):
     course_id=request.GET.get('course_id',None)
     course=get_object_or_404(Course,id=course_id)
@@ -350,6 +368,7 @@ def task(request):
 @login_required(login_url='app:login')
 def submitted_work_list(request):
     course_id = request.GET.get('course_id')
+    course=get_object_or_404(Course,id=course_id)
     work_meta_id = request.GET.get('work_meta_id')
     workmetas = WorkMeta.objects.filter(id=work_meta_id)
     works=[]
@@ -361,7 +380,7 @@ def submitted_work_list(request):
         if attachments:
             attachment_team_dict[work.team] = attachments
     return render(request,'teacher/submitted_work_list.html',
-                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id})
+                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id,'course':course})
 
 
 # 设置分数和评论
@@ -393,3 +412,9 @@ def add_comment_score(request):
         else:
             return HttpResponse('fail to add comment and score!')
 
+
+@login_required(login_url='app:login')
+def score_manage(request):
+    course_id = request.GET.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+    return render(request, 'teacher/score_manage.html',{'course':course})

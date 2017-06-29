@@ -23,7 +23,7 @@ def fileDownloadUrl(path):
 # Test Entry
 if __name__ == '__main__':
     print('PreviewOnline Links Like:')
-    print(docPreviewUrl('user/学生.xlsx'))
+    print(docPreviewUrl('stu.xlsx'))
     print(docPreviewUrl('file/作业1.docx'))
     print(docPreviewUrl('file/5.ppt'))
     print('Download Links Like:')

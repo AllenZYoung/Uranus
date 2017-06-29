@@ -13,12 +13,13 @@ def isItemRepeated(user_id):
         return True
     return False
 
+
 def handle_uploaded_user(request,course_id, f=None, user_role='student'):
     datenow = datetime.datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = os.path.join(os.path.abspath('.'),'uploads','user')
+    path = '/srv/http/Uranus/uploads/user'
     filepath = path + '/' + filedate + '_' + f.name
-    with open(filepath, 'ab') as de:
+    with open(filepath, 'wb+') as de:
         for chunk in f.chunks():
             de.write(chunk)
     wb = load_workbook(filepath)
@@ -33,6 +34,9 @@ def handle_uploaded_user(request,course_id, f=None, user_role='student'):
         user_id = table.cell(row=i,column=1).value
         #数据库已存在相同的信息，应跳过
         if isItemRepeated(user_id):
+            enroll = models.Enroll.objects.filter(course=course_id)
+            if(enroll):
+                continue
             model_enroll = models.Enroll(
                 course = models.Course.objects.get(id=course_id),
                 user = models.User.objects.get(username=user_id)
