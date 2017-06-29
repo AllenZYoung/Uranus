@@ -96,7 +96,7 @@ def view_resources(request):
     return render(request, 'student/student_course_resources.html', {'file_meta': file_meta, })
 
 
-# @login_required(login_url='app:login')
+@login_required(login_url='app:login')
 def download(request):
     def read_file(fn, buf_size=262144):
         f = open(fn, 'rb')
@@ -117,7 +117,7 @@ def download(request):
     return response
 
 
-# @login_required(login_url='app:login')
+@login_required(login_url='app:login')
 def view_submitted_work(request):
     team_id = 1
     course_id = 1
@@ -125,7 +125,7 @@ def view_submitted_work(request):
     return render(request, 'student/student_task_view.html', {'submitted': submittings['submitted'], })
 
 
-# @login_required(login_url='app:login')
+@login_required(login_url='app:login')
 def view_unsubmitted_work(request):
     team_id = 1
     course_id = 1
@@ -134,7 +134,7 @@ def view_unsubmitted_work(request):
 
 
 # added by wanggd 2017-06-28
-# @login_required(login_url='app:login')
+@login_required(login_url='app:login')
 def workView(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -170,11 +170,11 @@ def workView(request):
 # return render(request,'student/student_task_details.html')
 
 
-# @login_required(login_url='app:login')
-
+@login_required(login_url='app:login')
 def workRoot(request):
     return render(request, 'student/student_task.html')
 
 
+@login_required(login_url='app:login')
 def teamRoot(request):
     return render(request, 'student/student_team.html')

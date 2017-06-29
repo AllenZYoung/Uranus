@@ -102,3 +102,7 @@ def change_info(request):
             return redirect('/user/profile')
         else:
             return render(request,'change_info.html',{'form':form,'error_message':'请输入合法数据'})
+
+
+def bad_request(request):
+    return render(request,'pages-error-404.html',status=404)
