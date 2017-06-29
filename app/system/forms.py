@@ -36,10 +36,10 @@ class CourseForm(forms.Form):
 
 
 class EditTermForm(forms.ModelForm):
-    year = forms.CharField(required=True, label='学期年份', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    semester= forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','hidden':True}))
-    startWeek = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    endWeek = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    #year = forms.CharField(required=True, label='学期年份', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    #semester= forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control','hidden':True}))
+    #startWeek = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    #endWeek = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     def __init__(self, *args, **kwargs):
         super(EditTermForm, self).__init__(*args, **kwargs)
         self.fields['year'].widget.attrs['readonly'] = True
@@ -48,12 +48,26 @@ class EditTermForm(forms.ModelForm):
     class Meta:
         model = models.Term
         fields = ['year','semester','startWeek','endWeek']
+        widgets={
+            'year':forms.TextInput(attrs={'class': 'form-control'}),
+            'semester':forms.TextInput(attrs={'class': 'form-control','hidden':True}),
+            'startWeek':forms.TextInput(attrs={'class': 'form-control'}),
+            'endWeek':forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 
 class EditCourseForm(forms.ModelForm):
-    name = forms.CharField()
+    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
+    classroom = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
+    credit = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    startTime = forms.DateField(label='开始时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
+    endTime = forms.DateField(label='结束时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
+
     def __init__(self, *args, **kwargs):
         super(EditCourseForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = models.Course
-        fields = ['name','term','classroom','credit','status','startTime','endTime']
+        fields = ['name','term','classroom','credit','startTime','endTime']
+
+

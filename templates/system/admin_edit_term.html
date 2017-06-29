@@ -80,7 +80,7 @@
 	 							   <p class="hidden-lg hidden-md">Profile</p>
 		 						</a>
 		 						<ul class="dropdown-menu">
-									<li><a href="#">注销登录</a></li>
+									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -99,6 +99,7 @@
 	                            </div>
                                 <form method="post" action="/system/editTerm">
                                 {% csrf_token %}
+                                <input type="text" name='termId' hidden="True" readonly="True" value="{{ termId }}">
 	                            <div class="card-content">
 	                            	<div class="row">
 	                            		<div class="col-md-3">
