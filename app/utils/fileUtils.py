@@ -25,6 +25,7 @@ if __name__ == '__main__':
     print('PreviewOnline Links Like:')
     print(docPreviewUrl('uploads/user/学生.xlsx'))
     print(docPreviewUrl('uploads/file/作业1.docx'))
+    print(docPreviewUrl('uploads/file/5.ppt'))
     print('Download Links Like:')
     print(fileDownloadUrl('uploads/user/学生.xlsx'))
     print(fileDownloadUrl('uploads/file/作业1.docx'))
