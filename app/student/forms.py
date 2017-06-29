@@ -10,6 +10,12 @@ class ContributionForm(ModelForm):
         model = Member
         fields = ['user', 'role', 'contribution']
 
+    def __init__(self, *args, **kwargs):
+        super(ContributionForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+
 class UploadFileForm(forms.Form):
     file = forms.FileField(label='')
 
