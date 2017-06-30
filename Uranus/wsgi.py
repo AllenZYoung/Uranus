@@ -15,5 +15,6 @@ from Uranus.settings import BASE_DIR
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Uranus.settings")
 sys.path.append(BASE_DIR)
+sys.path.append('/srv/http/Uranus')
 
 application = get_wsgi_application()

@@ -46,7 +46,7 @@ def login(request):
                     return redirect(next)
                 else:
                     user=get_object_or_404(User,username=request.user.username)
-                    log(user.name + '登录成功', 'index_login', LOG_LEVEL.INFO)
+                    log(user.name or user.username + '登录成功', 'index_login', LOG_LEVEL.INFO)
                     if user.role == 'student':
                         return redirect('/student/')
                     elif user.role == 'teacher':

@@ -5,7 +5,6 @@ from app import models
 from app.models import *
 from django.shortcuts import get_object_or_404
 from django.conf import settings
-import datetime
 import pytz
 import os
 from openpyxl.reader.excel import load_workbook
@@ -104,5 +103,5 @@ def handle_uploaded_contribution(request, f=None):
         setContribution(student,student_contribution)
 
 def check_submit_time(workMeta):
-    return workMeta.startTime < datetime.datetime.now(tz=pytz.utc) < workMeta.endTime
+    return workMeta.startTime < datetime.now(tz=pytz.utc) < workMeta.endTime
 

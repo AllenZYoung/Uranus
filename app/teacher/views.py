@@ -330,7 +330,7 @@ def course(request):
     user = request.user
     enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
     course = None
-    present = datetime.datetime.now()
+    present = datetime.now()
     for enroll in enrolls:
         if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course
