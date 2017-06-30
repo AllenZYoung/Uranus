@@ -2,7 +2,7 @@
 # by kahsolt
 
 import os
-import datetime
+from datetime import datetime
 from Uranus.settings import BASE_DIR
 
 
@@ -18,7 +18,7 @@ LOG_LEVEL = _LOG_LEVEL()
 
 
 def log(msg='message_string', src='functionName_or_shortDescription', level=LOG_LEVEL.INFO):
-    time = datetime.datetime.now()
+    time = datetime.now()
     out = '[%s] %s\t<%s>: %s' %(level, time, src, msg)
     with open(LOG_FILE, 'a+') as logger:
         logger.write(out)

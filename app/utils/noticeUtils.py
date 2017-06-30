@@ -1,24 +1,24 @@
 from app.models import *
+from app.utils.logUtils import *
 
 # 关于公告牌的工具集
 # by kahsolt
 
 
 def listNotice(course):
-    course = Course(course)
-    if not course:
-        return False, '参数对象错误'
+    if not isinstance(course, Course):
+        return None
 
     notices = Notice.objects.filter(course=course).order_by('-time')
     return notices
 
 
 def addNotice(title, content, user):
-    user = User(user)
-    if not user:
-        return False, '参数对象错误'
+    if not isinstance(user, User):
+        return None
     if title == '' or title is None or content == '' or content is None:
-        return False, '标题/内容不能为空'
+        log('标题/内容不能为空', 'noticeUtils', LOG_LEVEL.ERROR)
+        return False
 
     notice = Notice()
     notice.title = title
@@ -30,7 +30,7 @@ def addNotice(title, content, user):
 
 def updateNotice(notice, **kwargs):
     if not isinstance(notice, Notice):
-        return False, '参数对象错误'
+        return None
 
     if kwargs.get('title') is not None:
         notice.title = kwargs.get('title')
@@ -43,7 +43,7 @@ def updateNotice(notice, **kwargs):
 
 def deleteNotice(notice):
     if not isinstance(notice, Notice):
-        return False, '参数对象错误'
+        return None
 
     notice.delete()
     return True

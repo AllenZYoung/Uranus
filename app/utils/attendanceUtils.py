@@ -1,5 +1,6 @@
 from app.models import *
 from datetime import datetime
+from app.utils.logUtils import *
 
 # 关于签到的工具集
 # by kahsolt
@@ -14,7 +15,7 @@ def showToday():
 
 def showTimeBetween(startTime, endTime):
     if not isinstance(startTime, datetime) or not isinstance(endTime, datetime):
-        return False, '参数对象错误'
+        return None
 
     attendences = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
     return attendences
@@ -22,9 +23,10 @@ def showTimeBetween(startTime, endTime):
 
 def addAttendance(user):
     if not isinstance(user, User):
-        return False, '参数对象错误'
+        return None
     if user.role != 'student':
-        return False, '不是学生'
+        log('不是学生', 'attendanceUtils', LOG_LEVEL.ERROR)
+        return False
 
     attendence = Attendance()
     attendence.user = user
