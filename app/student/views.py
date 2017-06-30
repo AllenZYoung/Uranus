@@ -12,7 +12,7 @@ from app.models import Course, Enroll, User
 from django.core.exceptions import ObjectDoesNotExist
 from app.utils import *
 from app.utils.authUtils import *
-
+from .utils import isXls
 # Create your views here.
 
 @login_required(login_url='app:login')
@@ -63,8 +63,9 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
                     except ObjectDoesNotExist as e:
                         error_message = "XLS obeject not exists"
                         return render(request,'pages-error-404.html')
-                    return render(request, 'student/student_team_manage.html', {'form': form})
-                else: # 文件不是xlsx
+                    # return render(request, 'student/student_team_manage.html', {'form': form})
+                    return redirect('/student/member_evaluation')
+                elif not isXls(request.FILES['file'].name): # 文件不是xlsx
                     error_message = '文件格式错误，请上传Excel文件（.xlsx)'
                     form = UploadFileForm()
                     return render(request,'pages-error-404.html')

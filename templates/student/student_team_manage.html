@@ -123,14 +123,15 @@
                             </div>
 
                             <div class="card-content table-responsive">
-                                <p>上传学生贡献表</p>
+                                <p>请上传贡献表
                                 <form method="Post" action="" enctype="multipart/form-data">
 
                                     {{ form.file }}
 
                                     {% csrf_token %}
-                                    <input type="submit" value="点我提交"/>
+                                    <input type="submit" value="点我上传"/>
                                 </form>
+                                </p>
                             </div>
                         </div>
                     </div>
