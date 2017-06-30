@@ -1,3 +1,5 @@
+import os
+
 from Uranus.settings import BASE_DIR
 from Uranus.settings import STATICFILES_DIRS
 from Uranus.settings import MEDIA_ROOT
@@ -5,12 +7,23 @@ from Uranus.settings import MEDIA_ROOT
 # 自定义根目录的工具集
 # by kahsolt
 
-RESOURCE_ROOT = BASE_DIR + 'resource'
-PHOTO_ROOT = RESOURCE_ROOT + 'photos'
-REPORT_ROOT = RESOURCE_ROOT + 'reports'
-UPLOAD_ROOT = MEDIA_ROOT
+RESOURCE_ROOT   = os.path.join(BASE_DIR, 'resource')
+PHOTO_ROOT      = os.path.join(RESOURCE_ROOT, 'photos')
+REPORT_ROOT     = os.path.join(RESOURCE_ROOT, 'reports')
+UPLOAD_ROOT     = MEDIA_ROOT    # os.path.join(RESOURCE_ROOT, 'uploads')
 
-ATTACHMENT_ROOT = UPLOAD_ROOT + 'attachment'
-IMPORT_ROOT = UPLOAD_ROOT + 'import'
-IMPORT_SKELETON_ROOT = IMPORT_ROOT + 'skeleton'
-HANDOUT_ROOT = UPLOAD_ROOT + 'handout'
+ATTACHMENT_ROOT = os.path.join(UPLOAD_ROOT, 'attachment')
+IMPORT_ROOT     = os.path.join(UPLOAD_ROOT, 'import')
+IMPORT_SKELETON_ROOT    = os.path.join(IMPORT_ROOT, 'skeleton')
+HANDOUT_ROOT    = os.path.join(UPLOAD_ROOT, 'handout')
+
+
+## Test Entry
+print(RESOURCE_ROOT)
+print(PHOTO_ROOT)
+print(REPORT_ROOT)
+print(UPLOAD_ROOT)
+print(ATTACHMENT_ROOT)
+print(IMPORT_ROOT)
+print(IMPORT_SKELETON_ROOT)
+print(HANDOUT_ROOT)

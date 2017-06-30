@@ -4,6 +4,7 @@ from app.models import *
 # 关于报表的工具集
 # by kahsolt
 
+
 def reportTeam(team):
     if not isinstance(team, Team):
         return False, '参数对象错误'

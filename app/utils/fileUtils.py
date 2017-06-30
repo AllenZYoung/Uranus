@@ -46,7 +46,7 @@ def getFileTpye(path):
 # 判断：是Excel表
 def isXls(path):
     ext = os.path.splitext(path)
-    return ext == 'xls' or ext =='xlsx'
+    return ext == 'xls' or ext == 'xlsx'
 
 
 ##
