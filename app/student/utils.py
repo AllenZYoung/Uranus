@@ -9,7 +9,7 @@ import pytz
 import os
 from openpyxl.reader.excel import load_workbook
 from app.utils import *
-
+import datetime
 
 def auth_user(form):  # 瞎写的东西
     if form.is_valid():
@@ -39,15 +39,6 @@ def submit_homework_file(request):
     work.save()
     Attachment(file=file, work=work, workMeta_id=workMeta_id).save()
     return True
-
-
-#TODO this function, some puzzled questions here
-# def set_members_evaluations(team_leader):  # 为团队成员设置贡献度（可以理解为权重）
-#     member_model = Member.objects.filter(user__username__contains=team_leader)
-#     team = Team.objects.filter(member_model.team).first()
-#     member_list = Member.objects.filter(team=team)
-#     for member in member_list:
-#         member.contribution =
 
 
 # 获得对应团队，对应课程的提交情况，包括已提交和未提交

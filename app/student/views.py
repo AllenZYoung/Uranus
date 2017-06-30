@@ -11,6 +11,7 @@ from .utils import *
 from app.models import Course, Enroll, User
 from django.core.exceptions import ObjectDoesNotExist
 from app.utils import *
+from app.utils.authUtils import *
 
 # Create your views here.
 
@@ -31,7 +32,7 @@ def my_course(request):
     return render(request, 'student/student_course_info.html', {'course': course})
 
 
-# todo 该函数很不完善
+# todo 该函数已经完善，但太过繁杂
 @login_required(login_url='app:login')
 def member_evaluation(request):  # （团队负责人）学生的团队管理，即成员评价页面
     student_id = request.user
@@ -45,9 +46,6 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
 
     if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
         form = UploadFileForm()
-        # student_id = request.user
-        # member_model = Member.objects.filter(user__username__contains=student_id).first()
-        # team = member_model.team
         member_list = Member.objects.filter(team=team)
         return render(request, ''
                                'student/student_team_manage.html',
@@ -56,19 +54,24 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
     elif request.method == 'POST' : # 设置贡献度（权重）
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print("form is VALID!")
-            if request.FILES['file'].name.split('.')[-1] == 'xlsx':
-                try:
-                    handle_uploaded_contribution(request, f=request.FILES['file'])
-                except ObjectDoesNotExist as e:
-                    error_message = "XLS obeject not exists"
+            print("form is VALID!") # 表单无效
+            if isTeamLeader(student):
+                print("Leader here!") # 是队长
+                if request.FILES['file'].name.split('.')[-1] == 'xlsx':
+                    try:
+                        handle_uploaded_contribution(request, f=request.FILES['file'])
+                    except ObjectDoesNotExist as e:
+                        error_message = "XLS obeject not exists"
+                        return render(request,'pages-error-404.html')
+                    return render(request, 'student/student_team_manage.html', {'form': form})
+                else: # 文件不是xlsx
+                    error_message = '文件格式错误，请上传Excel文件（.xlsx)'
+                    form = UploadFileForm()
                     return render(request,'pages-error-404.html')
-                return render(request, 'student/student_team_manage.html', {'form': form})
-            else:
-                error_message = '文件格式错误，请上传Excel文件（.xlsl)'
-                form = UploadFileForm()
-                return render(request,'pages-error-404.html')
-                # return render(request, 'student/student_team_manage.html', {'form': form, 'errorMessage': error_message})
+                    # return render(request, 'student/student_team_manage.html', {'form': form, 'errorMessage': error_message})
+            else: # 不是队长
+                print("Not the leader, get out here!")
+                return render(request, 'pages-error-404.html')
         else:
             error_message = '请添加文件'
             form = UploadFileForm()
