@@ -21,6 +21,7 @@ class TermForm(forms.Form):
     startWeek = forms.CharField(required=True, label='开始周次',widget=forms.TextInput(attrs={'class': 'form-control'}))
     endWeek = forms.CharField(required=True, label='结束周次',widget=forms.TextInput(attrs={'class': 'form-control'}))
 
+    
 
 
 class CourseForm(forms.Form):
