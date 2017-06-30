@@ -8,9 +8,7 @@ from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
 from django.conf import settings
 from app.templatetags import app_tags
-from app.utils import fileUtils
-from app.utils.logUtils import *
-from Uranus.settings import BASE_DIR
+from app.utils import *
 
 
 # Create your views here.
@@ -176,7 +174,7 @@ def delete_file(request):
     course_id=request.GET.get('course_id',None)
     course=get_object_or_404(Course,id=course_id)
     file=get_object_or_404(File,id=file_id)
-    location=os.path.join(settings.MEDIA_ROOT,file.file.path)
+    location=os.path.join(UPLOAD_ROOT,file.file.path)
     if os.path.isfile(location):
         os.remove(location)
     file.delete()
@@ -318,7 +316,7 @@ def work_detail(request):
 #下载上传的资源
 @login_required(login_url='app:login')
 def download_file(request,path):
-    file_path=os.path.join(settings.MEDIA_ROOT,path)
+    file_path=os.path.join(UPLOAD_ROOT, path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")

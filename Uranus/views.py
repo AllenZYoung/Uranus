@@ -1,10 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from utils.logUtils import *
+from app.utils.logUtils import *
+
 
 def index(request):
     return redirect('/user/login')
+
 
 def log(request):
     logs = []
