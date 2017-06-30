@@ -3639,7 +3639,7 @@ footer .btn {
 .card .card-footer .stats {
   line-height: 22px;
   color: #999999;
-  font-size: 12px;
+  font-size: 16px;
 }
 .card .card-footer .stats .material-icons {
   position: relative;
@@ -3711,7 +3711,11 @@ footer .btn {
 .card [data-background-color] a {
   color: #FFFFFF;
 }
-
+.card-stats:hover{
+  transform: scale(1.05,1.05);
+  transition: all ease 0.3s;
+  box-shadow: 7px 7px 5px #BDBDBD;
+}
 .card-stats .title {
   margin: 0;
 }
@@ -4597,6 +4601,14 @@ footer .btn {
   }
 
   .navbar-nav > li.open > .dropdown-menu,
+  .dropdown.open .dropdown-menu,
+  .dropdown-menu.bootstrap-datetimepicker-widget.open {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    visibility: visible;
+    margin-top: 0px;
+  }
+  .navbar-nav > li:hover > .dropdown-menu,
   .dropdown.open .dropdown-menu,
   .dropdown-menu.bootstrap-datetimepicker-widget.open {
     opacity: 1;
