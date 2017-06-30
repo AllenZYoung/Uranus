@@ -9,8 +9,7 @@ import pytz
 import os
 from openpyxl.reader.excel import load_workbook
 from app.utils import *
-import datetime
-
+from datetime import datetime # 请直接使用datetime()函数
 def auth_user(form):  # 瞎写的东西
     if form.is_valid():
         data = form.cleaned_data
@@ -50,7 +49,7 @@ def get_submittings(team_id, course_id):
     for work in Work.objects.filter(team_id=team_id):
         if work.workMeta_id not in last_submit:
             last_submit[work.workMeta_id] = {'work': work,
-                                             'time': datetime.datetime(2017, 1, 1, tzinfo=pytz.utc)}
+                                             'time': datetime(2017, 1, 1, tzinfo=pytz.utc)}
         if work.time > last_submit[work.workMeta_id]['time']:
             last_submit[work.workMeta_id]['time'] = work.time
             last_submit[work.workMeta_id]['work'] = work
@@ -67,15 +66,28 @@ def get_submittings(team_id, course_id):
     return submittings
 
 def handle_uploaded_contribution(request, f=None):
-    datenow = datetime.datetime.now()
+    # datenow = datetime.datetime.now()
+    # filedate = datenow.strftime('%Y%m%d-%H%M%S')
+    # path = IMPORT_ROOT
+    # filepath = path + '/' + filedate + '_' + f.name
+    # with open(filepath, 'ab') as de:
+    #     for chunk in f.chunks():
+    #         de.write(chunk)
+    # wb = load_workbook(filepath)
+    # log(filepath)
+    # table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+    datenow = datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = IMPORT_ROOT
-    filepath = path + '/' + filedate + '_' + f.name
-    with open(filepath, 'ab') as de:
+    path = os.path.join(BASE_DIR, 'resource', 'uploads', 'import')
+    log(path, 'handle_uploaded_user')
+    filepath = os.path.join(path, filedate + '_' + f.name)
+    log(filepath, 'handle_uploaded_user')
+    with open(filepath, 'wb+') as de:
         for chunk in f.chunks():
             de.write(chunk)
+    # 导入exel
     wb = load_workbook(filepath)
-    log(filepath)
+    log('导入exel', 'handle_uploaded_user')
     table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
     for i in range(2, table.max_row + 1):
         if table.cell(row=i, column=1).value is None:
