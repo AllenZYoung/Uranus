@@ -164,7 +164,7 @@ def preview_source_online(request):
     file = request.GET.get('file')
     log('file_path='+file)
     url = fileUtils.docPreviewUrl(file)
-    log('preview_source_online', url)
+    log(url, 'preview_source_online')
     return redirect(url)
 
 
