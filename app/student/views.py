@@ -5,12 +5,12 @@ from app.models import File, User, Work, WorkMeta, Attachment
 from django.conf import settings
 import os
 from .forms import ContributionForm, UploadFileForm
-from .models import Member, User, Team
 from django.shortcuts import get_object_or_404
 from . import utils
 from .utils import *
-from .models import Course, Enroll, User
-from  django.core.exceptions import ObjectDoesNotExist
+from app.models import Course, Enroll, User
+from django.core.exceptions import ObjectDoesNotExist
+from app.utils import *
 
 # Create your views here.
 
@@ -108,7 +108,8 @@ def download(request):
         f.close()
 
     file_name = os.path.basename(request.path)
-    file_path = os.path.join(settings.MEDIA_ROOT, 'file', file_name)
+    file_path = os.path.join(ATTACHMENT_ROOT, '/', file_name)
+    log('Downloading '+file_path, 'student_download')
     response = StreamingHttpResponse(read_file(file_path))
     response['Content-Type'] = 'application/octet-stream'
     response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file_name)

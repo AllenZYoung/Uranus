@@ -6,6 +6,7 @@ import os
 from app import models
 from django.contrib.auth.models import User
 from openpyxl.reader.excel import load_workbook
+from app.utils import *
 
 def isItemRepeated(user_id):
     all_user = models.User.objects.filter(username=user_id)
@@ -17,13 +18,13 @@ def isItemRepeated(user_id):
 def handle_uploaded_user(request,course_id, f=None, user_role='student'):
     datenow = datetime.datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = '/srv/http/Uranus/uploads/user'
+    path = IMPORT_ROOT
     filepath = path + '/' + filedate + '_' + f.name
     with open(filepath, 'wb+') as de:
         for chunk in f.chunks():
             de.write(chunk)
     wb = load_workbook(filepath)
-    print(filepath)
+    log(filepath, 'handle_uploaded_user')
     table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
     for i in range(2, table.max_row + 1):
         if table.cell(row=i, column=1).value is None:

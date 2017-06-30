@@ -1,9 +1,13 @@
 from app.models import *
+from app.utils.logUtils import *
+
+# 关于报表的工具集
+# by kahsolt
 
 
 def reportTeam(team):
     if not isinstance(team, Team):
-        return False, '参数对象错误'
+        return None
 
     t = {
         'id': team.serialNum,
@@ -22,7 +26,7 @@ def reportTeam(team):
 
 def reportTeams(course):
     if not isinstance(course, Course):
-        return False, '参数对象错误'
+        return None
 
     ts = []
     teams = Team.objects.filter(course=course)
@@ -34,7 +38,7 @@ def reportTeams(course):
 
 def reportWork(workMeta):
     if not isinstance(workMeta, WorkMeta):
-        return False, '参数对象错误'
+        return None
 
     # TODO: 需要哪些信息？
     pass
@@ -42,7 +46,7 @@ def reportWork(workMeta):
 
 def reportWorks(course):
     if not isinstance(course, Course):
-        return False, '参数对象错误'
+        return None
 
     ws = []
     workMetas = WorkMeta.objects.filter(course=course)
@@ -53,18 +57,19 @@ def reportWorks(course):
 
 def reportGrade(user):
     if not isinstance(user, User):
-        return False, '参数对象错误'
+        return None
     if user.role != 'student':
-        return False, '不是学生'
+        log('不是学生', 'reportUtils', LOG_LEVEL.ERROR)
+        return False
 
     pass
 
 
 def reportGradeTeam(team):
     if not isinstance(team, Team):
-        return False, '参数对象错误'
+        return None
 
 
 def reportGradeTeams(course):
     if not isinstance(course, Course):
-        return False, '参数对象错误'
+        return None

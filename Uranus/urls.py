@@ -25,5 +25,7 @@ urlpatterns = [
     url(r'^student/', include('app.student.urls', namespace='student')),
     url(r'^teacher/', include('app.teacher.urls', namespace='teacher')),
     url(r'^system/', include('app.system.urls', namespace='system')),
+    url(r'^log/', views.log),
+    url(r'^test/', views.test),
 ]
 handler404 = 'app.views.bad_request'

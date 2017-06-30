@@ -155,7 +155,7 @@ class Work(models.Model):
 class File(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='上传者')
-    file = models.FileField(upload_to='file', help_text='文件实体，保存时为绝对路径(未重命名)')
+    file = models.FileField(upload_to='handout', help_text='文件实体，保存时为绝对路径(未重命名)')
     TYPE = (
         ('text', '文本'),
         ('document', '文档'),

@@ -81,7 +81,7 @@ def run(_id):
     capInput.release()
     cv2.destroyAllWindows()
 
-    base_image = os.path.join(settings.MEDIA_ROOT, 'photo', str(_id)+'.jpg')
+    base_image = os.path.join(settings.MEDIA_ROOT, 'photos', str(_id)+'.jpg')
     print(check(base_image, filename))
 
 def collect():

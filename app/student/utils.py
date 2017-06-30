@@ -2,16 +2,13 @@
 
 from django.contrib.auth.models import User
 from app import models
-from app.models import Work, WorkMeta,Member,Team,User, Course, Enroll, Member
+from app.models import *
 from django.shortcuts import get_object_or_404
-from .models import User,Team, TeamMeta, Member, File, Attachment
 from django.conf import settings
-import datetime
 import pytz
 import os
 from openpyxl.reader.excel import load_workbook
-from ..utils.teamUtils import setContribution, isTeamLeader
-
+from app.utils import *
 
 
 def auth_user(form):  # 瞎写的东西
@@ -81,13 +78,13 @@ def get_submittings(team_id, course_id):
 def handle_uploaded_contribution(request, f=None):
     datenow = datetime.datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = os.path.join(os.path.abspath('.'),'uploads','user')
+    path = IMPORT_ROOT
     filepath = path + '/' + filedate + '_' + f.name
     with open(filepath, 'ab') as de:
         for chunk in f.chunks():
             de.write(chunk)
     wb = load_workbook(filepath)
-    print(filepath)
+    log(filepath)
     table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
     for i in range(2, table.max_row + 1):
         if table.cell(row=i, column=1).value is None:
@@ -106,5 +103,5 @@ def handle_uploaded_contribution(request, f=None):
         setContribution(student,student_contribution)
 
 def check_submit_time(workMeta):
-    return workMeta.startTime < datetime.datetime.now(tz=pytz.utc) < workMeta.endTime
+    return workMeta.startTime < datetime.now(tz=pytz.utc) < workMeta.endTime
 

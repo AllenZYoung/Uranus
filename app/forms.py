@@ -22,4 +22,3 @@ class UserChangeForm(forms.Form):
         for field_name, field in self.fields.items():
             if field_name is not 'attachment':
                 field.widget.attrs['class'] = 'form-control'
-
