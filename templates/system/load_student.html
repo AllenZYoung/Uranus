@@ -144,7 +144,7 @@
                                                                     <input name="courseId" type="hidden"  value='{{ course_dic.course.id }}' >
                                                                     {% csrf_token %}
                                                                     {{ form.filefield }}
-                                                            <button class="btn btn-inverse" disabled="disabled">不可操作</button>
+                                                                    <button class="btn btn-danger">重新导入</button>
                                                                </form>
                                                             {% else %}
                                                                <form method="Post" action="/system/uploadStudents" enctype="multipart/form-data" >
