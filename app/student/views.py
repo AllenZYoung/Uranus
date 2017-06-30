@@ -108,7 +108,7 @@ def download(request):
         f.close()
 
     file_name = os.path.basename(request.path)
-    file_path = os.path.join(ATTACHMENT_ROOT, file_name)
+    file_path = os.path.join(ATTACHMENT_ROOT, '/', file_name)
     log('Downloading '+file_path, 'student_download')
     response = StreamingHttpResponse(read_file(file_path))
     response['Content-Type'] = 'application/octet-stream'
