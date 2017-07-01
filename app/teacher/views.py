@@ -410,3 +410,21 @@ def team_manage(request):
     course_id = request.GET.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
     return render(request,'teacher/teacher_team_manage.html',{'course':course})
+
+@login_required(login_url='app:login')
+def teams(request):
+    course_id=request.GET.get('course_id',None)
+    course=get_object_or_404(Course,id=course_id)
+    teams=Team.objects.filter(course_id=course.id)
+    unteamed_students=query_unteamed_students(course_id)
+    return render(request,'teacher/teams.html',{'course':course,'unteamed_students':unteamed_students,'teams':teams})
+
+
+@login_required(login_url='app:login')
+def team_members(request):
+    return render(request,'teacher/team_memebers.html')
+
+
+@login_required(login_url='app:login')
+def adjust_team(request):
+    return render(request,'teacher/adjust_team.html')

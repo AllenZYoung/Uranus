@@ -2,6 +2,7 @@ from django.db.models import Max
 from app.models import *
 from app.utils.logUtils import *
 
+
 # 关于团队管理的工具集
 # by kahsolt
 
