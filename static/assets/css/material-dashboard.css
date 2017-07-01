@@ -1581,7 +1581,10 @@ output {
   font-size: 14px;
   line-height: 1.42857;
 }
-
+input[type="text"].form-control{
+  padding: 7px 0 0 50px;
+  font-size: 1.5em;
+}
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   input[type="date"].form-control,
   input[type="time"].form-control,
