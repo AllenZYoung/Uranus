@@ -145,7 +145,7 @@ def create_resource(request):
                           {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         else:
             handle_uploaded_file(request, course_id, file)
-            return redirect('/teacher/resources?course_id=' + str(course_id()))
+            return redirect('/teacher/resources?course_id=' + str(course_id))
 
 
 @login_required(login_url='app:login')
