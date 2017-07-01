@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="../../static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>学期管理</title>
+	<title>课程管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -29,7 +29,7 @@
 
 	<div class="wrapper">
 
-	    <div class="sidebar" data-color="blue" data-image="../../static/assets/img/sidebar-1.jpg">
+	    <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
 			<!--
 		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -37,20 +37,20 @@
 		    -->
 
 			<div class="logo">
-				<a href="/system" class="simple-text">
+				<a href="#" class="simple-text">
 					教务
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li  class="active">
+	                <li>
 	                    <a href="/system/term">
 	                        <i class="material-icons">today</i>
 	                        <p>学期管理</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href="/system/course">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
@@ -70,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="term">返回</a>
+						<a class="navbar-brand" href="/system/course">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -80,7 +80,7 @@
 	 							   <p class="hidden-lg hidden-md">Profile</p>
 		 						</a>
 		 						<ul class="dropdown-menu">
-									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
+									<li><a href="#">注销登录</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -93,35 +93,41 @@
 	                <div class="row">
 	                    <div class="col-md-12">
 	                        <div class="card card-plain">
-	                            <div class="card-header" data-background-color="green">
-	                                <h4 class="title">学期信息</h4>
-	                                <p class="category">查看并维护学期信息</p>
+	                            <div class="card-header" data-background-color="red">
+	                                <h4 class="title">学生信息</h4>
+	                                <p class="category">查看并维护学生信息</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
+                                     <div>
+                                        {% if isReloadable %}
+                                            <form method="Post" action="/system/uploadStudents" enctype="multipart/form-data" >
+                                                <input name="courseId" type="hidden"  value='{{ courseId }}' >
+                                                {% csrf_token %}
+                                                {{ form.filefield }}
+                                                <button class="btn btn-danger">重新导入</button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
 	                                <table class="table table-hover">
 	                                    <thead>
-	                                    	<th>年份</th>
-	                                    	<th>学期（春／秋）</th>
-	                                    	<th>开始周次</th>
-	                                    	<th>结束周次</th>
-	                                    	<th>操作</th>
+	                                        <th>学生学号</th>
+	                                    	<th>姓名</th>
+	                                    	<th>性别</th>
+	                                    	<th>班号</th>
 	                                    </thead>
 	                                    <tbody>
-                                            {% for term in terms %}
+	                                        {% for student in enrolls %}
                                                 <tr>
-                                                    <td>{{ term.year }}</td>
+                                                    <td>{{ student.username }}</td>
+                                                    <td>{{ student.name }}</td>
                                                     <td>
-                                                        {% if term.semester == 'spring' %}
-                                                            春季
+                                                        {% if student.gender == 'male' %}
+                                                            男
                                                         {% else %}
-                                                            秋季
+                                                            女
                                                         {% endif %}
                                                     </td>
-                                                    <td>{{ term.startWeek }}</td>
-                                                    <td>{{ term.endWeek }}</td>
-                                                    <td>
-                                                        <a class="btn btn-success" href="editTerm?id={{ term.id }}">修改</a>
-                                                    </td>
+                                                    <td>{{ student.classID }}</td>
                                                 </tr>
                                             {% endfor %}
 	                                    </tbody>

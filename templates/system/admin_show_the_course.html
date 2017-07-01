@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="../../static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>学期管理</title>
+	<title>课程管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -44,13 +44,13 @@
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li  class="active">
+	                <li>
 	                    <a href="/system/term">
 	                        <i class="material-icons">today</i>
 	                        <p>学期管理</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href="/system/course">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
@@ -70,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="term">返回</a>
+						<a class="navbar-brand" href="/system/showCourse">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -89,49 +89,59 @@
 			</nav>
 
 			<div class="content">
-	            <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-md-12">
-	                        <div class="card card-plain">
-	                            <div class="card-header" data-background-color="green">
-	                                <h4 class="title">学期信息</h4>
-	                                <p class="category">查看并维护学期信息</p>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card" data-color="blue">
+								<div class="card-header" data-background-color="green">
+	                                <h4 class="title">修改课程信息</h4>
+									<p class="category">修改所选课程信息</p>
 	                            </div>
-	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
-	                                    <thead>
-	                                    	<th>年份</th>
-	                                    	<th>学期（春／秋）</th>
-	                                    	<th>开始周次</th>
-	                                    	<th>结束周次</th>
-	                                    	<th>操作</th>
-	                                    </thead>
-	                                    <tbody>
-                                            {% for term in terms %}
-                                                <tr>
-                                                    <td>{{ term.year }}</td>
-                                                    <td>
-                                                        {% if term.semester == 'spring' %}
-                                                            春季
-                                                        {% else %}
-                                                            秋季
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>{{ term.startWeek }}</td>
-                                                    <td>{{ term.endWeek }}</td>
-                                                    <td>
-                                                        <a class="btn btn-success" href="editTerm?id={{ term.id }}">修改</a>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-	                                    </tbody>
-	                                </table>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                     <input type="text" name='courseId' hidden="True" readonly="True" value="{{ courseId }}">
+                                    <div class="card-content">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="">学期</label>
+                                                <input type="text" readonly="True" class="form-control" value="{{ termInfo }}">
+                                                <span hidden="True">{{ form.term }}</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="">课程名称</label>
+                                                {{ form.name }}
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="">学分</label>
+                                                {{ form.credit }}
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="">上课地点</label>
+                                                {{ form.classroom }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="">开始时间</label>
+                                                {{ form.startTime }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="">结束时间</label>
+                                                {{ form.endTime }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6" >
+                                                <button class="btn btn-success pull-right" >提交修改</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<footer class="footer">
 				<div class="container-fluid">
@@ -173,5 +183,4 @@
 
     	});
 	</script>
-
 </html>

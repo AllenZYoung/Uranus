@@ -97,7 +97,7 @@
 	                                <h4 class="title">学期信息</h4>
 									<p class="category">查看或修改学期信息</p>
 	                            </div>
-                                <form method="post" action="/system/editTerm">
+                                <form method="post" action="/system/editTerm" onsubmit="return weekCheck()">
                                 {% csrf_token %}
                                 <input type="text" name='termId' hidden="True" readonly="True" value="{{ termId }}">
 	                            <div class="card-content">
@@ -117,16 +117,16 @@
 	                            		</div>
 	                            		<div class="col-md-3">
 	                            			<label for="">开始周次</label>
-	                            			{{ form.startWeek }}
+                                            <span onkeyup="weekCheck()" >{{ form.startWeek }}</span>
 	                            		</div>
 	                            		<div class="col-md-3">
 	                            			<label for="">结束周次</label>
-	                            			{{ form.endWeek }}
+	                            			<span onkeyup="weekCheck()">{{ form.endWeek }}</span>
 	                            		</div>
 	                            	</div>
 	                            	<div class="row" align="center">
 	                            		<div class="col-md-6" align="center">
-	                            			<button class="btn btn-success pull-right">修改学期信息</button>
+	                            			<button class="btn btn-success pull-right" >修改学期信息</button>
 	                            		</div>
 	                            	</div>
 	                            </div>
@@ -170,11 +170,19 @@
 	<script src="../../static/assets/js/demo.js"></script>
 
 	<script type="text/javascript">
+        function weekCheck() {
+            var start = document.getElementById('id_startWeek').value;
+            var end = document.getElementById('id_endWeek').value;
+            if ( start > end) {
+                alert("结束周次应大于开始周次")
+                return false
+            }
+            return true
+        }
     	$(document).ready(function(){
 
 			// Javascript method's body can be found in assets/js/demos.js
         	demo.initDashboardPageCharts();
-
     	});
 	</script>
 
