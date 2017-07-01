@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>团队申请批准</title>
+</head>
+<body>
+    <label>团队编号:{{ team.serialNum }}</label><br/>
+    <label>团队名称:{{ team.name }}</label><br/>
+    <p>{{ error_message }}</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.status }}
+
+        {{ form.info }}
+        <input type="hidden" name="team_id" value="{{ team.id }}">
+        <input type="submit" value="确定">
+    </form>
+</body>
+</html>
