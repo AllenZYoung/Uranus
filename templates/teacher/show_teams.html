@@ -148,6 +148,8 @@
                                 {% endfor %}
                             </table>
                         </div>
+
+                        <p>{{ error_message }}</p>
                         <div class="card-content table-responsive">
                             <label>未组队的学生如下</label><br/>
 
@@ -159,13 +161,23 @@
                                     <th>性别</th>
                                     <th>调整</th>
                                 </tr>
-
                                 {% for student in unteamed_students %}
                                     <tr>
                                         <td>{{ student.username }}</td>
-                                        <td>{{ studnet.name }}</td>
-                                        <td>{{ student.get_male_display }}</td>
-                                        <td></td>
+                                        <td>{{ student.name }}</td>
+                                        <td>{{ student.get_gender_display }}</td>
+                                        <td>
+                                            <form action="{% url 'teacher:adjust_team' %}" method="post">
+                                                {% csrf_token %}
+                                                    <select name="serial_num{{ student.username }}" title="调整至队伍">
+                                                        {% for team in teams %}
+                                                            <option value="{{ team.serialNum }}">{{ team.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                <input type="hidden" name="student_id" value="{{ student.id }}">
+                                                <input type="submit"  value="调整至该队伍">
+                                            </form>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </table>

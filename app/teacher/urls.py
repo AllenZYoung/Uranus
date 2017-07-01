@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^score_manage/',views.score_manage,name='score_manage'),
     url(r'^team_manage/', views.team_manage, name='team_manage'),
     url(r'^teams/',views.teams,name='teams'),
-    url(r'^team_memebers/',views.team_members,name='team_members'),
+    url(r'^team_members/',views.team_members,name='team_members'),
     url(r'^adjust_team/',views.adjust_team,name='adjust_team'),
+    url(r'^dismiss_member/',views.dismiss_member,name='dismiss_member'),
+
 ]
