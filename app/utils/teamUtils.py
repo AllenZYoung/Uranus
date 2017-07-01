@@ -60,7 +60,7 @@ def joinTeam(user, team):
     member = Member()
     member.user = user
     member.team = team
-    member.role = 'member'
+    member.role = 'newMoe'
     member.save()
     return member
 
@@ -134,6 +134,28 @@ def submitTeam(team):
     team.status = 'auditing'
     team.save()
     return team
+
+
+# 审核队员：通过
+def auditMemberPassed(user):
+    if not isinstance(user, User):
+        return None
+    member = Member.objects.filter(user=user).first()
+    if not member:
+        log('未加入任何团队', 'teamutils', LOG_LEVEL.ERROR)
+        return False
+    if not member.role == 'newMoe':
+        log('不是新人', 'teamutils', LOG_LEVEL.ERROR)
+        return False
+
+    member.role = 'member'
+    member.save()
+    return member
+
+
+# 审核队员：拒绝
+def auditMemberRejected(user):
+    return leaveTeam(user)
 
 
 # 审核团队：通过

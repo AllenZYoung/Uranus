@@ -117,8 +117,9 @@ class Member(models.Model):
     ROLE = (
         ('leader', '队长'),
         ('member', '队员'),
+        ('newMoe', '待审核新人')
     )
-    role = models.CharField(max_length=16, choices=ROLE, default='member')
+    role = models.CharField(max_length=16, choices=ROLE, default='newMoe')
     contribution = models.FloatField(help_text='成员贡献度:0.4~1.2', null=True, blank=True)
 
     def __str__(self):

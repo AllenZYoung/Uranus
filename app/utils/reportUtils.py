@@ -6,6 +6,7 @@ from app.utils.logUtils import *
 # by kahsolt
 
 
+# 数据整理: {单个团队信息的字典}
 def reportTeam(team):
     if not isinstance(team, Team):
         return None
@@ -25,27 +26,30 @@ def reportTeam(team):
     return t
 
 
+# 数据整理: [所有团队信息字典的列表]
 def reportTeams(course):
     if not isinstance(course, Course):
         return None
 
     ts = []
-    teams = Team.objects.filter(course=course)
+    teams = Team.objects.filter(course=course).order_by('serialNum')
     for team in teams:
         t = reportTeam(team)
         ts.append(t)
     return ts
 
 
-def reportWork(workMeta):
-    if not isinstance(workMeta, WorkMeta):
+# 数据整理: {单个团队成绩的字典}
+def reportGradeTeam(team):
+    if not isinstance(team, Team):
         return None
 
-    # TODO: 需要哪些信息？
-    pass
+    for wm in WorkMeta.objects.filter(course=team.course).order_by('startTime'):
+        pass
 
 
-def reportWorks(course):
+# 数据整理: [所有团队成绩的列表]
+def reportGradeTeams(course):
     if not isinstance(course, Course):
         return None
 
@@ -56,7 +60,8 @@ def reportWorks(course):
     pass
 
 
-def reportGrade(user):
+# 数据整理: {单个学生成绩的字典}
+def reportGradeStudent(user):
     if not isinstance(user, User):
         return None
     if user.role != 'student':
@@ -65,12 +70,10 @@ def reportGrade(user):
 
     pass
 
-
-def reportGradeTeam(team):
-    if not isinstance(team, Team):
-        return None
-
-
-def reportGradeTeams(course):
+# 所有学生成绩的列表
+def reportGradeStudents(course):
     if not isinstance(course, Course):
         return None
+
+
+    pass

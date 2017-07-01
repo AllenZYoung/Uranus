@@ -84,3 +84,23 @@ def isEnrolledIn(user, course):
         return False
 
     return Enroll.objects.filter(user=user, course=course).count() > 0
+
+
+# 判断: 某个团队通过了老师审核
+def isTeamAudited(team):
+    if not isinstance(team, Team):
+        return None
+
+    return team.status == 'passed'
+
+
+# 判断: 所有队员通过了团长审核
+def isMembersAudited(team):
+    if not isinstance(team, Team):
+        return None
+
+    members = Member.objects.filter(team=team)
+    for m in members:
+        if m.role == 'newMoe':
+            return False
+    return True
