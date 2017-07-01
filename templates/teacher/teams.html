@@ -41,7 +41,11 @@
                 <td>{{ student.username }}</td>
                 <td>{{ studnet.name }}</td>
                 <td>{{ student.get_male_display }}</td>
-                <td></td>
+                <td>
+                    <a href="{% url 'teacher:adjust_team' %}?student_id={{ student.id }}">
+                        <button>微调</button>
+                    </a>
+                </td>
             </tr>
         {% endfor %}
     </table>
