@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from app.forms import *
 from app.models import *
-
+from app.utils import *
 
 # 在需要鉴别用户身份的地方，调用request.user.is_authenticated()判断即可
 # 需要用户登录才能访问的页面，请添加header @login_required(login_url='app:login'),参见test
@@ -46,6 +46,7 @@ def login(request):
                     return redirect(next)
                 else:
                     user=get_object_or_404(User,username=request.user.username)
+                    log(user.name or user.username + '登录成功', 'index_login', LOG_LEVEL.INFO)
                     if user.role == 'student':
                         return redirect('/student/')
                     elif user.role == 'teacher':
@@ -62,8 +63,8 @@ def login(request):
 
 
 def logout(request):
-        auth_logout(request)
-        return redirect('/user/login')
+    auth_logout(request)
+    return redirect('/user/login')
 
 
 @login_required(login_url='app:login')

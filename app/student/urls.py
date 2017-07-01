@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
 from . import views
+from attendance.views import attendance
 
 app_name = 'student'
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     url(r'^work', views.workView, name='work'),  # 查看作业详情
     url(r'^teampage$',views.teamRoot, name='teampage') ,# 团队主页，其下有多个功能
     url(r'^mycourse$',views.my_course,name='my_course'),
+    url(r'^attendance', attendance),  # 签到
 ]

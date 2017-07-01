@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404
 from app.teacher.entities import *
 from django.conf import settings
 from app.templatetags import app_tags
-from app.utils import fileUtils
-from Uranus.settings import BASE_DIR
+from app.utils import *
+
 
 # Create your views here.
 @login_required(login_url='app:login')
@@ -21,6 +21,7 @@ def index(request):
     for enroll in enrolls:
         if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course
+            request.session['course_id'] = course.id
     teacher = User.objects.get(username=user.username)
     return render(request, 'teacher/index.html', {'teacher': teacher, 'course': course})
 
@@ -28,21 +29,21 @@ def index(request):
 @login_required(login_url='app:login')
 def create_homework(request):
     if request.method == 'GET':
-        course_id = request.GET.get('course_id', None)
+        course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         form = HomeworkForm()
         return render(request, 'teacher/create_homework.html', {'form': form, 'course': course})
     else:
-        course_id = request.POST.get('course_id', None)
+        course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         form = HomeworkForm(request.POST)
         if form.is_valid():
             try:
-                file=request.FILES['attachment']
+                file = request.FILES['attachment']
             except:
-                file=None
-            add_homework(form, course_id, request.user.username,file)
-            return HttpResponseRedirect('/teacher/homework?course_id='+course_id)
+                file = None
+            add_homework(form, course_id, request.user.username, file)
+            return HttpResponseRedirect('/teacher/homework?course_id=' + course_id)
         else:
             error_message = '数据不合法'
             return render(request, 'teacher/create_homework.html',
@@ -52,30 +53,31 @@ def create_homework(request):
 @login_required(login_url='app:login')
 def edit_course(request):
     if request.method == 'GET':
-        course_id = request.GET.get('course_id', None)
+        course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
-        form=EditCourseForm()
+        form = EditCourseForm()
         form.set_init_data(course)
-        return render(request,'teacher/edit_course.html',{'form':form,'course':course})
+        return render(request, 'teacher/edit_course.html', {'form': form, 'course': course})
     else:
-        course_id=request.POST.get('course_id',None)
+        course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         form = EditCourseForm(request.POST)
         if form.is_valid():
-            course.name=form.cleaned_data['name']
-            course.info=form.cleaned_data['info']
-            course.syllabus=form.cleaned_data['syllabus']
-            course.classroom=form.cleaned_data['classroom']
-            course.status=form.cleaned_data['status']
+            course.name = form.cleaned_data['name']
+            course.info = form.cleaned_data['info']
+            course.syllabus = form.cleaned_data['syllabus']
+            course.classroom = form.cleaned_data['classroom']
+            course.status = form.cleaned_data['status']
             course.save()
-            return redirect('/teacher/course_info?course_id='+course_id)
+            return redirect('/teacher/course_info?course_id=' + course_id)
         else:
-            return render(request,'teacher/edit_course.html',{'form':form,'course':course,'error_message':'数据不合法!'})
+            return render(request, 'teacher/edit_course.html',
+                          {'form': form, 'course': course, 'error_message': '数据不合法!'})
 
 
 @login_required(login_url='app:login')
 def course_info(request):
-    course_id = request.GET.get('course_id', None)
+    course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
     user = request.user
     enrolls = Enroll.objects.filter(course_id=course_id)
@@ -108,7 +110,7 @@ def import_student(request):
 
 @login_required(login_url='app:login')
 def resources(request):
-    course_id = request.GET.get('course_id', None)
+    course_id = request.session.get('course_id', None)
     if course_id is None:
         return HttpResponse('course_id=None')
     course = get_object_or_404(Course, id=course_id)
@@ -122,15 +124,15 @@ def resources(request):
 @login_required(login_url='app:login')
 def create_resource(request):
     if request.method == 'GET':
-        course_id = request.GET.get('course_id', None)
-        course=get_object_or_404(Course,id=course_id)
+        course_id = request.session.get('course_id', None)
+        course = get_object_or_404(Course, id=course_id)
         user = request.user
         teacher = User.objects.get(username=user.username)
         return render(request, 'teacher/create_resource.html',
-                      {'course': course, 'teacher': teacher,})
+                      {'course': course, 'teacher': teacher, })
     else:
-        course_id=request.POST.get('course_id',None)
-        course=get_object_or_404(Course,id=course_id)
+        course_id = request.session.get('course_id', None)
+        course = get_object_or_404(Course, id=course_id)
         user = request.user
         teacher = User.objects.get(username=user.username)
         try:
@@ -140,15 +142,15 @@ def create_resource(request):
                           {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         if file is None:
             return render(request, 'teacher/create_resource.html',
-                      {'course': course, 'teacher': teacher,'error_message':'文件为空!'})
+                          {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         else:
             handle_uploaded_file(request, course_id, file)
-            return redirect('/teacher/resources?course_id='+course_id)
+            return redirect('/teacher/resources?course_id=' + course_id)
 
 
 @login_required(login_url='app:login')
 def homework(request):
-    course_id = request.GET.get('course_id', None)
+    course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
     works = WorkMeta.objects.filter(course_id=course_id)
     homeworks = []
@@ -162,104 +164,99 @@ def homework(request):
 # @login_required(login_url='app:login')
 def preview_source_online(request):
     file = request.GET.get('file')
-    print('file='+file)
-    file_path = os.path.join('uploads', file)
-    print('file_path='+file_path)
-    url = fileUtils.docPreviewUrl(file_path)
-    print(url)
+    log('file_path=' + file)
+    url = fileUtils.docPreviewUrl(file)
+    log(url, 'preview_source_online')
     return redirect(url)
-
-
 
 
 @login_required(login_url='app:login')
 def delete_file(request):
     file_id = request.GET.get("file_id", None)
-    course_id=request.GET.get('course_id',None)
-    course=get_object_or_404(Course,id=course_id)
-    file=get_object_or_404(File,id=file_id)
-    location=os.path.join(settings.MEDIA_ROOT,file.file.path)
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+    file = get_object_or_404(File, id=file_id)
+    location = os.path.join(UPLOAD_ROOT, file.file.path)
     if os.path.isfile(location):
         os.remove(location)
     file.delete()
-    return redirect('/teacher/resources/?course_id='+course_id)
+    return redirect('/teacher/resources/?course_id=' + course_id)
 
 
 @login_required(login_url='app:login')
 def edit_homework(request):
     if request.method == 'GET':
         workmeta_id = request.GET.get('workmeta_id', None)
-        course_id=request.GET.get('course_id',None)
-        course=get_object_or_404(Course,id=course_id)
+        course_id = request.session.get('course_id', None)
+        course = get_object_or_404(Course, id=course_id)
         workmeta = get_object_or_404(WorkMeta, id=workmeta_id)
         homework_form = HomeworkForm()
         homework_form.set_data(workmeta)
         return render(request, 'teacher/edit_homework.html',
-                      {'course':course,'workmeta_id': workmeta_id, 'form': homework_form})
+                      {'course': course, 'workmeta_id': workmeta_id, 'form': homework_form})
     else:
-        teacher=User.objects.get(username=request.user.username)
+        teacher = User.objects.get(username=request.user.username)
         workmeta_id = request.POST.get('workmeta_id', None)
-        course_id=request.POST.get('course_id',None)
-        course=get_object_or_404(Course,id=course_id)
+        course_id = request.session.get('course_id', None)
+        course = get_object_or_404(Course, id=course_id)
         workmeta = get_object_or_404(WorkMeta, id=workmeta_id)
         homework_form = HomeworkForm(request.POST)
         if homework_form.is_valid():
-            workmeta.title=homework_form.cleaned_data['title']
+            workmeta.title = homework_form.cleaned_data['title']
             workmeta.content = homework_form.cleaned_data['content']
             workmeta.proportion = homework_form.cleaned_data['proportion']
             workmeta.submits = homework_form.cleaned_data['submits']
             workmeta.endTime = homework_form.cleaned_data['endTime']
             try:
-                file=request.FILES['attachment']
+                file = request.FILES['attachment']
             except:
-                file=None
+                file = None
             if file is not None:
-                f=File(course=course,user=teacher,file=file,type='text',time=datetime.now())
+                f = File(course=course, user=teacher, file=file, type='text', time=datetime.now())
                 f.save()
-                attachment=Attachment(file=f,workMeta=workmeta,type='workmeta')
+                attachment = Attachment(file=f, workMeta=workmeta, type='workmeta')
                 attachment.save()
             workmeta.save()
-            return redirect('/teacher/homework/?course_id='+course_id)
+            return redirect('/teacher/homework/?course_id=' + course_id)
         else:
             error_message = '数据不合法'
             return render(request, 'teacher/edit_homework.html',
-                          {'course':course,'workmeta_id': workmeta_id, 'form': homework_form, 'error_message': error_message})
+                          {'course': course, 'workmeta_id': workmeta_id, 'form': homework_form,
+                           'error_message': error_message})
 
 
 @login_required(login_url='app:login')
 def past_homeworks(request):
-    course_id=request.GET.get('course_id',None)
-    course=get_object_or_404(Course,id=course_id)
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
     user = request.user
-    workmetas=get_past_homeworks(user.username)
+    workmetas = get_past_homeworks(user.username)
     if len(workmetas) == 0:
         error_message = '当前没有往期作业数据'
-    return render(request,'teacher/past_homeworks.html',{'course':course,'workmetas':workmetas,'error_message':error_message})
-
-
+    return render(request, 'teacher/past_homeworks.html',
+                  {'course': course, 'workmetas': workmetas, 'error_message': error_message})
 
 
 # 生成个人得分表
 @login_required(login_url='app:login')
 def generate_stu_score_table(request):
-    course_id=request.GET.get('course_id',None)
-    course=get_object_or_404(Course,id=course_id)
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
     stu_score_dict = compute_stu_score()
     stu_list = get_stu_list_in_now_course()
-    #第一次计算出每个学生的得分后保存到excel表，以便老师下载
+    # 第一次计算出每个学生的得分后保存到excel表，以便老师下载
     file = get_stu_score_excel_file_abspath()
     # if not os.path.isfile(file):
     create_stu_score_excel(file, stu_list, stu_score_dict)
     return render(request, 'teacher/stu_score_list.html',
-                  {'stu_score_dict': stu_score_dict, 'stu_list': stu_list,'course':course})
+                  {'stu_score_dict': stu_score_dict, 'stu_list': stu_list, 'course': course})
 
 
-
-#生成小组最终成绩
+# 生成小组最终成绩
 @login_required(login_url='app:login')
 def generate_team_score_table(request):
-    course_id=request.GET.get('course_id',None)
-    course=get_object_or_404(Course,id=course_id)
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
     team_list, score_list, team_score = compute_team_score()
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     file = get_team_score_excel_file_abspath()
@@ -268,17 +265,17 @@ def generate_team_score_table(request):
     num_list = range(len(team_list))
 
     return render(request, 'teacher/team_score_list.html',
-                  {'team_list': team_list, 'score_list': score_list, 'num_list': num_list,'course':course})
+                  {'team_list': team_list, 'score_list': score_list, 'num_list': num_list, 'course': course})
 
 
-#下载小组得分excel
+# 下载小组得分excel
 @login_required(login_url='app:login')
 def download_team_score_list(request):
     file = get_team_score_excel_file_abspath()
     if os.path.exists(file):
         response = StreamingHttpResponse(file_iterator(file))
         response['Content-Type'] = 'application/octet-stream'
-        response['Content-Disposition'] = 'attachment;filename='+os.path.basename(file)
+        response['Content-Disposition'] = 'attachment;filename=' + os.path.basename(file)
         return response
     return Http404
 
@@ -290,37 +287,37 @@ def download_stu_score_list(request):
     if os.path.exists(file):
         response = StreamingHttpResponse(file_iterator(file))
         response['Content-Type'] = 'application/octet-stream'
-        response['Content-Disposition'] = 'attachment;filename='+os.path.basename(file)
+        response['Content-Disposition'] = 'attachment;filename=' + os.path.basename(file)
         return response
     return Http404
 
 
-#显示当前已布置的作业
+# 显示当前已布置的作业
 @login_required(login_url='app:login')
 def show_works(request):
-    course_id = request.GET.get('course_id', None)
+    course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
-    workmetas=WorkMeta.objects.filter(course_id=course_id)
+    workmetas = WorkMeta.objects.filter(course_id=course_id)
     # works=[]
     # for workmeta in workmetas:
     #     works.extend(Work.objects.filter(workMeta=workmeta))
-    return render(request,'teacher/show_works.html',
-                  {'course':course, 'work_metas': workmetas, 'course_id': course_id})
+    return render(request, 'teacher/show_works.html',
+                  {'course': course, 'work_metas': workmetas, 'course_id': course_id})
 
 
-#显示学生提交的一次作业
+# 显示学生提交的一次作业
 @login_required(login_url='app:login')
 def work_detail(request):
-    work_id=request.GET.get('work_id',None)
-    work=get_object_or_404(Work,id=work_id)
-    attachments=Attachment.objects.filter(workMeta_id=work.workMeta_id)
-    return render(request,'teacher/work_detail.html',{'work':work,'attachments':attachments})
+    work_id = request.GET.get('work_id', None)
+    work = get_object_or_404(Work, id=work_id)
+    attachments = Attachment.objects.filter(workMeta_id=work.workMeta_id)
+    return render(request, 'teacher/work_detail.html', {'work': work, 'attachments': attachments})
 
 
-#下载上传的资源
+# 下载上传的资源
 @login_required(login_url='app:login')
-def download_file(request,path):
-    file_path=os.path.join(settings.MEDIA_ROOT,path)
+def download_file(request, path):
+    file_path = os.path.join(UPLOAD_ROOT, path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -338,26 +335,28 @@ def course(request):
     for enroll in enrolls:
         if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course
+            request.session['course_id'] = course.id
     teacher = User.objects.get(username=user.username)
     return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course})
 
 
 @login_required(login_url='app:login')
 def task(request):
-    course_id=request.GET.get('course_id',None)
-    course=get_object_or_404(Course,id=course_id)
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
     user = request.user
     teacher = User.objects.get(username=user.username)
     return render(request, 'teacher/task.html', {'teacher': teacher, 'course': course})
 
+
 # 某作业的所有提交的附件
 @login_required(login_url='app:login')
 def submitted_work_list(request):
-    course_id = request.GET.get('course_id')
-    course=get_object_or_404(Course,id=course_id)
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
     work_meta_id = request.GET.get('work_meta_id')
     workmetas = WorkMeta.objects.filter(id=work_meta_id)
-    works=[]
+    works = []
     for workmeta in workmetas:
         works.extend(Work.objects.filter(workMeta=workmeta))
     attachment_team_dict = {}
@@ -365,15 +364,16 @@ def submitted_work_list(request):
         attachments = Attachment.objects.filter(work=work)
         if attachments:
             attachment_team_dict[work.team] = attachments
-    return render(request,'teacher/submitted_work_list.html',
-                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id,'course':course})
+    return render(request, 'teacher/submitted_work_list.html',
+                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id,
+                   'course': course})
 
 
 # 设置分数和评论
 @login_required(login_url='app:login')
 def add_comment_score(request):
     work_meta_id = request.GET.get('work_meta_id')
-    course_id = request.GET.get('course_id')
+    course_id = request.session.get('course_id', None)
     homework_id = request.GET.get('work_id')
     homework = get_object_or_404(Work, id=homework_id)
     attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
@@ -395,7 +395,7 @@ def add_comment_score(request):
                 .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
             # return render(request, 'teacher/success.html',
             #               {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
-            return redirect('/teacher/submitted_work_list?work_meta_id='+work_meta_id+'&course_id='+course_id)
+            return redirect('/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + course_id)
         else:
             error_message = '评论失败！'
             return render(request, 'teacher/add_comment_score.html',
@@ -405,6 +405,39 @@ def add_comment_score(request):
 
 @login_required(login_url='app:login')
 def score_manage(request):
-    course_id = request.GET.get('course_id', None)
+    course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
-    return render(request, 'teacher/score_manage.html',{'course':course})
+    return render(request, 'teacher/score_manage.html', {'course': course})
+
+
+@login_required(login_url='app:login')
+def team_manage(request):
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+    return render(request, 'teacher/teacher_team_manage.html', {'course': course})
+
+
+@login_required(login_url='app:login')
+def teams(request):
+    course_id = request.session.get('course_id', None)
+    course=get_object_or_404(Course,id=course_id)
+    teams=Team.objects.filter(course_id=course.id)
+    unteamed_students=query_unteamed_students(course_id)
+    return render(request,'teacher/show_teams.html',{'course':course,'unteamed_students':unteamed_students,'teams':teams})
+
+
+@login_required(login_url='app:login')
+def team_members(request):
+    team_id=request.GET.get('team_id',None)
+    course_id = request.session.get('course_id', None)
+    team=get_object_or_404(Team,id=team_id)
+    course=get_object_or_404(Course,id=course_id)
+    members=Member.objects.filter(team=team)
+    return render(request, 'teacher/team_memebers.html',{'team':team,'course':course,'members':members})
+
+
+@login_required(login_url='app:login')
+def adjust_team(request):
+    student_id=request.GET.get('student_id',None)
+    course_id = request.session.get('course_id', None)
+    return render(request, 'teacher/adjust_team.html')

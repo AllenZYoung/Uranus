@@ -5,8 +5,10 @@ from datetime import datetime
 from openpyxl import *
 from app.models import *
 from django.shortcuts import get_object_or_404
+from app.utils import *
+from app.utils.logUtils import *
 
-from Uranus.settings import BASE_DIR
+
 def handle_uploaded_file(request,course_id,f):
     # f = request.FILES['file']
     # name = f.name
@@ -25,9 +27,8 @@ def import_student_for_course(request):
     course_id = request.POST.get('course_id', None)
     f = request.FILES['file']
     name = f.name
-    suffix = name.split('.', 1)[1]
-    if suffix == 'xls' or suffix == 'xlsx':
-        path = os.path.join('uploads/file/teacher/', name)
+    if isXls(name):
+        path = os.path.join(IMPORT_ROOT, name)
         with open(path, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
@@ -97,8 +98,7 @@ def get_team_score_excel_file_abspath():
 
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     # 各个团队得分的excel命名规范：termYear_termsemester_team_score_list.xlsx
-    file_father_path = os.path.join(BASE_DIR, 'downloads')
-    file_path = os.path.join(file_father_path, 'teamScores')
+    file_path = os.path.join(REPORT_ROOT, 'teamScores')
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_team_score_list.xlsx'
     file = os.path.join(file_path, file_name)
     return file
@@ -109,8 +109,7 @@ def get_stu_score_excel_file_abspath():
     now_term = get_now_term()
 
     # 各人得分的excel命名规范：termYear_termsemester_stu_score_list.xlsx
-    file_father_path = os.path.join(BASE_DIR, 'downloads')
-    file_path = os.path.join(file_father_path, 'stuScores')
+    file_path = os.path.join(REPORT_ROOT, 'stuScores')
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_score_list.xlsx'
     file = os.path.join(file_path, file_name)
     return file
@@ -212,4 +211,16 @@ def file_iterator(file_name, chunk_size=512):
                 yield c
             else:
                 break
+
+
+# 获取某一门课程中没有团队的学生
+def query_unteamed_students(course_id):
+    course=get_object_or_404(Course, id=course_id)
+    enrolls=Enroll.objects.filter(course=course,user__role='student')
+    unteamed_students=[]
+    for enroll in enrolls:
+        member=Member.objects.filter(user=enroll.user)
+        if member is None:
+            unteamed_students.append(enroll.user)
+    return unteamed_students
 

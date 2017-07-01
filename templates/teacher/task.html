@@ -59,8 +59,14 @@
 	                    </a>
 	                </li>
                     <li>
-	                    <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+	                    <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
 	                        <i class="material-icons">face</i>
+	                        <p>团队管理</p>
+	                    </a>
+	                </li>
+                    <li>
+	                    <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+	                        <i class="material-icons">assessment</i>
 	                        <p>成绩管理</p>
 	                    </a>
 	                </li>

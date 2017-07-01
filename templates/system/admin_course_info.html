@@ -108,7 +108,7 @@
 	                                    	<th>状态</th>
 	                                    	<th>开始时间</th>
 	                                    	<th>结束时间</th>
-	                                    	<th>修改</th>
+	                                    	<th>操作</th>
 	                                    </thead>
 	                                    <tbody>
                                             {% for course_dic in info %}
@@ -140,7 +140,9 @@
                                                         {% if course_dic.course.status == 'ended' %}
                                                             <button class="btn btn-inverse" disabled="disabled">不可操作</button>
                                                         {% else %}
-                                                            <a class="btn btn-success" href="editCourse?id={{ course_dic.course.id }}">修改</a>
+                                                            <a class="btn btn-success" href="editCourse?id={{ course_dic.course.id }}">查看修改</a>
+                                                             <a class="btn btn-success" href="?id={{ course_dic.course.id }}">查看老师</a>
+                                                             <a class="btn btn-success" href="?id={{ course_dic.course.id }}">查看学生</a>
                                                         {% endif %}
                                                     </td>
                                                 </tr>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOG</title>
+</head>
+<body>
+    <h3>最近100条Log记录：</h3>
+    {% for log in logs %}
+        {{ log }} <br/>
+    {% endfor %}
+</body>
+</html>

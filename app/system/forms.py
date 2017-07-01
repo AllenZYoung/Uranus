@@ -18,8 +18,10 @@ class TermForm(forms.Form):
         ('autumn', '秋季学期'),
     )
     semester = forms.CharField(required=True, widget=forms.Select(choices=SEMESTER_CHOICES,attrs={'class': 'form-control'}), label='')
-    startWeek = forms.CharField(required=True, label='开始周次',widget=forms.TextInput(attrs={'class': 'form-control'}))
-    endWeek = forms.CharField(required=True, label='结束周次',widget=forms.TextInput(attrs={'class': 'form-control'}))
+    #forms.IntegerField( required=True, label='开始周次',attrs={'class': 'form-control'},min_value=0)
+    startWeek =  forms.CharField(required=True, label='开始周次',widget=forms.TextInput(attrs={'type':'number','min':'1','class':'form-control'}))
+    endWeek =  forms.CharField(required=True, label='结束周次',widget=forms.TextInput(attrs={'type':'number','min':'1','class':'form-control'}))
+
 
 
 
@@ -51,8 +53,8 @@ class EditTermForm(forms.ModelForm):
         widgets={
             'year':forms.TextInput(attrs={'class': 'form-control'}),
             'semester':forms.TextInput(attrs={'class': 'form-control','hidden':True}),
-            'startWeek':forms.TextInput(attrs={'class': 'form-control'}),
-            'endWeek':forms.TextInput(attrs={'class': 'form-control'})
+            'startWeek':forms.TextInput(attrs={'type':'number','min':'1','class':'form-control'}),
+            'endWeek':forms.TextInput(attrs={'type':'number','min':'1','class':'form-control'}),
         }
 
 

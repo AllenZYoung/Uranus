@@ -29,7 +29,7 @@
 
 	<div class="wrapper">
 
-	    <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
+	    <div class="sidebar" data-color="blue" data-image="../../static/assets/img/sidebar-1.jpg">
 			<!--
 		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -97,7 +97,7 @@
 	                                <h4 class="title">创建学期</h4>
 									<p class="category">填写如下信息并创建学期</p>
 	                            </div>
-                                <form method="post" action="">
+                                <form method="post" action="" onsubmit="return weekCheck()">
                                  {% csrf_token %}
 	                            <div class="card-content">
 	                            	<div class="row">
@@ -111,7 +111,7 @@
 	                            		</div>
 	                            		<div class="col-md-3">
 	                            			<label for="">开始周次</label>
-	                            			{{ form.startWeek }}
+                                            {{ form.startWeek }}
 	                            		</div>
 	                            		<div class="col-md-3">
 	                            			<label for="">结束周次</label>
@@ -164,6 +164,15 @@
 	<script src="../../static/assets/js/demo.js"></script>
 
 	<script type="text/javascript">
+        function weekCheck() {
+            var start = document.getElementById('id_startWeek').value;
+            var end = document.getElementById('id_endWeek').value;
+            if ( start > end) {
+                alert("结束周次应大于开始周次")
+                return false
+            }
+            return true
+        }
     	$(document).ready(function(){
 
 			// Javascript method's body can be found in assets/js/demos.js

@@ -31,6 +31,7 @@ class User(models.Model):
     def __str__(self):
         return self.name or self.username
 
+
 # [学期]
 class Term(models.Model):
     info = models.TextField(blank=True, help_text='学期说明信息')
@@ -45,7 +46,7 @@ class Term(models.Model):
 
     def __str__(self):
         sem = self.semester == 'spring' and '春季学期' or '秋季学期'
-        return '%d年%s' %(self.year, sem)
+        return '%d年%s' % (self.year, sem)
 
 
 # [团队元信息]
@@ -56,13 +57,13 @@ class TeamMeta(models.Model):
     endTime = models.DateTimeField(blank=True, default=datetime.now())
 
     def __str__(self):
-        return '%d~%d人团队' %(self.minNum, self.maxNum)
+        return '%d~%d人团队' % (self.minNum, self.maxNum)
 
 
 # [课程]==[学期]&[团队元信息]
 class Course(models.Model):
-    term = models.ForeignKey(Term)            # 学期
-    teamMeta = models.ForeignKey(TeamMeta, null=True, blank=True)    # 团队元信息
+    term = models.ForeignKey(Term)  # 学期
+    teamMeta = models.ForeignKey(TeamMeta, null=True, blank=True)  # 团队元信息
     name = models.CharField(max_length=64)
     info = models.TextField(null=True, blank=True, help_text='课程要求/其他说明')
     syllabus = models.TextField(null=True, blank=True, help_text='课程大纲')
@@ -87,13 +88,13 @@ class Enroll(models.Model):
     user = models.ForeignKey(User)
 
     def __str__(self):
-        return '%s <- %s' %(self.course.name, self.user.name or self.user.username)
+        return '%s <- %s' % (self.course.name, self.user.name or self.user.username)
 
 
 # [团队]==[课程]&[用户:学生账户]
 class Team(models.Model):
     course = models.ForeignKey(Course)
-    serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号') # 'id' is a reserved word...
+    serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号')  # 'id' is a reserved word...
     name = models.CharField(max_length=32, null=True, blank=True, help_text='可选的自定义名字')
     STATUS = (
         ('incomplete', '未完成组队'),
@@ -106,7 +107,8 @@ class Team(models.Model):
     info = models.TextField(help_text='通过欢迎信息/驳回理由', null=True, blank=True)
 
     def __str__(self):
-        return '%d: %s' %(self.serialNum, self.name)
+        return '%d: %s' % (self.serialNum, self.name)
+
 
 # <团队成员>==[团队]&[用户:学生账户]
 class Member(models.Model):
@@ -120,7 +122,8 @@ class Member(models.Model):
     contribution = models.FloatField(help_text='成员贡献度:0.4~1.2', null=True, blank=True)
 
     def __str__(self):
-        return '%d: %s <- %s' %(self.team.serialNum, self.team.name or 'NoTeamName', self.user.name or self.user.username)
+        return '%d: %s <- %s' % (
+        self.team.serialNum, self.team.name or 'NoTeamName', self.user.name or self.user.username)
 
 
 # [作业任务]~~<附件>
@@ -148,14 +151,14 @@ class Work(models.Model):
     time = models.DateTimeField(blank=True, auto_now_add=True)
 
     def __str__(self):
-        return '%s <- %d: %s' %(self.workMeta.title, self.team.serialNum, self.team.name or 'NoTeamName')
+        return '%s <- %d: %s' % (self.workMeta.title, self.team.serialNum, self.team.name or 'NoTeamName')
 
 
 # [资源文件]
 class File(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='上传者')
-    file = models.FileField(upload_to='file', help_text='文件实体，保存时为绝对路径(未重命名)')
+    file = models.FileField(upload_to='handout', help_text='文件实体，保存时为绝对路径(未重命名)')
     TYPE = (
         ('text', '文本'),
         ('document', '文档'),
@@ -181,7 +184,8 @@ class Attachment(models.Model):
 
     def __str__(self):
         w = self.workMeta is not None and self.workMeta.title or self.work.workMeta.title
-        return '%s <- %s' %(w, os.path.split(self.file.file.url))
+        return '%s <- %s' % (w, os.path.split(self.file.file.url))
+
 
 # [签到]
 class Attendance(models.Model):
@@ -190,6 +194,7 @@ class Attendance(models.Model):
 
     def __str__(self):
         return self.user.name or self.user.username
+
 
 # [公告]
 class Notice(models.Model):
