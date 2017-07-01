@@ -36,6 +36,6 @@ urlpatterns = [
     url(r'^dismiss_member/',views.dismiss_member,name='dismiss_member'),
     url(r'^team_apply/',views.team_apply,name='team_apply'),
     url(r'^apply_manage/',views.apply_manage,name='apply_manage'),
-
+    url(r'^download_stu_teams$', views.download_team_members_all, name='download_stu_teams'),
 
 ]

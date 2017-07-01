@@ -291,6 +291,21 @@ def download_stu_score_list(request):
         return response
     return Http404
 
+#下载所有学生及团队的excel
+@login_required(login_url='app:login')
+def download_team_members_all(request):
+    file = get_team_members_all_excel_file_abspath()
+
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+
+    create_stu_teams_excel(file, course)
+    if os.path.exists(file):
+        response = StreamingHttpResponse(file_iterator(file))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename=' + os.path.basename(file)
+        return response
+    return Http404
 
 # 显示当前已布置的作业
 @login_required(login_url='app:login')
@@ -465,7 +480,7 @@ def team_apply(request):
     course_id=request.session.get('course_id', None)
     course=get_object_or_404(Course,id=course_id)
     teams=Team.objects.filter(course=course,status='auditing')
-    return render(request,'teacher/team_apply.html',{'teams':teams})
+    return render(request,'teacher/team_apply.html',{'teams':teams,'course':course})
 
 
 @login_required(login_url='app:login')

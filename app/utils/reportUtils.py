@@ -21,10 +21,11 @@ def reportTeam(team):
     members = Member.objects.filter(team=team)
     for member in members:
         if member.role == 'leader':
-            t['leader'] = member
+            t['leader'] = member.user.name
         else:
-            t['member'].append(member)
-    return t
+            t['member'].append(member.user.name)
+
+
 
 
 # 数据整理: [所有团队信息字典的列表]
