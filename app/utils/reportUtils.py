@@ -44,8 +44,15 @@ def reportGradeTeam(team):
     if not isinstance(team, Team):
         return None
 
+    grade = {}
+    ws = Work.objects.filter(team=team)
     for wm in WorkMeta.objects.filter(course=team.course).order_by('startTime'):
-        pass
+        w = ws.filter(workMeta=wm).order_by('-time').first()
+        if w:
+            grade[wm.id] = w.score      # 作业ID(不是连续流水号), 或许该用Title？
+        else:
+            grade[wm.id] = 0
+    return grade
 
 
 # 数据整理: [所有团队成绩的列表]
@@ -53,11 +60,12 @@ def reportGradeTeams(course):
     if not isinstance(course, Course):
         return None
 
-    ws = []
-    workMetas = WorkMeta.objects.filter(course=course)
-    teams = Team.objects.filter(course=course)
-    # TODO: 需要哪些信息？
-    pass
+    grades = []
+    teams = Team.objects.filter(course=course).order_by('serialNum')
+    for t in teams:
+        g = reportGradeTeam(t)
+        grades.append(g)
+    return grades
 
 
 # 数据整理: {单个学生成绩的字典}
@@ -67,13 +75,27 @@ def reportGradeStudent(user):
     if user.role != 'student':
         log('不是学生', 'reportUtils', LOG_LEVEL.ERROR)
         return False
+    member = Member.objects.filter(user=user).first()
+    if not member:
+        log('未加入任何团队', 'teamutils', LOG_LEVEL.ERROR)
+        return False
 
-    pass
+    ret = {
+        'user': user,
+        'grade': 0,
+    }
+    # TODO: 根据贡献度计算总分??
+    return ret
+
 
 # 所有学生成绩的列表
 def reportGradeStudents(course):
     if not isinstance(course, Course):
         return None
 
-
-    pass
+    grades = []
+    enrolls = Enroll.objects.filter(course=course)
+    for e in enrolls:
+        g = reportGradeStudent(e.user)
+        grades.append(g)
+    return grades
