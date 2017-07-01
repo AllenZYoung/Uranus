@@ -79,7 +79,7 @@ class Course(models.Model):
     endTime = models.DateTimeField(blank=True, default=datetime.now())
 
     def __str__(self):
-        return self.name
+                return self.name
 
 
 # <选课>==[课程]&[用户:学生/教师账户]
