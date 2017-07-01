@@ -215,6 +215,7 @@ def student_team_build(request):
     return render(request, 'student/student_team_transaction.html', {'teams': teams,
                                                                      'member': member})
 
+
 @login_required(login_url='app:login')
 def apply_for_team(request):
     user = get_object_or_404(User, username=request.user.username)
