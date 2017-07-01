@@ -2334,7 +2334,12 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 
 .table > thead > tr > th {
   border-bottom-width: 1px;
-  font-size: 1em;
+  font-size: 1.55em;
+  font-weight: 300;
+}
+.table > tbody > tr > td{
+  border-bottom-width: 1px;
+  font-size: 1.4em;
   font-weight: 300;
 }
 .table .radio,
