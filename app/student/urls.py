@@ -13,5 +13,5 @@ urlpatterns = [
     url(r'^workpage$', views.workRoot, name='workpage'),  # 查看作业详情
     url(r'^work', views.workView, name='work'),  # 查看作业详情
     url(r'^teampage$',views.teamRoot, name='teampage') ,# 团队主页，其下有多个功能
-    url(r'^mycourse$',views.my_course,name='my_course')
+    url(r'^mycourse$',views.my_course,name='my_course'),
 ]

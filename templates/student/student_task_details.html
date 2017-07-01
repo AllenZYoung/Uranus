@@ -107,10 +107,16 @@
 	                                <h4 class="title">提交作业</h4>
 	                                <p class="category">{{ workMeta.title }}</p>
 	                            </div>
+								<br>
 	                            <div class="card-content">
 	                                <div class="tim-typo">
 										<p><span class="tim-note">作业内容</span>
 											{{ workMeta.content }}
+										</p>
+									</div>
+									<div class="tim-typo">
+										<p><span class="tim-note">最大提交次数</span>
+											{{ workMeta.submits }}
 										</p>
 									</div>
 									{% if not is_work %}
