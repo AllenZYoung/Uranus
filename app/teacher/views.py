@@ -404,3 +404,9 @@ def score_manage(request):
     course_id = request.GET.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
     return render(request, 'teacher/score_manage.html',{'course':course})
+
+@login_required(login_url='app:login')
+def team_manage(request):
+    course_id = request.GET.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+    return render(request,'teacher/teacher_team_manage.html',{'course':course})

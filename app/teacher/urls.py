@@ -29,6 +29,6 @@ urlpatterns = [
     url(r'^submitted_work_list/', views.submitted_work_list, name='submitted_work_list'),
     url(r'^preview_source_online/', views.preview_source_online, name='preview_source_online'),
     url(r'^score_manage/',views.score_manage,name='score_manage'),
-
+    url(r'^team_manage/', views.team_manage, name='team_manage'),
 
 ]
