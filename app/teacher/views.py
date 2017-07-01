@@ -444,7 +444,7 @@ def adjust_team(request):
     course=get_object_or_404(Course,id=course_id)
     serial_num=request.POST.get('serial_num'+student.username,None)
     if serial_num is None:
-        return render(request, 'teacher/show_teams.html', {'error_message': '请选择要调整至的队伍'})
+        return HttpResponse('请选择要调整至的队伍')
     team=get_object_or_404(Team,serialNum=serial_num)
     member=Member(team=team,user=student,role='member',contribution=0)
     member.save()
@@ -458,3 +458,33 @@ def dismiss_member(request):
     member=get_object_or_404(Member,id=member_id)
     member.delete()
     return redirect('/teacher/team_members?team_id='+team_id)
+
+
+@login_required(login_url='app:login')
+def team_apply(request):
+    course_id=request.session.get('course_id', None)
+    course=get_object_or_404(Course,id=course_id)
+    teams=Team.objects.filter(course=course,status='auditing')
+    return render(request,'teacher/team_apply.html',{'teams':teams})
+
+
+@login_required(login_url='app:login')
+def apply_manage(request):
+    if request.method == 'GET':
+        team_id=request.GET.get('team_id',None)
+        team=get_object_or_404(Team,id=team_id)
+        form=EditTeamForm()
+        return render(request,'teacher/apply_manage.html',{'team':team,'form':form})
+    else:
+        team_id=request.POST.get('team_id',None)
+        team=get_object_or_404(Team,id=team_id)
+        form=EditTeamForm(request.POST)
+        if form.is_valid():
+            team.status=form.cleaned_data['status']
+            team.info=form.cleaned_data['info']
+            team.save()
+            return redirect('/teacher/team_apply')
+        else:
+            return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form,'error_message':'数据不合法'})
+
+

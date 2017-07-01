@@ -34,5 +34,8 @@ urlpatterns = [
     url(r'^team_members/',views.team_members,name='team_members'),
     url(r'^adjust_team/',views.adjust_team,name='adjust_team'),
     url(r'^dismiss_member/',views.dismiss_member,name='dismiss_member'),
+    url(r'^team_apply/',views.team_apply,name='team_apply'),
+    url(r'^apply_manage/',views.apply_manage,name='apply_manage'),
+
 
 ]
