@@ -6,7 +6,7 @@
 	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>团队管理</title>
+	<title>团队事务</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -94,89 +94,84 @@
 				</div>
 			</nav>
 
-			<div class="content">
-				<div class="container-fluid">
-					<div class="row"> 
-						<div class="col-md-12">
+	        <div class="content">
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-12">
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="blue">
-	                                <h4 class="title">编辑团队信息</h4>
+	                                <h4 class="title">组队要求</h4>
+	                                <p class="category">各团队需符合组队要求</p>
 	                            </div>
+	                            <br>
 	                            <div class="card-content">
-	                                <form>
-	                                    <div class="row">
-	                                        <div class="col-md-6">
-												<div class="form-info">
-													<label class="col-md-12">团队名称</label>
-													<div>
-														<input type="text" class="form-control">
-													</div>
-												</div>
-	                                        </div>
-	                                        <div class="col-md-6">
-												<div class="form-group">
-													<label class="col-md-12">团队负责人</label>
-													<div>
-														<input type="text" class="form-control">
-													</div>
-												</div>
-	                                        </div>
-	                                    </div>
-	                                    <button type="submit" class="btn btn-info pull-right">提交</button>
-	                                    <div class="clearfix"></div>
-	                                </form>
+	                                <div class="tim-typo">
+										<p><span class="tim-note">具体要求</span>
+											
+										</p>
+									</div>
+									<div class="tim-typo">
+										<a href="student_team_build.html">
+                        				<button type="" class="btn btn-info pull-right">发起团队</button>
+                        				</a>
+                    				</div>
+	                            </div>
+	                        </div>
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="blue">
+	                                <h4 class="title">当前组队情况</h4>
+	                                <p class="category">当前发起的团队</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table table-hover">
+	                                    <thead>
+	                                        <th>团队名称</th>
+	                                    	<th>发起人</th>
+	                                    	<th>已有人数</th>
+	                                    	<th>组建状态</th>
+	                                    	<th>申请加入</th>
+	                                    </thead>
+	                                    <tbody>
+											{% for team in teams %}
+	                                        <tr>
+	                                        	<td>{{ team.name }}</td>
+	                                        	<td>{{ team.leader.user.name }}</td>
+	                                        	<td>{{ team.count|add:1 }}</td>
+	                                        	<td>{{ team.status }}</td>
+	                                        	<td>
+	                                        		<td>
+														{% if team.status == '已通过' or member != 'None' %}
+														{% if team.id == member.team.serialNum and member.role == 'newMoe'%}
+														<button type="" class="btn btn-info" disabled="disabled">正在申请中...</button>
+														{% else %}
+														<button type="" class="btn btn-info" disabled="disabled">申请加入</button>
+														{% endif %}
+														{% else %}
+														<a href="apply_for_team?id={{ team.id }}">
+														<button class="btn btn-info"
+																href="apply_for_team">申请加入</button></a>
+														{% endif %}
+													</td>
+	                                        	</td>
+	                                        </tr>
+											{% endfor %}
+	                                    </tbody>
+	                                </table>
 	                            </div>
 	                        </div>
 	                    </div>
-					</div>
-				</div>
-			</div>
+	                </div>
+	            </div>
+	        </div>
 
-
-			<div class="card-content table-responsive">
-				<table class="table table-hover">
-					<thead>
-					<th>团队名称</th>
-					<th>队长</th>
-					<th>已有人数</th>
-					<th>状态</th>
-					<th>操作</th>
-					</thead>
-					<tbody>
-						{% for team in teams %}
-						<tr>
-							<td>{{ team.name }}</td>
-							<td>{{ team.leader.user.name }}</td>
-							<td>{{ team.member|length|add:1 }}</td>
-							<td>{{ team.status }}</td>
-							<td><a href="apply_for_team?id={{ team.id }}">
-								{% if team.status == '已通过' or role != 'None' %}
-								<button class="btn btn-success"
-										disabled="disabled">加入
-								</button>
-								{% else %}
-								<button class="btn btn-success"
-										href="apply_for_team">加入</button>
-								{% endif %}
-							</a></td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-
-
-
-
-
-			<footer class="footer">
+	        <footer class="footer">
 				<div class="container-fluid">
 					<p class="copyright pull-right">
 						URANUS@2017
 					</p>
 				</div>
 			</footer>
-		</div>
+	    </div>
 	</div>
 
 </body>
@@ -200,14 +195,5 @@
 
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="/static/assets/js/demo.js"></script>
-
-	<script type="text/javascript">
-    	$(document).ready(function(){
-
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
-
-    	});
-	</script>
 
 </html>

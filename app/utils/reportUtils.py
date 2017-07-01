@@ -14,6 +14,7 @@ def reportTeam(team):
     t = {
         'id': team.serialNum,
         'name': team.name,
+        'status': team.get_status_display,
         'leader': None,     # 队长实体User
         'member': [],       # 队员实体列表[User]
     }
@@ -22,7 +23,7 @@ def reportTeam(team):
         if member.role == 'leader':
             t['leader'] = member
         else:
-            t['member'].append(members)
+            t['member'].append(member)
     return t
 
 
