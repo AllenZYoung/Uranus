@@ -1,6 +1,7 @@
 from app.models import *
 from app.utils.logUtils import *
 
+
 # 关于报表的工具集
 # by kahsolt
 
