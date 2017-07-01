@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>作业基本信息</title>
+    <title>学生团队信息</title>
     {% load static %}
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}"/>
     <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}"/>
@@ -46,26 +46,26 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li>
-                <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:course' %}">
                     <i class="material-icons">dashboard</i>
                     <p>课程管理</p>
                 </a>
             </li>
-            <li class="active">
-                <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
+            <li>
+                <a href="{% url 'teacher:task' %}">
                     <i class="material-icons">content_copy</i>
                     <p>作业管理</p>
                 </a>
             </li>
-            <li>
-                <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
+            <li class="active">
+                <a href="{% url 'teacher:team_manage' %}">
                     <i class="material-icons">face</i>
                     <p>团队管理</p>
                 </a>
             </li>
             <li>
-                <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
-                    <i class="material-icons">assessment</i>
+                <a href="{% url 'teacher:score_manage' %}">
+                    <i class="material-icons">face</i>
                     <p>成绩管理</p>
                 </a>
             </li>
@@ -95,7 +95,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'teacher:task' %}?course_id={{ course.id }}">返回</a>
+                <a class="navbar-brand" href="{% url 'teacher:teams' %}">返回</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -121,40 +121,36 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header" data-background-color="orange">
-                            <h4 class="title">评价作业</h4>
-                            <p class="category">评价已截止的作业</p>
+                            <h4 class="title">团队成员</h4>
+                            <p class="category">查看该团队目前的成员</p>
                         </div>
                         <div class="card-content table-responsive">
+                            <label>团队名称:{{ team.name }}</label><br/>
+                            <label>团队编号:{{ team.serialNum }}</label>
+                            <label>团队成员信息</label><br/>
                             <table class="table table-hover">
-                                <thead>
-                                <th>作业名称</th>
-                                <th>发布者</th>
-                                <th>占分比</th>
-                                <th>可提交次数</th>
-                                <th>开始时间</th>
-                                <th>结束时间</th>
-                                <th>评价作业</th>
-                                </thead>
-                                <tbody>
-                                {% for work_meta in work_metas %}
+                                <tr>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>角色</th>
+                                    <th>贡献度</th>
+                                    <th>剔除该成员</th>
+                                </tr>
+                                {% for member in members %}
                                     <tr>
+                                        <td>{{ member.user.username }}</td>
+                                        <td>{{ member.user.name }}</td>
+                                        <td>{{ member.user.get_gender_display }}</td>
+                                        <td>{{ member.get_role_display }}</td>
+                                        <td>{{ member.contribution }}</td>
                                         <td>
-                                            {#                                                                <a href="{% url 'teacher:submitted_work_list' %}?work_meta_id={{ work_meta.id }}&course_id={{ course_id }}">{{ work_meta.title }}</a>#}
-                                            {{ work_meta.title }}
-                                        </td>
-                                        <td>{{ work_meta.user.name }}</td>
-                                        <td>{{ work_meta.proportion }}</td>
-                                        <td>{{ work_meta.submits }}</td>
-                                        <td>{{ work_meta.startTime }}</td>
-                                        <td>{{ work_meta.endTime }}</td>
-                                        <td>
-                                            <a href="{% url 'teacher:submitted_work_list' %}?work_meta_id={{ work_meta.id }}&course_id={{ course_id }}">
-                                                <button class="btn btn-warning">查看</button>
+                                            <a href="{% url 'teacher:dismiss_member' %}?member_id={{ member.id }}&team_id={{ team.id }}">
+                                                <button>剔除</button>
                                             </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
-                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from . import views
-from attendance.views import attendance
+from app.attendance.views import attendance
 
 app_name = 'student'
 urlpatterns = [

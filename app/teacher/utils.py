@@ -219,8 +219,9 @@ def query_unteamed_students(course_id):
     enrolls=Enroll.objects.filter(course=course,user__role='student')
     unteamed_students=[]
     for enroll in enrolls:
-        member=Member.objects.filter(user=enroll.user)
-        if member is None:
+        try:
+            member=Member.objects.get(user=enroll.user)
+        except:
             unteamed_students.append(enroll.user)
     return unteamed_students
 

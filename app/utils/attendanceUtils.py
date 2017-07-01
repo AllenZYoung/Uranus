@@ -9,16 +9,16 @@ from app.utils.logUtils import *
 def showToday():
     startTime = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 9, 0, 0, 0)
     endTime = datetime.now()
-    attendences = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
-    return attendences
+    attendances = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
+    return attendances
 
 
 def showTimeBetween(startTime, endTime):
     if not isinstance(startTime, datetime) or not isinstance(endTime, datetime):
         return None
 
-    attendences = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
-    return attendences
+    attendances = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
+    return attendances
 
 
 def addAttendance(user):
