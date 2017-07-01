@@ -46,10 +46,13 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
 
     if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
         form = UploadFileForm()
-        member_list = Member.objects.filter(team=team)
+        member_info = reportTeam(team)
+        member_list = member_info['member']
+        member_list.append(member_info['leader'])
+        print(member_list)
         return render(request, ''
                                'student/student_team_manage.html',
-                      {'team': team, 'member_list': member_list,'form':form})
+                      {'team': team, 'member_list': member_list,'form':form, 'user_role': member_model})
 
     elif request.method == 'POST' : # 设置贡献度（权重）
         form = UploadFileForm(request.POST, request.FILES)
@@ -193,3 +196,43 @@ def workRoot(request):
 @login_required(login_url='app:login')
 def teamRoot(request):
     return render(request, 'student/student_team.html')
+
+@login_required(login_url='app:login')
+def student_team_build(request):
+    user = get_object_or_404(User, username=request.user.username)
+    enroll = Enroll.objects.get(user=user)
+    teams = reportTeams(enroll.course)
+    for i in range(len(teams)):
+        teams[i]['count'] = 0
+        for member in teams[i]['member']:
+            print(member.role)
+            if member.role != 'newMoe':
+                teams[i]['count'] += 1
+    try:
+        member = Member.objects.get(user=user)
+    except:
+        member = 'None'
+    return render(request, 'student/student_team_transaction.html', {'teams': teams,
+                                                                     'member': member})
+
+
+@login_required(login_url='app:login')
+def apply_for_team(request):
+    user = get_object_or_404(User, username=request.user.username)
+    member = joinTeam(user, Team.objects.get(serialNum=request.GET.get('id')))
+    if member:
+        return HttpResponse('申请成功')
+    else:
+        return HttpResponse('申请失败')
+
+@login_required(login_url='app:login')
+def process_apply(request):
+    applicant = Member.objects.get(id=request.GET.get('id')).user
+    res = request.GET.get('res')
+    if res == 'y':
+        auditMemberPassed(applicant)
+    elif res == 'n':
+        auditMemberRejected(applicant)
+    else:
+        log('错误的参数', 'process_apply', LOG_LEVEL.ERROR)
+    return redirect('/student/member_evaluation')

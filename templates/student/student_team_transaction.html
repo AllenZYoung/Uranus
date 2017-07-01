@@ -6,11 +6,10 @@
 	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程资源</title>
+	<title>团队事务</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
-
 
     <!-- Bootstrap core CSS     -->
     <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,15 +28,16 @@
 <body>
 
 	<div class="wrapper">
-	    <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
-			<!--
-	        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-		    Tip 2: you can also add an image using data-image tag
 
-			-->
+	    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
+			<!--
+		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+		        Tip 2: you can also add an image using data-image tag
+		    -->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
+				<a href="#" class="simple-text">
 					学生
 				</a>
 			</div>
@@ -45,18 +45,18 @@
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
 	                <li>
-	                    <a href="./">
+	                    <a href="resources">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
-	                <li class="active">
+	                <li>
 	                    <a href="workpage">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href="teampage">
 	                        <i class="material-icons">face</i>
 	                        <p>团队管理</p>
@@ -64,7 +64,7 @@
 	                </li>
 	            </ul>
 	    	</div>
-		</div>
+	    </div>
 
 	    <div class="main-panel">
 			<nav class="navbar navbar-transparent navbar-absolute">
@@ -76,11 +76,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						{% if is_work %}
-							<a class="navbar-brand" href="submits">返回</a>
-						{% else %}
-							<a class="navbar-brand" href="unsubmits">返回</a>
-						{% endif %}
+						<a class="navbar-brand" href="teampage">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -102,72 +98,65 @@
 	            <div class="container-fluid">
 	                <div class="row">
 	                    <div class="col-md-12">
-	                        <div class="card card-plain">
+	                        <div class="card">
 	                            <div class="card-header" data-background-color="blue">
-	                                <h4 class="title">提交作业</h4>
-	                                <p class="category">{{ workMeta.title }}</p>
+	                                <h4 class="title">组队要求</h4>
+	                                <p class="category">各团队需符合组队要求</p>
 	                            </div>
-								<br>
+	                            <br>
 	                            <div class="card-content">
 	                                <div class="tim-typo">
-										<p><span class="tim-note">作业内容</span>
-											{{ workMeta.content }}
+										<p><span class="tim-note">具体要求</span>
+											
 										</p>
 									</div>
 									<div class="tim-typo">
-										<p><span class="tim-note">最大提交次数</span>
-											{{ workMeta.submits }}
-										</p>
-									</div>
-									{% if not is_work %}
-									{% if member.role == 'leader' %}
-										<div class="tim-typo">
-											<span class="tim-note">上传作业</span>
-											<form method="Post" action="" enctype="multipart/form-data" >
-												{% csrf_token %}
-												{{ form }}
-												<input name='workMeta_id' type="hidden" value='{{ workMeta.id }}'/>
-												<button type="submit" class="btn btn-info pull-right">提交</button>
-											</form>
-										</div>
-									{% endif %}
-									{% else %}
-									<div class="tim-typo">
-										<p><span class="tim-note">评论</span>
-											 {{ work.review }}
-										</p>
-									</div>
-
-                                    <div class="tim-typo">
-										<p><span class="tim-note">评分</span>
-											 {{ work.score }}
-										</p>
-									</div>
-
-									<div class="row">
-                                        <div class="col-md-12">
-											 <table class="table table-hover">
-												<thead>
-                                                    <th>文件名</th>
-                                                    <th>上传者</th>
-                                                    <th>上传时间</th>
-                                                    <th>下载</th>
-                                                </thead>
-                                                <tbody>
-
-												{% for meta in files %}
-												<tr>
-													<td><a href="s/{{ meta.file.file }}">{{ meta.file.file }}</a></td>
-													<td>{{ meta.file.user.name }}</td>
-													<td>{{ meta.file.time }}</td>
-                                                    <td><a href="s/{{ meta.file.file }}"><button class="btn btn-info">下载</button></a></td>
-												</tr>
-												{% endfor %}
-                                                </tbody>
-        									</table>
-                                            </div>
-									</div>
-									{% endif %}
+										<a href="student_team_build.html">
+                        				<button type="" class="btn btn-info pull-right">发起团队</button>
+                        				</a>
+                    				</div>
+	                            </div>
+	                        </div>
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="blue">
+	                                <h4 class="title">当前组队情况</h4>
+	                                <p class="category">当前发起的团队</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table table-hover">
+	                                    <thead>
+	                                        <th>团队名称</th>
+	                                    	<th>发起人</th>
+	                                    	<th>已有人数</th>
+	                                    	<th>组建状态</th>
+	                                    	<th>申请加入</th>
+	                                    </thead>
+	                                    <tbody>
+											{% for team in teams %}
+	                                        <tr>
+	                                        	<td>{{ team.name }}</td>
+	                                        	<td>{{ team.leader.user.name }}</td>
+	                                        	<td>{{ team.count|add:1 }}</td>
+	                                        	<td>{{ team.status }}</td>
+	                                        	<td>
+	                                        		<td>
+														{% if team.status == '已通过' or member != 'None' %}
+														{% if team.id == member.team.serialNum and member.role == 'newMoe'%}
+														<button type="" class="btn btn-info" disabled="disabled">正在申请中...</button>
+														{% else %}
+														<button type="" class="btn btn-info" disabled="disabled">申请加入</button>
+														{% endif %}
+														{% else %}
+														<a href="apply_for_team?id={{ team.id }}">
+														<button class="btn btn-info"
+																href="apply_for_team">申请加入</button></a>
+														{% endif %}
+													</td>
+	                                        	</td>
+	                                        </tr>
+											{% endfor %}
+	                                    </tbody>
+	                                </table>
 	                            </div>
 	                        </div>
 	                    </div>

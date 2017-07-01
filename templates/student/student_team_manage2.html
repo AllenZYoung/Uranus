@@ -6,11 +6,10 @@
     <link rel="icon" type="image/png" href="/static/assets/img/favicon.png"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-    <title>课程资源</title>
+    <title>团队管理</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
-
 
     <!-- Bootstrap core CSS     -->
     <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet"/>
@@ -30,35 +29,36 @@
 <body>
 
 <div class="wrapper">
+
     <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
         <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-        Tip 2: you can also add an image using data-image tag
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
+            Tip 2: you can also add an image using data-image tag
         -->
 
         <div class="logo">
-            <a href="http://www.creative-tim.com" class="simple-text">
+            <a href="#" class="simple-text">
                 学生
             </a>
         </div>
 
         <div class="sidebar-wrapper">
             <ul class="nav">
-                <li class="active">
-                    <a href="{% url 'student:index' %}">
+                <li>
+                    <a href="student_course.html">
                         <i class="material-icons">dashboard</i>
                         <p>课程管理</p>
                     </a>
                 </li>
                 <li>
-                    <a href="workpage">
+                    <a href="student_task.html">
                         <i class="material-icons">content_copy</i>
                         <p>作业管理</p>
                     </a>
                 </li>
-                <li>
-                    <a href="teampage">
+                <li class="active">
+                    <a href="student_team.html">
                         <i class="material-icons">face</i>
                         <p>团队管理</p>
                     </a>
@@ -77,7 +77,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{% url 'student:index' %}">返回</a>
+                    <a class="navbar-brand" href={% url 'student:teampage' %}>返回</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -91,7 +91,6 @@
                                 <li><a href="{% url 'app:profile' %}">个人中心</a></li>
                             </ul>
                         </li>
-                        c
                     </ul>
                 </div>
             </div>
@@ -102,53 +101,52 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-plain">
-                            <div class="card-header" data-background-color="green">
-                                <h4 class="title">课程资源</h4>
-                                <p class="category">已发布的课程资源</p>
+                            <div class="card-header" data-background-color="orange">
+                                <h4 class="title">我的团队</h4>
+                                <p class="category">团队成员贡献度</p>
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table table-hover">
-                                    <thead>
-                                    <th>资源名称</th>
-                                    <th>文件类型</th>
-                                    <th>上传者</th>
-                                    <th>上传时间</th>
-                                    <th>下载资源</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for meta in file_meta %}
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>角色</th>
+                                        <th>贡献度</th>
+                                    </tr>
+                                    {% for member in member_list %}
                                         <tr>
-                                            <td><a href="s/{{ meta.file }}">{{ meta.file }}</a></td>
-                                            <td>{{ meta.type }}</td>
-                                            <td>{{ meta.time }}</td>
-                                            <td>{{ meta.user.name }}</td>
-                                            <td>
-                                                <a href="s/{{ meta.file }}">
-                                                    <button class="btn btn-success"
-                                                            onclick="demo.showNotification('top','right')">下载
-                                                    </button>
-                                                </a>
-                                            </td>
+                                            <td>{{ member.user }}</td>
+                                            <td>{{ member.role }}</td>
+                                            <td>{{ member.contribution }}</td>
                                         </tr>
                                     {% endfor %}
-                                    </tbody>
                                 </table>
+                            </div>
+
+                            <div class="card-content table-responsive">
+                                <p>请上传贡献表
+                                <form method="Post" action="" enctype="multipart/form-data">
+
+                                    {{ form.file }}
+
+                                    {% csrf_token %}
+                                    <input type="submit" value="点我上传"/>
+                                </form>
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <footer class="footer">
-            <div class="container-fluid">
-                <p class="copyright pull-right">
-                    URANUS@2017
-                </p>
-            </div>
-        </footer>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <p class="copyright pull-right">
+                        URANUS@2017
+                    </p>
+                </div>
+            </footer>
+        </div>
     </div>
-</div>
 
 </body>
 
@@ -171,5 +169,14 @@
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="/static/assets/js/demo.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+    });
+</script>
 
 </html>
