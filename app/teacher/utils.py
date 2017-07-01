@@ -114,6 +114,40 @@ def get_stu_score_excel_file_abspath():
     file = os.path.join(file_path, file_name)
     return file
 
+# 获取所有的团队学生表的excel的完整路径名
+def get_team_members_all_excel_file_abspath():
+    now_term = get_now_term()
+
+    # 团队成员表的excel命名规范：termYear_termsemester_stu_teams.xlsx
+    file_path = os.path.join(REPORT_ROOT, 'stuTeams')
+    file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_teams.xlsx'
+    file = os.path.join(file_path, file_name)
+    return file
+
+# 保存所有的学生和团队信息到excel
+def create_stu_teams_excel(file,course):
+    work_book = Workbook()
+    team_stu_list = reportTeams(course)
+    ws = work_book.get_active_sheet()
+    ws.cell(row=1, column=1).value = '团队id'
+    ws.cell(row=1, column=2).value = '团队名称'
+    ws.cell(row=1, column=3).value = '队长'
+    ws.cell(row=1,column=4).value = '队员'
+
+    for i in range(0,len(team_stu_list)):
+        num = i + 2
+        print(team_stu_list[i]['id'])
+        print(team_stu_list[i]['name'])
+        print(team_stu_list[i]['leader'])
+        ws.cell(row=num, column=1).value = team_stu_list[i]['id']
+        ws.cell(row=num, column=2).value = team_stu_list[i]['name']
+        ws.cell(row=num, column=3).value = team_stu_list[i]['leader']
+        column_index = 4
+        for member in team_stu_list[i]['member']:
+            ws.cell(row=num, column=column_index).value = member
+            column_index += 1
+        work_book.save(filename=file)
+
 
 # 保存团队得分表到excel
 def create_team_score_excel(file, team_list, score_list):

@@ -20,9 +20,9 @@ def reportTeam(team):
     members = Member.objects.filter(team=team)
     for member in members:
         if member.role == 'leader':
-            t['leader'] = member
+            t['leader'] = member.user.name
         else:
-            t['member'].append(members)
+            t['member'].append(member.user.name)
     return t
 
 
