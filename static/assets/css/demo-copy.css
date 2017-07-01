@@ -46,17 +46,15 @@
 }
 .tim-typo .tim-note{
     bottom: 10px;
-    color: #474747;
+    color: #c0c1c2;
     display: block;
     font-weight: 400;
+    font-size: 13px;
     line-height: 13px;
     left: 0;
     margin-left: 20px;
     position: absolute;
     width: 260px;
-}
-.tim-typo{
-    font-size: 1.25em;
 }
 .tim-row{
     padding-top: 50px;
