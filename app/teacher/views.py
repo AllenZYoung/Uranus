@@ -417,7 +417,7 @@ def teams(request):
     course=get_object_or_404(Course,id=course_id)
     teams=Team.objects.filter(course_id=course.id)
     unteamed_students=query_unteamed_students(course_id)
-    return render(request,'teacher/teams.html',{'course':course,'unteamed_students':unteamed_students,'teams':teams})
+    return render(request,'teacher/show_teams.html',{'course':course,'unteamed_students':unteamed_students,'teams':teams})
 
 
 @login_required(login_url='app:login')
