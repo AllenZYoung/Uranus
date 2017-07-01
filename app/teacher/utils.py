@@ -215,12 +215,12 @@ def file_iterator(file_name, chunk_size=512):
 
 # 获取某一门课程中没有团队的学生
 def query_unteamed_students(course_id):
-    course=get_object_or_404(Course,id=course_id)
-    students=Enroll.objects.filter(course=course,user__role='student')
+    course=get_object_or_404(Course, id=course_id)
+    enrolls=Enroll.objects.filter(course=course,user__role='student')
     unteamed_students=[]
-    for stu in students:
-        member=Member.objects.filter(user=stu)
+    for enroll in enrolls:
+        member=Member.objects.filter(user=enroll.user)
         if member is None:
-            unteamed_students.append(stu)
+            unteamed_students.append(enroll.user)
     return unteamed_students
 

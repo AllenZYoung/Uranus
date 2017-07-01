@@ -32,5 +32,6 @@ urlpatterns = [
     url(r'^team_manage/', views.team_manage, name='team_manage'),
     url(r'^teams/',views.teams,name='teams'),
     url(r'^team_memebers/',views.team_members,name='team_members'),
+    url(r'^adjust_team$',views.adjust_team,name='adjust_team')
 
 ]
