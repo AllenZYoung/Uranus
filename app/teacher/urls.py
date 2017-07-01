@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^preview_source_online/', views.preview_source_online, name='preview_source_online'),
     url(r'^score_manage/',views.score_manage,name='score_manage'),
     url(r'^team_manage/', views.team_manage, name='team_manage'),
+    url(r'^teams/',views.teams,name='teams'),
+    url(r'^team_memebers/',views.team_members,name='team_members'),
 
 ]
