@@ -1,9 +1,11 @@
 .idea/
+
 *.pyc
-*/migrations/*
 *__pycache__*
+
+*/migrations/*
 *.DS_Store
-uploads/*
+
 Uranus/DEPRECATED
 Uranus/Uranus.log
 
@@ -14,7 +16,3 @@ templates/teacher/course_teacher.html
 static/user/
 static/teamScores/
 static/stuScores/
-
-
-
-Uranus/Uranus.log

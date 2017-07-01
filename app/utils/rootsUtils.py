@@ -18,12 +18,14 @@ IMPORT_SKELETON_ROOT    = os.path.join(IMPORT_ROOT, 'skeleton')
 HANDOUT_ROOT    = os.path.join(UPLOAD_ROOT, 'handout')
 
 
-## Test Entry
-print(RESOURCE_ROOT)
-print(PHOTO_ROOT)
-print(REPORT_ROOT)
-print(UPLOAD_ROOT)
-print(ATTACHMENT_ROOT)
-print(IMPORT_ROOT)
-print(IMPORT_SKELETON_ROOT)
-print(HANDOUT_ROOT)
+##
+# Test Entry
+if __name__ == '__main__':
+    print(RESOURCE_ROOT)
+    print(PHOTO_ROOT)
+    print(REPORT_ROOT)
+    print(UPLOAD_ROOT)
+    print(ATTACHMENT_ROOT)
+    print(IMPORT_ROOT)
+    print(IMPORT_SKELETON_ROOT)
+    print(HANDOUT_ROOT)
