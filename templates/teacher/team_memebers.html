@@ -2,30 +2,191 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>团队成员信息</title>
+    <title>学生团队信息</title>
+    {% load static %}
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}"/>
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+
+    <!-- Bootstrap core CSS     -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet"/>
+
+    <!--  Material Dashboard CSS    -->
+    <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet"/>
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet"/>
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+          type='text/css'>
+    <style>
+        html, body {
+            height: 100%
+        }
+    </style>
 </head>
 <body>
-    <label>团队名称:{{ team.name }}</label><br/>
-    <label>团队编号:{{ team.serialNum }}</label>
-    <label>团队成员信息</label><br/>
+<div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
+    <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-    <table>
-        <tr>
-            <th>学号</th>
-            <th>姓名</th>
-            <th>性别</th>
-            <th>角色</th>
-            <th>贡献度</th>
-        </tr>
-        {% for member in members %}
-            <tr>
-                <td>{{ member.user.username }}</td>
-                <td>{{ member.user.name }}</td>
-                <td>{{ member.user.get_male_display }}</td>
-                <td>{{ member.get_role_display }}</td>
-                <td>{{ member.contribution }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        Tip 2: you can also add an image using data-image tag
+    -->
+
+    <div class="logo">
+        <a href="#" class="simple-text">
+            教师
+        </a>
+    </div>
+
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            <li>
+                <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
+                    <i class="material-icons">dashboard</i>
+                    <p>课程管理</p>
+                </a>
+            </li>
+            <li class="active">
+                <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
+                    <i class="material-icons">content_copy</i>
+                    <p>作业管理</p>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+                    <i class="material-icons">face</i>
+                    <p>成绩管理</p>
+                </a>
+            </li>
+            {#	                <li>#}
+            {#	                    <a href="teacher_team.html">#}
+            {#	                        <i class="material-icons">face</i>#}
+            {#	                        <p>学生团队管理</p>#}
+            {#	                    </a>#}
+            {#	                </li>#}
+            {#	                <li>#}
+            {#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
+            {#	                        <i class="material-icons">receipt</i>#}
+            {#	                        <p>往期课程</p>#}
+            {#	                    </a>#}
+            {#	                </li>#}
+        </ul>
+    </div>
+</div>
+
+<div class="main-panel">
+    <nav class="navbar navbar-transparent navbar-absolute">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">返回</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="material-icons">person</i>
+                            <p class="hidden-lg hidden-md">Profile</p>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'app:logout' %}">注销登录</a></li>
+                            <li><a href="{% url 'app:profile' %}">个人中心</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" data-background-color="orange">
+                            <h4 class="title">团队成员</h4>
+                            <p class="category">查看该团队目前的成员</p>
+                        </div>
+                        <div class="card-content table-responsive">
+                            <label>团队名称:{{ team.name }}</label><br/>
+                            <label>团队编号:{{ team.serialNum }}</label>
+                            <label>团队成员信息</label><br/>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>角色</th>
+                                    <th>贡献度</th>
+                                </tr>
+                                {% for member in members %}
+                                    <tr>
+                                        <td>{{ member.user.username }}</td>
+                                        <td>{{ member.user.name }}</td>
+                                        <td>{{ member.user.get_gender_display }}</td>
+                                        <td>{{ member.get_role_display }}</td>
+                                        <td>{{ member.contribution }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <p class="copyright pull-right">
+                URANUS@2017
+            </p>
+        </div>
+    </footer>
+</div>
+
 </body>
+<!--   Core JS Files   -->
+<script src="{% static 'assets/js/jquery-3.1.0.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/js/material.min.js' %}" type="text/javascript"></script>
+
+<!--  Charts Plugin -->
+<script src="{% static 'assets/js/chartist.min.js' %}"></script>
+
+<!--  Notifications Plugin    -->
+<script src="{% static 'assets/js/bootstrap-notify.js' %}"></script>
+
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+<!-- Material Dashboard javascript methods -->
+<script src="{% static 'assets/js/material-dashboard.js' %}"></script>
+
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="{% static 'assets/js/demo.js' %}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+    });
+</script>
+
+
 </html>
+
