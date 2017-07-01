@@ -18,9 +18,14 @@ LOG_LEVEL = _LOG_LEVEL()
 
 
 def log(msg='message_string', src='functionName_or_shortDescription', level=LOG_LEVEL.INFO):
+    out = logSilent(msg, src, level)
+    print(out)
+
+
+def logSilent(msg='message_string', src='functionName_or_shortDescription', level=LOG_LEVEL.INFO):
     time = datetime.now()
     out = '[%s] %s\t<%s>: %s' %(level, time, src, msg)
     with open(LOG_FILE, 'a+') as logger:
         logger.write(out)
         logger.write('\r\n')
-    print(out)
+    return out

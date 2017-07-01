@@ -44,7 +44,7 @@
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li  class="active">
+	                <li class="active">
 	                    <a href="/system/term">
 	                        <i class="material-icons">today</i>
 	                        <p>学期管理</p>
@@ -70,7 +70,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="term">返回</a>
+						<a class="navbar-brand" href="/system/showTerm">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -89,49 +89,47 @@
 			</nav>
 
 			<div class="content">
-	            <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-md-12">
-	                        <div class="card card-plain">
-	                            <div class="card-header" data-background-color="green">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card" data-color="blue">
+								<div class="card-header" data-background-color="green">
 	                                <h4 class="title">学期信息</h4>
-	                                <p class="category">查看并维护学期信息</p>
+									<p class="category">查看学期信息</p>
 	                            </div>
-	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
-	                                    <thead>
-	                                    	<th>年份</th>
-	                                    	<th>学期（春／秋）</th>
-	                                    	<th>开始周次</th>
-	                                    	<th>结束周次</th>
-	                                    	<th>操作</th>
-	                                    </thead>
-	                                    <tbody>
-                                            {% for term in terms %}
-                                                <tr>
-                                                    <td>{{ term.year }}</td>
-                                                    <td>
-                                                        {% if term.semester == 'spring' %}
-                                                            春季
-                                                        {% else %}
-                                                            秋季
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>{{ term.startWeek }}</td>
-                                                    <td>{{ term.endWeek }}</td>
-                                                    <td>
-                                                        <a class="btn btn-success" href="editTerm?id={{ term.id }}">修改</a>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-	                                    </tbody>
-	                                </table>
+                                <form method="post" action="/system/editTerm">
+                                {% csrf_token %}
+                                <input type="text" name='termId' hidden="True" readonly="True" value="{{ termId }}">
+	                            <div class="card-content">
+	                            	<div class="row">
+	                            		<div class="col-md-3">
+	                            			<label for="">年份</label>
+	                            			<input type="text" class="form-control" name='syear' value="{{ term.year }}" readonly="True" >
+	                            		</div>
+	                            		<div class="col-md-3">
+	                            			<label for="">学期（春／秋）</label>
+                                            {% if term.semester == 'spring' %}
+                                                <input type="text" class="form-control" name='semester' value="春季" readonly="True" >
+                                            {% else %}
+                                                <input type="text" class="form-control" name='semester' value="秋季" readonly="True" >
+                                            {% endif %}
+	                            		</div>
+	                            		<div class="col-md-3">
+	                            			<label for="">开始周次</label>
+                                            <input type="text" class="form-control" name='startWeek' value="{{ term.startWeek }}" readonly="True" >
+	                            		</div>
+	                            		<div class="col-md-3">
+	                            			<label for="">结束周次</label>
+	                            			<input type="text" class="form-control" name='endWeek' value="{{ term.endWeek }}" readonly="True" >
+	                            		</div>
+	                            	</div>
 	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+                                </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<footer class="footer">
 				<div class="container-fluid">
@@ -170,7 +168,6 @@
 
 			// Javascript method's body can be found in assets/js/demos.js
         	demo.initDashboardPageCharts();
-
     	});
 	</script>
 
