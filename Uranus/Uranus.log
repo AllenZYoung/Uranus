@@ -59,3 +59,10 @@
 [INFO] 2017-07-01 12:07:31.783181	<handle_uploaded_user>: E:\bt\pycharm\django\Uranus\resource\uploads\import
 [INFO] 2017-07-01 12:07:31.784181	<handle_uploaded_user>: E:\bt\pycharm\django\Uranus\resource\uploads\import\20170701-120731_学生 - 副本.xlsx
 [INFO] 2017-07-01 12:07:31.888187	<handle_uploaded_user>: 导入exel
+[INFO] 2017-07-01 14:51:10.383772	<index_login>: ks1
+[INFO] 2017-07-01 14:51:22.735933	<student_download>: Downloading /student_team_build.html
+[INFO] 2017-07-01 14:51:22.743150	<student_download>: Downloading /student_team_build.html
+[INFO] 2017-07-01 14:51:22.748859	<student_download>: Downloading /student_team_build.html
+[INFO] 2017-07-01 14:51:22.756285	<student_download>: Downloading /student_team_build.html
+[INFO] 2017-07-01 14:51:22.762542	<student_download>: Downloading /student_team_build.html
+[INFO] 2017-07-01 14:51:22.812865	<student_download>: Downloading /student_team_build.html
