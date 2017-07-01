@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>作业管理</title>
+    <title>成绩管理</title>
     {% load static %}
     <link rel="apple-touch-icon" sizes="76x76" href="{%  static 'assets/img/apple-icon.png' %}" />
 	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
@@ -52,13 +52,13 @@
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
-	                <li class="active">
+	                <li>
 	                    <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
-                    <li>
+                    <li class="active">
 	                    <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
 	                        <i class="material-icons">face</i>
 	                        <p>团队管理</p>
@@ -96,7 +96,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="{% url 'teacher:task' %}?course_id={{ course.id }}">作业管理</a>
+						<a class="navbar-brand" href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">成绩管理</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -119,74 +119,38 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'teacher:create_homework' %}?course_id={{ course.id }}">
+							<a href="{% url 'teacher:generate_team_score_table' %}?course_id={{ course.id }}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">content_copy</i>
+										<i class="material-icons">accessibility</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">发布作业</h3>
+										<h3 class="title">管理团队申请</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
 											<p>
-												在课程内向学生布置作业
+												查看或管理学生的团队申请
 											</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'teacher:homework' %}?course_id={{ course.id }}">
+                       <div class="col-md-6 col-sm-6">
+							<a href="{% url 'teacher:generate_stu_score_table' %}?course_id={{ course.id }}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
-										<i class="material-icons">content_copy</i>
+										<i class="material-icons">groupadd</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">调整作业</h3>
+										<h3 class="title">团队调整</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>调整作业内容、要求、截止日期等</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'teacher:show_works' %}?course_id={{ course.id }}">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">content_copy</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">查看已发布作业</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>评价已截止的作业</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'teacher:past_homeworks' %}?course_id={{ course.id }}">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="red">
-										<i class="material-icons">content_copy</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">往期作业</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看本学期课程内往期所布置作业，以及团队提交</p>
+											<p>微调学生的团队成员</p>
 										</div>
 									</div>
 								</div>
