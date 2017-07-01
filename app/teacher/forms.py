@@ -16,7 +16,7 @@ class HomeworkForm(forms.Form):
     proportion = forms.FloatField(label='总分占比', min_value=0, max_value=1)
     submits = forms.IntegerField(label='最大提交次数', min_value=1)
     endTime = forms.DateField(label='截止日期', widget=widgets.SelectDateWidget)
-    attachment = forms.FileField(label='上传附件', required=False,widget=widgets.FileInput)
+    attachment = forms.FileField(label='上传附件', required=False, widget=widgets.FileInput)
 
     def set_data(self, workmeta):
         self.fields['title'].initial = workmeta.title
@@ -61,5 +61,19 @@ class EditCourseForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(EditCourseForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+
+class EditTeamForm(forms.Form):
+    STATUS = (
+        ('passed', '已通过'),
+        ('rejected', '已驳回')
+    )
+    status = forms.ChoiceField(choices=STATUS, label='状态')
+    info = forms.CharField(widget=widgets.Textarea, label='说明信息')
+
+    def __init__(self, *args, **kwargs):
+        super(EditTeamForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
