@@ -7,161 +7,187 @@
 	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程管理</title>
+    <title>课程管理</title>
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
 
     <!-- Bootstrap core CSS     -->
     <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
 
     <!--  Material Dashboard CSS    -->
     <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet"/>
-
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
+
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+          type='text/css'>
 </head>
 
 <body>
 
-	<div class="wrapper">
 
-	    <div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
-			<!--
-		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+<div class="wrapper">
 
-		        Tip 2: you can also add an image using data-image tag
-		    -->
+    <div class="sidebar" data-color="blue" data-image="../../static/assets/img/sidebar-1.jpg">
+        <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-			<div class="logo">
-				<a href="#" class="simple-text">
-					教务
-				</a>
-			</div>
+            Tip 2: you can also add an image using data-image tag
+        -->
 
-	    	<div class="sidebar-wrapper">
-	            <ul class="nav">
-	                <li>
-	                    <a href="{% url 'system:index' %}">
-	                        <i class="material-icons">today</i>
-	                        <p>学期管理</p>
-	                    </a>
-	                </li>
-	                <li class="active">
-	                    <a href="{% url 'system:index_course' %}">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
-	                    </a>
-	                </li>
-	            </ul>
-	    	</div>
-	    </div>
+        <div class="logo">
+            <a href="/system" class="simple-text">
+                教务
+            </a>
+        </div>
 
-	    <div class="main-panel">
-			<nav class="navbar navbar-transparent navbar-absolute">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="{% url 'system:index_course' %}">课程管理</a>
-					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-		 						</a>
-		 						<ul class="dropdown-menu">
-									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li>
+                    <a href="/system/term">
+                        <i class="material-icons">today</i>
+                        <p>学期管理</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/system/course">
+                        <i class="material-icons">dashboard</i>
+                        <p>课程管理</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card" data-color="blue">
-								<div class="card-header" data-background-color="blue">
-	                                <h4 class="title">创建课程</h4>
-									<p class="category">填写如下信息并创建课程</p>
-	                            </div>
-                                <form method="post" action="" >
-                                    {% csrf_token %}
-                                    <div class="card-content">
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label for="">学期</label>
-                                                 <select name="term" class="form-control">
-                                                     {{ form.term }}
-                                                    {% for term in terms %}
-                                                        <option value="{{ term.id }}">
-                                                            {% if term.semester == 'spring' %}
-                                                                {{ term.year }} 春季学期
-                                                            {% else %}
-                                                                {{ term.year }} 秋季学期
-                                                            {% endif %}
-                                                        </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-5" >
-                                                <label for="" >课程名称</label>
-                                                {{ form.name }}
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="">学分</label>
-                                                {{ form.credit }}
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="">上课地点</label>
-                                                {{ form.classroom }}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="">开始时间</label>
-                                                {{ form.startTime }}
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">结束时间</label>
-                                                {{ form.endTime }}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button class="btn btn-info pull-right" onsubmit="return timeCheck()">创建课程</button>
-                                            </div>
-                                        </div>
+    <div class="main-panel">
+        <nav class="navbar navbar-transparent navbar-absolute">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="course">返回</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">person</i>
+                                <p class="hidden-lg hidden-md">Profile</p>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'app:logout' %}">注销登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" data-color="blue">
+                            <div class="card-header" data-background-color="blue">
+                                <h4 class="title">创建课程</h4>
+                                <p class="category">填写如下信息并创建课程</p>
+                            </div>
+                            {#                                <form method="post" action="" >#}
+                            {% csrf_token %}
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label for="">学期</label>
+                                        <select name="term" class="form-control">
+                                            {{ form.term }}
+                                            {% for term in terms %}
+                                                <option value="{{ term.id }}">
+                                                    {% if term.semester == 'spring' %}
+                                                        {{ term.year }} 春季学期
+                                                    {% else %}
+                                                        {{ term.year }} 秋季学期
+                                                    {% endif %}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
-                                </form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+                                    <div class="col-md-5">
+                                        <label for="">课程名称</label>
+                                        {{ form.name }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="">学分</label>
+                                        {{ form.credit }}
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="">上课地点</label>
+                                        {{ form.classroom }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="">开始时间</label>
+                                        {{ form.startTime }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">结束时间</label>
+                                        {{ form.endTime }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button id="submit-data" class="btn btn-info pull-right">创建课程</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {#                                </form>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<footer class="footer">
-				<div class="container-fluid">
-					<p class="copyright pull-right">
-						URANUS@2017
-					</p>
-				</div>
-			</footer>
-		</div>
-	</div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <p class="copyright pull-right">
+                    URANUS@2017
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    创建课程
+                </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirm-btn" class="btn btn-primary" data-dismiss="modal">确定
+                </button>
+{#                <button type="button" class="btn btn-primary" id="confirm-btn">#}
+{#                    确定#}
+{#                </button>#}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 
 </body>
@@ -183,14 +209,79 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="{%  static 'assets/js/demo.js' %}"></script>
 
+<script type="text/javascript">
+    $(document).ready(function () {
 
-	<script type="text/javascript">
-    	$(document).ready(function(){
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
 
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
+    });
 
-    	});
-	</script>
+{#    <!--#}
+{#    term:1#}
+{#name:kecheng#}
+{#credit:1#}
+{#classroom:didain#}
+{#startTime_year:2024#}
+{#startTime_month:5#}
+{#startTime_day:11#}
+{#endTime_year:2024#}
+{#endTime_month:6#}
+{#endTime_day:11-->#}
+    $('#submit-data').click(function () {
+        var term = $('#id_term').val();
+        var course_name = $('#id_name').val() || "";
+        var credit = $('#id_credit').val() || "";
+        var startTime_year = $('#id_startTime_year').val() || "";
+        var startTime_month = $('#id_startTime_month').val() || "";
+        var startTime_day = $('#id_startTime_day').val() || "";
+        var endTime_year = $('#id_endTime_year').val() || "";
+        var endTime_month = $('#id_endTime_month').val() || "";
+        var endTime_day = $('#id_endTime_day').val() || "";
+
+
+        if (course_name=="" || credit==""
+            || startTime_year=="" || startTime_month=="" || startTime_day==""
+            || endTime_year=="" || endTime_month=="" || endTime_day==""){
+            $('.modal-body').text('数据不完整，请重新填写！');
+            $('#myModal').modal('show');
+            return;
+        }
+
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax('{% url 'system:createCourse' %}', {
+            method: 'post',
+            data: {
+                'csrfmiddlewaretoken': csrftoken,
+                'term': term,
+                'name': course_name,
+                'credit': credit,
+                'startTime_year': startTime_year,
+                'startTime_month': startTime_month,
+                'startTime_day': startTime_month,
+                'endTime_year': endTime_year,
+                'endTime_month': endTime_month,
+                'endTime_day': endTime_day
+            },
+            success: function (data) {
+                data = $.parseJSON(data);
+                var success_info = data['success'] || "";
+                var error_message = data['error_message'] || "";
+                if (success_info) {
+                    $('.modal-body').text('创建成功！');
+                    $('#myModal').modal('show');
+                    $('#confirm-btn').click(function () {
+                        window.location = "/system/showCourse";
+                    });
+                } else {
+                    $('.modal-body').text(error_message);
+                    $('#myModal').modal('show');
+                }
+            }
+        });
+    });
+
+
+</script>
 
 </html>

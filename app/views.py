@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from app.forms import *
 from app.models import *
 from app.utils import *
+import json
 
 # 在需要鉴别用户身份的地方，调用request.user.is_authenticated()判断即可
 # 需要用户登录才能访问的页面，请添加header @login_required(login_url='app:login'),参见test
@@ -33,11 +34,15 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if not form.is_valid():
-            return render(request, 'login.html', {'form': form, 'error_message': '用户名或密码不正确'})
+            data = {}
+            data['error_message'] = '用户名或密码错误'
+            return HttpResponse(json.dumps(data))
+            # return render(request, 'login.html', {'form': form, 'error_message': '用户名或密码不正确'})
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
 
+        data = {}
         if user:
             if user.is_active:
                 auth_login(request, user)
@@ -47,16 +52,20 @@ def login(request):
                 else:
                     user=get_object_or_404(User,username=request.user.username)
                     log(user.name or user.username + '登录成功', 'index_login', LOG_LEVEL.INFO)
+
                     if user.role == 'student':
-                        return redirect('/student/')
+                        data['user_role'] = 'student'
                     elif user.role == 'teacher':
-                        return redirect('/teacher/')
+                        data['user_role'] = 'teacher'
                     else:
-                        return redirect('/system/')
+                        data['user_role'] = 'system'
             else:
-                return HttpResponse('您的账户已被禁用')
+                data['error_message'] = '您的账户已被禁用'
         else:
-            return render(request, 'login.html', {'form': form, 'error_message': '用户名或密码不正确'})
+            data['error_message'] = '用户名或密码错误'
+        return HttpResponse(json.dumps(data))
+
+            # return render(request, 'login.html', {'form': form, 'error_message': '用户名或密码不正确'})
     else:
         form = LoginForm()
         return render(request, 'login.html', {'form': form, })
@@ -107,3 +116,4 @@ def change_info(request):
 
 def bad_request(request):
     return render(request,'pages-error-404.html',status=404)
+
