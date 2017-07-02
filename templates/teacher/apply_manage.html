@@ -122,17 +122,18 @@
                     <div class="card">
                         <div class="card-header" data-background-color="orange">
                             <h4 class="title">管理团队申请</h4>
-                            <p class="category">批准或驳回团队</p>
+                            <p class="category">批准或驳回团队，选择下方的状态并更改</p>
                         </div>
                         <div class="row">
                             <div class="col-md-12" style="padding: 20px 40px 20px 40px;">
                                 <form method="post" action="" enctype="multipart/form-data">
+                                    选择“已通过”则批准团队申请，选择“未通过”则驳回团队申请
                                     {% csrf_token %}
                                     {{ form.status }}
-
+                                    请输入批准或驳回的意见
                                     {{ form.info }}
                                     <input type="hidden" name="team_id" value="{{ team.id }}">
-                                    <button class="btn btn-warning" type="submit">确定</button>
+                                    <button class="btn btn-warning" type="submit">确定更改</button>
                                 </form>
                             </div>
                         </div>
