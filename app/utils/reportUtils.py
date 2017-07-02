@@ -50,7 +50,7 @@ def reportGradeTeam(team):
     for wm in WorkMeta.objects.filter(course=team.course).order_by('startTime'):
         w = ws.filter(workMeta=wm).order_by('-time').first()
         if w:
-            grade[wm.id] = w.score      # 作业ID(不是连续流水号), 或许该用Title？
+            grade[wm.id] = w.score or 0      # 作业ID(不是连续流水号), 或许该用Title？
         else:
             grade[wm.id] = 0
     return grade
