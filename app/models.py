@@ -95,7 +95,7 @@ class Enroll(models.Model):
 # [团队]==[课程]&[用户:学生账户]
 class Team(models.Model):
     course = models.ForeignKey(Course)
-    serialNum = models.PositiveSmallIntegerField(default=-1, help_text='每学期的课都能从1开始的编号')  # 'id' is a reserved word...
+    serialNum = models.SmallIntegerField(default=-1, help_text='每学期的课都能从1开始的编号')  # 'id' is a reserved word...
     name = models.CharField(max_length=32, null=True, blank=True, help_text='可选的自定义名字')
     STATUS = (
         ('incomplete', '未完成组队'),
