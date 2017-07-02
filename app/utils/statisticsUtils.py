@@ -1,5 +1,5 @@
+from app.utils.logUtils import log, LOG_LEVEL
 from app.models import *
-from app.utils.logUtils import *
 
 # 关于统计计算的工具集, 从属于reportUtils
 # by kahsolt

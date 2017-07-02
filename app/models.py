@@ -2,11 +2,9 @@
 # Date: 2017-06-26
 # Principle: Maintain tables as least as possible!
 
-import os
-
 from django.db import models
 from datetime import datetime
-from app.utils.rootsUtils import *
+import os
 
 
 # [用户:学生/教师/教务账户]

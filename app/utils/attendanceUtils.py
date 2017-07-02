@@ -1,6 +1,6 @@
-from app.models import *
+from app.utils.logUtils import log, LOG_LEVEL
 from datetime import datetime
-from app.utils.logUtils import *
+from app.models import *
 
 # 关于签到的工具集
 # by kahsolt

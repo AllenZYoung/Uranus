@@ -164,7 +164,7 @@ def homework(request):
 # @login_required(login_url='app:login')
 def preview_source_online(request):
     file = request.GET.get('file')
-    log('file_path=' + file)
+    log('file_path=' + file, 'preview_source_online')
     url = fileUtils.docPreviewUrl(file)
     log(url, 'preview_source_online')
     return redirect(url)

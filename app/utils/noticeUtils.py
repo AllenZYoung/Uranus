@@ -1,5 +1,5 @@
+from app.utils.logUtils import log, LOG_LEVEL
 from app.models import *
-from app.utils.logUtils import *
 
 # 关于公告牌的工具集
 # by kahsolt

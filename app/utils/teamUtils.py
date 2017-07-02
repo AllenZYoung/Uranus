@@ -1,6 +1,6 @@
 from django.db.models import Max
 from app.models import *
-from app.utils.logUtils import *
+from app.utils.logUtils import log, LOG_LEVEL
 
 
 # 关于团队管理的工具集
