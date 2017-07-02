@@ -1,7 +1,7 @@
 from app.models import *
 from app.utils.logUtils import *
 from app.utils.statisticsUtils import *
-
+import pprint
 # 关于报表的工具集
 # by kahsolt
 
@@ -18,13 +18,15 @@ def reportTeam(team):
         'leader': None,     # 队长实体User
         'member': [],       # 队员实体列表[User]
     }
+    t['member'] = list()
     members = Member.objects.filter(team=team)
     for member in members:
         if member.role == 'leader':
-            t['leader'] = member        # SHOULD be [User] but...
-        else:
+            t['leader'] = member
+        elif member.role == 'member':
             t['member'].append(member)
     return t
+
 
 
 # 数据整理: [所有团队信息字典的列表]
@@ -36,6 +38,7 @@ def reportTeams(course):
     teams = Team.objects.filter(course=course).order_by('serialNum')
     for team in teams:
         t = reportTeam(team)
+        pprint.pprint(t)
         ts.append(t)
     return ts
 
