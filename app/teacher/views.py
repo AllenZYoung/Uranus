@@ -503,7 +503,7 @@ def apply_manage(request):
 def score_report(request):
     course_id = request.session.get('course_id', None)
     scores=generate_team_scores(course_id)
-    teams=Team.objects.filter(course_id=course_id)
+    teams=Team.objects.filter(course_id=course_id,status='passed')
     return render(request,'teacher/score_report.html',{'datas':scores,'teams':teams})
 
 
@@ -523,7 +523,7 @@ def generate_score_excel(request):
 @login_required(login_url='app:login')
 def add_score_params(request):
     course_id = request.session.get('course_id', None)
-    teams = Team.objects.filter(course_id=course_id)
+    teams = Team.objects.filter(course_id=course_id,status='passed')
     user=User.objects.get(username=request.user.username)
     if request.method == 'GET':
         form=ScoreParamForm()
@@ -536,7 +536,7 @@ def add_score_params(request):
                              proportion=form.cleaned_data['proportion'],submits=1,startTime=datetime.now(),endTime=datetime.now())
             workmeta.save()
             for team in teams:
-                work=Work(workMeta=workmeta,team=team,score=form.cleaned_data[team.serialNum],time=datetime.now())
+                work=Work(workMeta=workmeta,team=team,score=request.POST.get(str(team.serialNum)),time=datetime.now())
                 work.save()
             return redirect('/teacher/score_report')
         else:

@@ -10,10 +10,6 @@ Uranus
         photos
         reports     (报表下载)
         uploads     (文件上传：作业附件/讲义资源)
-            attachment
-            handout
-            import
-                skeleton    (导入Excel模板)
     static      [静态文件目录]
         assets
     templates   [html视图层]

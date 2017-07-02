@@ -103,19 +103,22 @@
 	                                <h4 class="title">组队要求</h4>
 	                                <p class="category">各团队需符合组队要求</p>
 	                            </div>
-	                            <br>
-	                            <div class="card-content">
-	                                <div class="tim-typo">
-										<p><span class="tim-note">具体要求</span>
-											
-										</p>
-									</div>
-									<div class="tim-typo">
-										<a href="student_team_build.html">
-                        				<button type="" class="btn btn-info pull-right">发起团队</button>
-                        				</a>
-                    				</div>
-	                            </div>
+	                            <div class="card-content table-responsive">
+									<form method="POST" action="" enctype="multipart/form-data">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<td style="text-align: center">团队名称</td>
+													<td><input type="text" class="form-control" name="team_name"></td>
+													{% csrf_token %}
+													<td style="text-align: center">
+														<button type="submit" class="btn btn-info">提交</button>
+													</td>
+												</tr>
+											</thead>
+										</table>
+									</form>
+								</div>
 	                        </div>
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="blue">

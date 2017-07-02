@@ -209,6 +209,7 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="{%  static 'assets/js/demo.js' %}"></script>
 
+    <script src="{% static 'assets/js/uranus.js' %}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -217,70 +218,15 @@
 
     });
 
-{#    <!--#}
-{#    term:1#}
-{#name:kecheng#}
-{#credit:1#}
-{#classroom:didain#}
-{#startTime_year:2024#}
-{#startTime_month:5#}
-{#startTime_day:11#}
-{#endTime_year:2024#}
-{#endTime_month:6#}
-{#endTime_day:11-->#}
-    $('#submit-data').click(function () {
-        var term = $('#id_term').val();
-        var course_name = $('#id_name').val() || "";
-        var credit = $('#id_credit').val() || "";
-        var startTime_year = $('#id_startTime_year').val() || "";
-        var startTime_month = $('#id_startTime_month').val() || "";
-        var startTime_day = $('#id_startTime_day').val() || "";
-        var endTime_year = $('#id_endTime_year').val() || "";
-        var endTime_month = $('#id_endTime_month').val() || "";
-        var endTime_day = $('#id_endTime_day').val() || "";
-
-
-        if (course_name=="" || credit==""
-            || startTime_year=="" || startTime_month=="" || startTime_day==""
-            || endTime_year=="" || endTime_month=="" || endTime_day==""){
-            $('.modal-body').text('数据不完整，请重新填写！');
-            $('#myModal').modal('show');
-            return;
-        }
-
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-        $.ajax('{% url 'system:createCourse' %}', {
-            method: 'post',
-            data: {
-                'csrfmiddlewaretoken': csrftoken,
-                'term': term,
-                'name': course_name,
-                'credit': credit,
-                'startTime_year': startTime_year,
-                'startTime_month': startTime_month,
-                'startTime_day': startTime_month,
-                'endTime_year': endTime_year,
-                'endTime_month': endTime_month,
-                'endTime_day': endTime_day
-            },
-            success: function (data) {
-                data = $.parseJSON(data);
-                var success_info = data['success'] || "";
-                var error_message = data['error_message'] || "";
-                if (success_info) {
-                    $('.modal-body').text('创建成功！');
-                    $('#myModal').modal('show');
-                    $('#confirm-btn').click(function () {
-                        window.location = "/system/showCourse";
-                    });
-                } else {
-                    $('.modal-body').text(error_message);
-                    $('#myModal').modal('show');
-                }
-            }
+    $(function () {
+        $('#myModalLabel').text('创建课程'); //不同的页面，text值不同，需要修改
+        $('#submit-data').click(function () {
+            submitClick(
+                "{% url 'system:createCourse' %}",
+                '创建成功！'
+            );
         });
     });
-
 
 </script>
 

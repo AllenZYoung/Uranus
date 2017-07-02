@@ -130,7 +130,6 @@ function submitClickWithFile(postUrl, modalShowText) {
                 data = $.parseJSON(data);
                 var success_info = data['success'] || "";
                 var error_message = data['error_message'] || "";
-                debugger;
                 if (success_info) {
                     $('.modal-body').text(modalShowText);
                     $('#myModal').modal('show');

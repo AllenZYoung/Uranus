@@ -78,6 +78,7 @@
 [INFO] 2017-07-02 14:54:57.544374	<handle_uploaded_user>: /home/hui/code/PycharmProjects/Uranus/resource/uploads/import
 [INFO] 2017-07-02 14:54:57.545312	<handle_uploaded_user>: /home/hui/code/PycharmProjects/Uranus/resource/uploads/import/20170702-145457_学生.xlsx
 [INFO] 2017-07-02 14:54:57.624193	<handle_uploaded_user>: 导入exel
+<<<<<<< Updated upstream
 [INFO] 2017-07-02 15:33:15.701778	<index_login>: 张廓
 [INFO] 2017-07-02 15:40:26.310499	<index_login>: 张廓
 [INFO] 2017-07-02 15:42:40.763009	<index_login>: 林广艳
@@ -91,3 +92,19 @@
 [INFO] 2017-07-02 16:06:19.468267	<handle_uploaded_user>: /home/hui/code/PycharmProjects/Uranus/resource/uploads/import
 [INFO] 2017-07-02 16:06:19.469309	<handle_uploaded_user>: /home/hui/code/PycharmProjects/Uranus/resource/uploads/import/20170702-160619_学生.xlsx
 [INFO] 2017-07-02 16:06:19.517170	<handle_uploaded_user>: 导入exel
+<<<<<<< Updated upstream
+[INFO] 2017-07-02 16:46:55.109767	<index_login>: 皮皮虾
+=======
+[INFO] 2017-07-02 16:24:18.941572	<index_login>: 林广艳
+[INFO] 2017-07-02 16:38:01.926550	<index_login>: 张坤
+[INFO] 2017-07-02 16:38:54.638449	<index_login>: 闫亚辉
+[INFO] 2017-07-02 16:41:20.017272	<index_login>: 闫亚辉
+[INFO] 2017-07-02 16:42:06.166634	<index_login>: 林广艳
+[INFO] 2017-07-02 16:43:26.819702	<index_login>: 100登录成功
+>>>>>>> Stashed changes
+=======
+[INFO] 2017-07-02 15:09:37.212868	<student_download>: Downloading C:/student_team_build.html
+[INFO] 2017-07-02 15:12:13.372863	<student_download>: Downloading C:/student_team_build.html
+[ERROR] 2017-07-02 15:53:31.293083	<teamutils>: �Ѿ��Ƕӳ����Ա
+[ERROR] 2017-07-02 16:00:30.322527	<teamutils>: �Ѿ��Ƕӳ����Ա
+>>>>>>> Stashed changes

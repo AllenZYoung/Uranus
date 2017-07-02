@@ -30,12 +30,15 @@ def reportTeam(team):
 
 
 # 数据整理: [所有团队信息字典的列表]
-def reportTeams(course):
+def reportTeams(course, is_ordered=True):
     if not isinstance(course, Course):
         return None
 
     ts = []
-    teams = Team.objects.filter(course=course).order_by('serialNum')
+    if is_ordered:
+        teams = Team.objects.filter(course=course).order_by('serialNum')
+    else:
+        teams = Team.objects.filter(course=course)
     for team in teams:
         t = reportTeam(team)
         pprint.pprint(t)

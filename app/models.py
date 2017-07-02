@@ -6,6 +6,7 @@ import os
 
 from django.db import models
 from datetime import datetime
+from app.utils.rootsUtils import *
 
 
 # [用户:学生/教师/教务账户]
@@ -94,7 +95,7 @@ class Enroll(models.Model):
 # [团队]==[课程]&[用户:学生账户]
 class Team(models.Model):
     course = models.ForeignKey(Course)
-    serialNum = models.PositiveSmallIntegerField(help_text='每学期的课都能从1开始的编号')  # 'id' is a reserved word...
+    serialNum = models.SmallIntegerField(default=-1, help_text='每学期的课都能从1开始的编号')  # 'id' is a reserved word...
     name = models.CharField(max_length=32, null=True, blank=True, help_text='可选的自定义名字')
     STATUS = (
         ('incomplete', '未完成组队'),
@@ -159,7 +160,7 @@ class Work(models.Model):
 class File(models.Model):
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User, help_text='上传者')
-    file = models.FileField(upload_to='handout', help_text='文件实体，保存时为绝对路径(未重命名)')
+    file = models.FileField(upload_to='uploads', help_text='文件实体，保存时为绝对路径(未重命名)')
     TYPE = (
         ('text', '文本'),
         ('document', '文档'),

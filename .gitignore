@@ -1,9 +1,9 @@
 .idea/
-
 *.pyc
 *__pycache__*
-
 */migrations/*
-*.DS_Store
+.DS_Store
 Uranus/DEPRECATED/
 Uranus/Uranus.log
+/resource/uploads/*
+/resource/reports/*

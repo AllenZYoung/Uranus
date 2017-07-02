@@ -123,7 +123,7 @@ def download(request):
         f.close()
 
     file_name = os.path.basename(request.path)
-    file_path = os.path.join(ATTACHMENT_ROOT, '/', file_name)
+    file_path = os.path.join(UPLOAD_ROOT, '/', file_name)
     log('Downloading '+file_path, 'student_download')
     response = StreamingHttpResponse(read_file(file_path))
     response['Content-Type'] = 'application/octet-stream'
@@ -208,12 +208,15 @@ def teamRoot(request):
 @login_required(login_url='app:login')
 def student_team_build(request):
     user = get_object_or_404(User, username=request.user.username)
+    if request.method == 'POST':
+        team_name = request.POST.get('team_name')
+        createTeam(user, team_name)
+        return redirect('/student/student_team_build')
     enroll = Enroll.objects.get(user=user)
-    teams = reportTeams(enroll.course)
+    teams = reportTeams(enroll.course, is_ordered=False)
     for i in range(len(teams)):
         teams[i]['count'] = 0
         for member in teams[i]['member']:
-            print(member.role)
             if member.role != 'newMoe':
                 teams[i]['count'] += 1
     try:
