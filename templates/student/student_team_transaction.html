@@ -123,6 +123,19 @@
 	                                <p class="category">当前发起的团队</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
+									{% if member == 'None' %}
+									<div class="col-md-4">
+										<div class="form-info">
+											<label class="col-md-12">您的状态：未选择团队</label>
+										</div>
+	                                </div>
+	                                <div class="col-md-4">
+										<div class="form-info">
+											<label class="col-md-12 text-warning">请选择团队加入吧！</label>
+										</div>
+	                                </div>
+	                                <br><br>
+									{% endif %}
 	                                <table class="table table-hover">
 	                                    <thead>
 	                                        <th>团队名称</th>
@@ -134,22 +147,26 @@
 	                                    <tbody>
 											{% for team in teams %}
 	                                        <tr>
-	                                        	<td>{{ team.name }}</td>
+												{% if team.id == member.team.serialNum %}
+												<td><a href="member_evaluation">{{ team.name }}</a></td>
+												{% else %}
+												<td>{{ team.name }}</td>
+												{% endif %}
 	                                        	<td>{{ team.leader.user.name }}</td>
 	                                        	<td>{{ team.count|add:1 }}</td>
 	                                        	<td>{{ team.status }}</td>
 	                                        	<td>
 	                                        		<td>
-														{% if team.status == '已通过' or member != 'None' %}
-														{% if team.id == member.team.serialNum and member.role == 'newMoe'%}
-														<button type="" class="btn btn-info" disabled="disabled">正在申请中...</button>
-														{% else %}
-														<button type="" class="btn btn-info" disabled="disabled">申请加入</button>
-														{% endif %}
-														{% else %}
+														{% if team.status == '未完成组队' and member == 'None' %}
 														<a href="apply_for_team?id={{ team.id }}">
 														<button class="btn btn-info"
 																href="apply_for_team">申请加入</button></a>
+														{% else %}
+															{% if team.id == member.team.serialNum and member.role == 'newMoe'%}
+															<button type="" class="btn btn-info" disabled="disabled">正在申请中...</button>
+															{% else %}
+															<button type="" class="btn btn-info" disabled="disabled">申请加入</button>
+															{% endif %}
 														{% endif %}
 													</td>
 	                                        	</td>

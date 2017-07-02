@@ -176,6 +176,7 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="{%  static 'assets/js/demo.js' %}"></script>
 
+    <script src="{% static 'assets/js/uranus.js' %}" ></script>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -188,8 +189,7 @@
         $('#submit-data').click(function () {
             submitClick(
                 "{% url 'system:editCourse' %}",
-                '修改成功！',
-                "{% url 'system:showCourse' %}"
+                '修改成功！'
             );
         });
     });

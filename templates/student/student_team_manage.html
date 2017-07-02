@@ -15,7 +15,6 @@
     <!-- Bootstrap core CSS     -->
     <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
 
-
     <!--  Material Dashboard CSS    -->
     <link href="/static/assets/css/material-dashboard.css" rel="stylesheet"/>
 
@@ -101,9 +100,9 @@
 	            <div class="container-fluid">
 	                <div class="row">
 	                    <div class="col-md-12">
-	                        <div class="card card-plain">
+	                        <div class="card">
 	                            <div class="card-header" data-background-color="green">
-	                                <h4 class="title">当前组队情况</h4>
+	                                <h4 class="title">{{ team.name }}的当前组队情况</h4>
 	                                <p class="category">组建中的团队</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
@@ -141,8 +140,48 @@
 											{% endfor %}
 	                                    </tbody>
 	                                </table>
+									<div class="tim-typo">
+										<button type="" class="btn btn-success pull-right">向老师提交</button>
+										{% if team.status == 'unsubmitted' %}
+										<button class="btn btn-success pull-right" disabled="disabled">结束组队</button></a>
+										{% else %}
+										<a href="finish_team_bulid">
+                        				<button class="btn btn-success pull-right">结束组队</button></a>
+										{% endif %}
+                    				</div>
 	                            </div>
 	                        </div>
+
+							{% if user_role.role == 'leader' %}
+							<div class="card">
+								<div class="card-header" data-background-color="green">
+									<h4 class="title">为Uranus选择团队负责人</h4>
+								</div>
+								<form action="" method="GET" enctype="multipart/form-data">
+								<div class="card-content">
+									<div class="tim-typo">
+									<span class="tim-note">选择团队负责人</span>
+										<div class="btn-group">
+											<select name="user">
+												<option value="0">更换负责人</option>
+												{% for member in member_list %}
+												{% if member.role == 'member' %}
+												<option value="{{ member.user_id }}">{{ member.user.name}}</option>
+												{% endif %}
+												{% endfor %}
+											</select>
+												{% csrf_token %}
+
+										</div>
+
+									</div>
+									<div class="tim-typo">
+										<button type="submit" class="btn btn-success pull-right">提交团队申请</button>
+									</div>
+								</div>
+								</form>
+							</div>
+							{% endif %}
 	                    </div>
 	                </div>
 	            </div>

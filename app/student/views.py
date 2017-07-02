@@ -45,11 +45,19 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
         return render(request, 'pages-error-404.html')
 
     if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
+        try:
+            user_id = request.GET.get('user')
+            leader_id = Member.objects.get(team=team, role='leader').user_id
+            if user_id != 0 and user_id != leader_id:
+                transferLeadership(team, User.objects.get(id=user_id))
+                member_model = Member.objects.get(user=student)
+        except:
+            pass
         form = UploadFileForm()
         member_info = reportTeam(team)
         member_list = member_info['member']
         member_list.append(member_info['leader'])
-        print(member_list)
+        member_list = sort_team_members(member_list)
         return render(request, ''
                                'student/student_team_manage.html',
                       {'team': team, 'member_list': member_list,'form':form, 'user_role': member_model})
@@ -221,7 +229,7 @@ def apply_for_team(request):
     user = get_object_or_404(User, username=request.user.username)
     member = joinTeam(user, Team.objects.get(serialNum=request.GET.get('id')))
     if member:
-        return HttpResponse('申请成功')
+        return redirect('/student/student_team_build')
     else:
         return HttpResponse('申请失败')
 
@@ -236,3 +244,10 @@ def process_apply(request):
     else:
         log('错误的参数', 'process_apply', LOG_LEVEL.ERROR)
     return redirect('/student/member_evaluation')
+
+@login_required(login_url='app:login')
+def finish_team_bulid(request):
+    user = get_object_or_404(User, username=request.user.username)
+    team = Member.objects.get(user=user).team
+    completeTeam(team)
+    return redirect('/student/student_team_build')
