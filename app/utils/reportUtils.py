@@ -14,16 +14,16 @@ def reportTeam(team):
     t = {
         'id': team.serialNum,
         'name': team.name,
-        'status': team.get_status_display,
+        'status': team.get_status_display(),
         'leader': None,     # 队长实体User
         'member': [],       # 队员实体列表[User]
     }
     members = Member.objects.filter(team=team)
     for member in members:
         if member.role == 'leader':
-            t['leader'] = member
+            t['leader'] = member.user
         else:
-            t['member'].append(member)
+            t['member'].append(member.user)
     return t
 
 
@@ -130,13 +130,20 @@ def reportGradeWorkMetas(course):
 ##
 # 测试
 def test():
+    log('='*50)
+    log('Report Utils Unit Test')
+
     c = Course.objects.first()
-    log(reportTeams(c))
-    log(reportGradeTeams(c))
-    log(reportGradeWorkMetas(c))
+    log(reportTeams(c), 'reportTeams')
+    log(reportGradeTeams(c),'reportGradeTeams')
+    log(reportGradeWorkMetas(c), 'reportGradeWorkMetas')
+    log(meanGradeTeam(c), 'meanGradeTeam')
+    log(meanGradeStudent(c), 'meanGradeStudent')
 
     t = Team.objects.first()
-    log(sumGradeTeam(t))
+    log(sumGradeTeam(t), 'sumGradeTeam')
 
     u = User.objects.filter(role='student').first()
-    log(sumGradeStudent(u))
+    log(sumGradeStudent(u), 'sumGradeStudent')
+
+    log('='*50)

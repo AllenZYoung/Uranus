@@ -1,7 +1,6 @@
 import os
 
 from Uranus.settings import BASE_DIR
-from Uranus.settings import STATICFILES_DIRS
 from Uranus.settings import MEDIA_ROOT
 
 # 自定义根目录的工具集
