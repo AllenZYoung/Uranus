@@ -7,7 +7,7 @@
 	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程管理</title>
+	<title>学期管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -45,16 +45,16 @@
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li>
+	                <li class="active">
 	                    <a href="{% url 'system:index' %}">
 	                        <i class="material-icons">today</i>
 	                        <p>学期管理</p>
 	                    </a>
 	                </li>
-	                <li class="active">
+	                <li>
 	                    <a href="{% url 'system:index_course' %}">
 	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
+	                        <p>学期管理</p>
 	                    </a>
 	                </li>
 	            </ul>

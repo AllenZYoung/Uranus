@@ -17,12 +17,12 @@ LOG_FILE = os.path.join(BASE_DIR, 'Uranus/Uranus.log')
 LOG_LEVEL = _LOG_LEVEL()
 
 
-def log(msg='message_string', src='functionName_or_shortDescription', level=LOG_LEVEL.INFO):
+def log(msg='msg', src='src', level=LOG_LEVEL.INFO):
     out = logSilent(msg, src, level)
     print(out)
 
 
-def logSilent(msg='message_string', src='functionName_or_shortDescription', level=LOG_LEVEL.INFO):
+def logSilent(msg='msg', src='src', level=LOG_LEVEL.INFO):
     time = datetime.now()
     out = '[%s] %s\t<%s>: %s' %(level, time, src, msg)
     with open(LOG_FILE, 'a+') as logger:

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Login Form</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <script src="{% static 'assets/js/jquery-3.1.0.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
 
     <style>
         /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
@@ -130,6 +133,9 @@
             background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104, 128, 138, .4) 10%, rgba(138, 114, 76, 0) 40%), linear-gradient(to bottom, rgba(57, 173, 219, .25) 0%, rgba(42, 60, 87, .4) 100%), linear-gradient(135deg, #670d10 0%, #092756 100%);
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3E1D6D', endColorstr='#092756', GradientType=1);
         }
+        label{
+            color: #ffffff;
+        }
 
         .login {
             position: absolute;
@@ -183,18 +189,69 @@
     {% if error_message %}
             <p>{{ error_message }}</p>
     {% endif %}
-    <form action="" method="post" novalidate="novalidate">
+{#    <form action="" method="post" novalidate="novalidate">#}
         <label >{{ form.username.label }}</label> {{ form.username }}
 
         <label >{{ form.password.label }}</label> {{ form.password }}
-        <button type="submit" class="btn btn-primary btn-block btn-large">登入</button>
+        <button class="btn btn-primary btn-block btn-large" id="login-btn">登入</button>
 
         {% csrf_token %}
 
-    </form>
+{#    </form>#}
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    login
+                </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 </div>
 
 <script src="/static/assets/js/index.js"></script>
 
+<script>
+
+    $('#login-btn').click(function () {
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        var username = $('input#id_username').val() || "";
+        var password = $('input#id_password').val() || "";
+        if(username=="" || password==""){
+            $('.modal-body').text("用户名或密码不能为空！");
+            $('#myModal').modal('show');
+        }
+        $.ajax('{% url 'app:login' %}', {
+            method: 'post',
+            data: {'username': username,'password':password, 'csrfmiddlewaretoken': csrftoken},
+            success: function (data) {
+                data = $.parseJSON(data);
+                error_message = data['error_message'] || "";
+                user_role = data['user_role'] || "";
+                if(user_role){
+                    window.location = "/"+user_role+"/";
+                }else if(error_message){
+{#                    alert(error_message);#}
+                    $('.modal-body').text(error_message);
+                    $('#myModal').modal('show');
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
