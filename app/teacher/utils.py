@@ -30,7 +30,7 @@ def import_student_for_course(request):
     f = request.FILES['file']
     name = f.name
     if isXls(name):
-        path = os.path.join(IMPORT_ROOT, name)
+        path = os.path.join(UPLOAD_ROOT, name)
         with open(path, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)

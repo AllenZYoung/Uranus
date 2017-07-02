@@ -78,7 +78,7 @@ def handle_uploaded_contribution(request, f=None):
     # table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
     datenow = datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = os.path.join(BASE_DIR, 'resource', 'uploads', 'import')
+    path = UPLOAD_ROOT
     log(path, 'handle_uploaded_user')
     filepath = os.path.join(path, filedate + '_' + f.name)
     log(filepath, 'handle_uploaded_user')

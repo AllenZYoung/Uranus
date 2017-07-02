@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from openpyxl.reader.excel import load_workbook
 from Uranus.settings import  BASE_DIR
 from app.utils import log
-#from app.utils import *
+from app.utils.rootsUtils import *
 
 def getItem(user_id):
     try :
@@ -22,7 +22,7 @@ def handle_uploaded_user(request,course_id, f=None, user_role='student'):
     # 向resource中传入上传的exel
     datenow = datetime.now()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
-    path = os.path.join(BASE_DIR,'resource','uploads','import')
+    path = UPLOAD_ROOT
     log(path, 'handle_uploaded_user')
     filepath = os.path.join(path,filedate+'_'+f.name)
     log(filepath, 'handle_uploaded_user')

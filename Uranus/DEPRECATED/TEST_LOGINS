@@ -1,0 +1,33 @@
++----+------------+-------------+--------------+---------+---------+--------+-------------+----------------------------+
+| id | username   | password    | name         | classID | role    | gender | tel         | email                      |
++----+------------+-------------+--------------+---------+---------+--------+-------------+----------------------------+
+|  1 | 100        | jiaowu123   | 教务         | 000     | admin   | male   | 000         | 78951@qq.com               |
+|  2 | 12211001   | User123456  | 擎天柱       | 122111  | student | male   | 10086       | optimusprime@cybertron.com |
+|  3 | 14211019   | passwd123   | Teacher      | NULL    | teacher | male   | NULL        | NULL                       |
+|  4 | yangjiawei | yangjiawei  | NULL         | NULL    | teacher | male   | NULL        | NULL                       |
+|  5 | 12211002   | User123     | 大黄蜂       | 122111  | student | male   | 13126597775 | NULL                       |
+|  6 | 12211003   | User123     | 威震天       | 122111  | student | male   | 13126597776 | NULL                       |
+|  7 | 12211004   | User123     | 红蜘蛛       | 122111  | student | male   | 13126597777 | NULL                       |
+|  8 | 12211005   | User123     | 王大锤       | 122111  | student | male   | 13126597778 | NULL                       |
+|  9 | 12211006   | User123     | 王小明       | 122111  | student | male   | 13126597779 | NULL                       |
+| 10 | 12211007   | User123     | 林黛玉       | 122111  | student | female | 13126597780 | NULL                       |
+| 11 | 12211008   | User123     | 薛宝钗       | 122111  | student | female | 13126597781 | NULL                       |
+| 12 | 12211009   | User123     | 赫敏         | 122111  | student | female | 13126597782 | NULL                       |
+| 13 | 12211010   | User123     | 露娜         | 122111  | student | female | 13126597783 | NULL                       |
+| 14 | 12211011   | User123     | 伊丽莎白     | 122111  | student | female | 13126597784 | NULL                       |
+| 15 | 21102      | User123     | 鲁迅         | NULL    | teacher | male   | 13552755184 | NULL                       |
+| 16 | 21103      | User123     | 谢冰莹       | NULL    | teacher | male   | 13552755185 | NULL                       |
+| 17 | 21104      | User123     | 周树人       | NULL    | teacher | male   | 13552755186 | NULL                       |
+| 18 | 21105      | User123     | 宋江         | NULL    | teacher | male   | 13552755187 | NULL                       |
+| 19 | 711001     | User123     | 李玲         | NULL    | teacher | female | 178000001   | NULL                       |
+| 20 | 711002     | User123     | 李丽         | NULL    | teacher | female | 178000002   | NULL                       |
+| 21 | 711003     | User123     | 张三         | NULL    | teacher | male   | 178000003   | NULL                       |
+| 22 | 711004     | User123     | 李四         | NULL    | teacher | male   | 178000004   | NULL                       |
+| 23 | 30211001   | User123     | 张堃         | 152111  | student | male   | 17802020001 | NULL                       |
+| 24 | 30211002   | User123     | 张坤         | 152112  | student | female | 17802020002 | NULL                       |
+| 25 | 30211003   | User123     | 张昆         | 152113  | student | male   | 17802020003 | NULL                       |
+| 26 | 30211004   | User123     | 张廓         | 152114  | student | male   | 17802020004 | NULL                       |
+| 27 | 30211005   | User123     | 张琨         | 152115  | student | male   | 17802020005 | NULL                       |
+| 28 | 30211006   | User123     | 张坤         | 152116  | student | male   | 17802020006 | NULL                       |
+| 29 | 14211050   | kahsolt1379 | Kahsolt      | NULL    | student | male   | NULL        | NULL                       |
++----+------------+-------------+--------------+---------+---------+--------+-------------+----------------------------+
