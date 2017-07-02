@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成绩报表</title>
+</head>
+<body>
+
+    <a href="{% url 'teacher:generate_score_excel' %}">
+        <button>下载Excel</button>
+    </a><br/>
+    <table>
+        <thead>
+            <tr>
+                <th>作业名称\团队名称</th>
+                {% for team in teams %}
+                    <th>{{ team.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+                {% for row in datas %}
+                    <tr>
+                         <td>{{ row.workmeta.title }}</td>
+                            {% for work in row.works %}
+                                <td>
+                                    {{ work.score }}
+                                </td>
+                            {% endfor %}
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

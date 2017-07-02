@@ -10,3 +10,12 @@ class Homework:
     def __init__(self, workmeta, attachments):
         self.workmeta = workmeta
         self.attachments = attachments
+
+
+class ScoreWrapper:
+    workmeta=None
+    works=None
+
+    def __init__(self,workmeta,works):
+        self.workmeta=workmeta
+        self.works=works
