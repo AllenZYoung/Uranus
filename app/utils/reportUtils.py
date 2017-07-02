@@ -1,4 +1,3 @@
-from app.models import *
 from app.utils.statisticsUtils import *
 import pprint
 
