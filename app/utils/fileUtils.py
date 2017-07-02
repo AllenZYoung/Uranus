@@ -1,11 +1,11 @@
 import urllib.parse
 
-from app.utils.rootsUtils import RESOURCE_ROOT
-from app.utils.logUtils import *
+from app.utils.rootsUtils import MEDIA_URL
+from app.utils.logUtils import log, LOG_LEVEL
 from app.models import *
 
 URL_API = 'https://view.officeapps.live.com/op/view.aspx?src='
-URL_BASE = 'http://uranus.kahsolt.tk' + RESOURCE_ROOT
+URL_BASE = 'http://uranus.kahsolt.tk' + MEDIA_URL
 
 
 TEXT_EXT = ['.txt', '.html', '.htm']
@@ -22,7 +22,8 @@ VIDEO_EXT = ['.mp4', '.webm', '.mpg', '.ogg', '.flv', '.f4v']
 def docPreviewUrl(path):
     if not isOfficeFile(path):
         log(path + '不是office文档文件', 'docPreviewUrl', LOG_LEVEL.ERROR)
-        return None
+        return '#'
+
     url = os.path.join(URL_BASE, path)
     url = urllib.parse.quote(url)
     url = URL_API + url
