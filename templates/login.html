@@ -229,7 +229,7 @@
 <script>
 
     $('#login-btn').click(function () {
-        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var username = $('input#id_username').val() || "";
         var password = $('input#id_password').val() || "";
         if(username=="" || password==""){

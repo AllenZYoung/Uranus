@@ -91,4 +91,13 @@
 [INFO] 2017-07-02 16:06:19.468267	<handle_uploaded_user>: /home/hui/code/PycharmProjects/Uranus/resource/uploads/import
 [INFO] 2017-07-02 16:06:19.469309	<handle_uploaded_user>: /home/hui/code/PycharmProjects/Uranus/resource/uploads/import/20170702-160619_学生.xlsx
 [INFO] 2017-07-02 16:06:19.517170	<handle_uploaded_user>: 导入exel
+<<<<<<< Updated upstream
 [INFO] 2017-07-02 16:46:55.109767	<index_login>: 皮皮虾
+=======
+[INFO] 2017-07-02 16:24:18.941572	<index_login>: 林广艳
+[INFO] 2017-07-02 16:38:01.926550	<index_login>: 张坤
+[INFO] 2017-07-02 16:38:54.638449	<index_login>: 闫亚辉
+[INFO] 2017-07-02 16:41:20.017272	<index_login>: 闫亚辉
+[INFO] 2017-07-02 16:42:06.166634	<index_login>: 林广艳
+[INFO] 2017-07-02 16:43:26.819702	<index_login>: 100登录成功
+>>>>>>> Stashed changes
