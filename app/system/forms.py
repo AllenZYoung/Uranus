@@ -29,8 +29,10 @@ class CourseForm(forms.Form):
     name = forms.CharField(required=True, label='课程名字', max_length=64, widget=forms.TextInput(attrs={'class': 'form-control'}))
     classroom = forms.CharField(required=True, label='教室', max_length=64, widget=forms.TextInput(attrs={'class': 'form-control'}))
     credit = forms.CharField(required=True,label='学分', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    startTime = forms.DateField(required=False, label='开始时间', widget=SelectDateWidget(attrs={'class':'form-control'}))
-    endTime = forms.DateField(required=False, label='结束时间', widget=SelectDateWidget(attrs={'class':'form-control'}))
+    # startTime = forms.DateField(required=False, label='开始时间', widget=SelectDateWidget(attrs={'class':'form-control'}))
+    startTime = forms.CharField(required=True)
+    endTime = forms.CharField(required=True)
+    # endTime = forms.DateField(required=False, label='结束时间', widget=SelectDateWidget(attrs={'class':'form-control'}))
 
 
 
@@ -62,7 +64,7 @@ class EditCourseForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     classroom = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
     credit = forms.CharField(widget=forms.TextInput(attrs={'type':'number','class': 'form-control'}))
-    startTime = forms.DateField(label='开始时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
+    startTime = forms.CharField(label='开始时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
     endTime = forms.DateField(label='结束时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
 
     def __init__(self, *args, **kwargs):

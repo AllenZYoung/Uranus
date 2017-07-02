@@ -2,7 +2,13 @@
 *.pyc
 *__pycache__*
 */migrations/*
-.DS_Store
+
+*.DS_Store
+
+
+resource/uploads/import
+
+
 Uranus/DEPRECATED/
 Uranus/Uranus.log
 /resource/uploads/*

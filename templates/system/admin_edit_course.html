@@ -32,7 +32,7 @@
 
 <div class="wrapper">
 
-    <div class="sidebar" data-color="blue" data-image="../../static/assets/img/sidebar-1.jpg">
+    <div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
         <!--
             Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -40,7 +40,7 @@
         -->
 
         <div class="logo">
-            <a href="/system" class="simple-text">
+            <a href="{% url 'system:index' %}" class="simple-text">
                 教务
             </a>
         </div>
