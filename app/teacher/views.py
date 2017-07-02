@@ -434,7 +434,7 @@ def team_manage(request):
 def teams(request):
     course_id = request.session.get('course_id', None)
     course=get_object_or_404(Course,id=course_id)
-    teams=Team.objects.filter(course_id=course.id)
+    teams=Team.objects.filter(course_id=course.id,status='passed')
     unteamed_students=query_unteamed_students(course_id)
     return render(request,'teacher/show_teams.html',{'course':course,'unteamed_students':unteamed_students,'teams':teams})
 
@@ -501,3 +501,23 @@ def apply_manage(request):
             return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form,'error_message':'数据不合法'})
 
 
+# 生成所有团队每次作业的成绩报表
+@login_required(login_url='app:login')
+def score_report(request):
+    course_id = request.session.get('course_id', None)
+    scores=generate_team_scores(course_id)
+    teams=Team.objects.filter(course_id=course_id)
+    return render(request,'teacher/score_report.html',{'datas':scores,'teams':teams})
+
+
+@login_required(login_url='app:login')
+def generate_score_excel(request):
+    course_id = request.session.get('course_id', None)
+    dest=generate_scores_excel(course_id)
+    if os.path.exists(dest):
+        with open(dest, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(dest)
+            return response
+    else:
+        return HttpResponse('generate excel failed!')

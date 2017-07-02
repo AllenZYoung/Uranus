@@ -7,6 +7,8 @@ from app.models import *
 from django.shortcuts import get_object_or_404
 from app.utils import *
 from app.utils.logUtils import *
+from app.teacher.entities import *
+from django.core.exceptions import *
 
 
 def handle_uploaded_file(request,course_id,f):
@@ -256,3 +258,51 @@ def query_unteamed_students(course_id):
             unteamed_students.append(enroll.user)
     return unteamed_students
 
+
+# 生成所有团队的所有成绩报表
+def generate_team_scores(course_id):
+    course=get_object_or_404(Course,id=course_id)
+    workmetas=WorkMeta.objects.filter(course=course)
+    teams=Team.objects.filter(course=course)
+    datas=[]
+    for workmeta in workmetas:
+        works=[]
+        for team in teams:
+            try:
+                work=Work.objects.get(workMeta=workmeta,team=team)
+            except ObjectDoesNotExist:
+                work=Work(score=0,team=team)
+            works.append(work)
+        row_data=ScoreWrapper(workmeta=workmeta,works=works)
+        datas.append(row_data)
+    return datas
+
+
+def generate_scores_excel(course_id):
+    data=generate_team_scores(course_id)
+    wb=Workbook()
+    dest=os.path.join(REPORT_ROOT,'teams_scores_'+str(course_id)+'.xlsx')
+    ws1=wb.active
+    ws1.title='团队成绩报表'
+    ws1['A1']='作业标题\团队'
+    ws1['A'+str(len(data)+3)]='加权总成绩'
+    teams=Team.objects.filter(course_id=course_id)
+
+    for i in range(len(teams)):
+        ws1.cell(row=1,column=i+2,value=teams[i].name)
+
+    for i in range(len(data)):
+        ws1.cell(row=i+2,column=1,value=data[i].workmeta.title)
+        works=data[i].works
+        for j in range(len(works)):
+            ws1.cell(row=i+2,column=j+2,value=works[j].score)
+
+    # 根据每次作业的权重，计算总成绩
+    for i in range(len(teams)):
+        sum=0
+        for j in range(len(data)):
+            weight=data[j].workmeta.proportion
+            sum+=weight*data[j].works[i].score
+        ws1.cell(row=len(data)+3,column=i+2,value=sum)
+    wb.save(filename=dest)
+    return dest
