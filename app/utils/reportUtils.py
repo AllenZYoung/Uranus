@@ -14,7 +14,7 @@ def reportTeam(team):
     t = {
         'id': team.serialNum,
         'name': team.name,
-        'status': team.get_status_display,
+        'status': team.get_status_display(),
         'leader': None,     # 队长实体User
         'member': [],       # 队员实体列表[User]
     }
@@ -25,7 +25,9 @@ def reportTeam(team):
             t['leader'] = member
         elif member.role == 'member':
             t['member'].append(member)
+
     return t
+
 
 
 # 数据整理: [所有团队信息字典的列表]
@@ -132,13 +134,20 @@ def reportGradeWorkMetas(course):
 ##
 # 测试
 def test():
+    log('='*50)
+    log('Report Utils Unit Test')
+
     c = Course.objects.first()
-    log(reportTeams(c))
-    log(reportGradeTeams(c))
-    log(reportGradeWorkMetas(c))
+    log(reportTeams(c), 'reportTeams')
+    log(reportGradeTeams(c),'reportGradeTeams')
+    log(reportGradeWorkMetas(c), 'reportGradeWorkMetas')
+    log(meanGradeTeam(c), 'meanGradeTeam')
+    log(meanGradeStudent(c), 'meanGradeStudent')
 
     t = Team.objects.first()
-    log(sumGradeTeam(t))
+    log(sumGradeTeam(t), 'sumGradeTeam')
 
     u = User.objects.filter(role='student').first()
-    log(sumGradeStudent(u))
+    log(sumGradeStudent(u), 'sumGradeStudent')
+
+    log('='*50)

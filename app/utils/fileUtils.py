@@ -1,14 +1,18 @@
 import os
 import urllib.parse
 
-from Uranus.settings import STATIC_URL
+from app.utils.rootsUtils import RESOURCE_ROOT
+from app.utils.logUtils import *
+from app.utils.statisticsUtils import *
 
 URL_API = 'https://view.officeapps.live.com/op/view.aspx?src='
-URL_BASE = 'http://uranus.kahsolt.tk' + STATIC_URL
+# URL_BASE = 'http://uranus.kahsolt.tk' + RESOURCE_ROOT
+URL_BASE = 'http://uranus.kahsolt.tk'
 
-TEXT_EXT = ['txt', 'html', 'htm']
-DOCUMENT_EXT = ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx']
-VIDEO_EXT = ['mp4', 'webm', 'mpg', 'ogg', 'flv', 'f4v']
+TEXT_EXT = ['.txt', '.html', '.htm']
+XLS_EXT = ['.xls', '.xlsx']
+DOCUMENT_EXT = ['.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx']
+VIDEO_EXT = ['.mp4', '.webm', '.mpg', '.ogg', '.flv', '.f4v']
 
 
 # 关于文件资源和URL的工具集
@@ -17,7 +21,10 @@ VIDEO_EXT = ['mp4', 'webm', 'mpg', 'ogg', 'flv', 'f4v']
 
 # 文档在线预览url：doc/ppt/xls
 def docPreviewUrl(path):
-    url = URL_BASE + path
+    if not isOfficeFile(path):
+        log(path + '不是office文档文件', 'docPreviewUrl', LOG_LEVEL.ERROR)
+        return None
+    url = os.path.join(URL_BASE, path)
     url = urllib.parse.quote(url)
     url = URL_API + url
     return url
@@ -26,13 +33,13 @@ def docPreviewUrl(path):
 # 文件下载url
 def fileDownloadUrl(path):
     url = urllib.parse.quote(path)
-    url = URL_BASE + url
+    url = os.path.join(URL_BASE, url)
     return url
 
 
 # 枚举：获取文件类型(后缀名判定)
 def getFileTpye(path):
-    ext = os.path.splitext(path)
+    ext = os.path.splitext(path)[1]
     if ext in TEXT_EXT:
         return 'text'
     elif ext in DOCUMENT_EXT:
@@ -45,17 +52,23 @@ def getFileTpye(path):
 
 # 判断：是Excel表
 def isXls(path):
-    ext = os.path.splitext(path)
-    return ext == 'xls' or ext == 'xlsx'
+    ext = os.path.splitext(path)[1]
+    return ext in XLS_EXT
 
+
+# 判断：是Document
+def isOfficeFile(path):
+    ext = os.path.splitext(path)[1]
+    return ext in DOCUMENT_EXT
 
 ##
 # Test Entry
-if __name__ == '__main__':
-    print('PreviewOnline Links Like:')
-    print(docPreviewUrl('stu.xlsx'))
-    print(docPreviewUrl('file/作业1.docx'))
-    print(docPreviewUrl('file/8第四章Camellia.ppt'))
-    print('Download Links Like:')
-    print(fileDownloadUrl('user/学生.xlsx'))
-    print(fileDownloadUrl('file/作业1.docx'))
+def test():
+    log('='*50)
+    log('File Utils Unit Test')
+
+    fs = File.objects.filter()
+    for f in fs:
+        log(docPreviewUrl(f.file.url[1:]), 'docPreviewUrl')
+
+    log('='*50)

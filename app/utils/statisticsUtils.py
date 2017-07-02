@@ -1,7 +1,7 @@
 from app.models import *
 from app.utils.logUtils import *
 
-# 关于统计计算的工具集
+# 关于统计计算的工具集, 从属于reportUtils
 # by kahsolt
 
 
@@ -15,7 +15,7 @@ def sumGradeTeam(team):
     for wm in wms:
         w = Work.objects.filter(team=team, workMeta=wm).order_by('-time').first()
         if w:
-            grade += w.score
+            grade += w.score or 0.0
     return grade
 
 
@@ -32,19 +32,21 @@ def sumGradeStudent(user):
         log('未设置个人贡献度', 'statisticsUils', LOG_LEVEL.INFO)
         return 0
 
-    return contrib * sumGradeTeam(member.team)
+    return contrib * sumGradeTeam(member.team) or 0.0
 
 
 # 团队平均成绩
 def meanGradeTeam(course):
     if not isinstance(course, Course):
         return None
-
     teams = Team.objects.filter(course=course)
     cnt = teams.count()
+    if cnt == 0:
+        return 0
+
     sum = 0
     for t in teams:
-        sum += sumGradeTeam(t)
+        sum += sumGradeTeam(t) or 0.0
 
     return sum / cnt
 
@@ -53,11 +55,13 @@ def meanGradeTeam(course):
 def meanGradeStudent(course):
     if not isinstance(course, Course):
         return None
-
     users = Enroll.objects.filter(course=course)
     cnt = users.count()
+    if cnt == 0:
+        return 0
+
     sum = 0
     for u in users:
-        sum += sumGradeStudent(u)
+        sum += sumGradeStudent(u) or 0.0
 
     return sum / cnt
