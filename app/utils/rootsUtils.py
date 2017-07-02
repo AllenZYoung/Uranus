@@ -1,7 +1,6 @@
 import os
 
-from Uranus.settings import BASE_DIR
-from Uranus.settings import MEDIA_ROOT
+from Uranus.settings import BASE_DIR, MEDIA_ROOT
 
 # 自定义根目录的工具集
 # by kahsolt

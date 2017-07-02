@@ -3,8 +3,7 @@
 
 import os
 from datetime import datetime
-from Uranus.settings import BASE_DIR
-
+from app.utils.rootsUtils import BASE_DIR
 
 class _LOG_LEVEL():
     def __init__(self):

@@ -8,4 +8,5 @@ from .logUtils import *
 from .noticeUtils import *
 from .reportUtils import *
 from .rootsUtils import *
+from .statisticsUtils import *
 from .teamUtils import *

@@ -1,13 +1,12 @@
-import os
 import urllib.parse
 
 from app.utils.rootsUtils import RESOURCE_ROOT
 from app.utils.logUtils import *
-from app.utils.statisticsUtils import *
+from app.models import *
 
 URL_API = 'https://view.officeapps.live.com/op/view.aspx?src='
-# URL_BASE = 'http://uranus.kahsolt.tk' + RESOURCE_ROOT
-URL_BASE = 'http://uranus.kahsolt.tk'
+URL_BASE = 'http://uranus.kahsolt.tk' + RESOURCE_ROOT
+
 
 TEXT_EXT = ['.txt', '.html', '.htm']
 XLS_EXT = ['.xls', '.xlsx']

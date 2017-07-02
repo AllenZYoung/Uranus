@@ -1,7 +1,7 @@
 from app.models import *
-from app.utils.logUtils import *
 from app.utils.statisticsUtils import *
 import pprint
+
 # 关于报表的工具集
 # by kahsolt
 
