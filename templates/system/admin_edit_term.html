@@ -244,8 +244,8 @@
             $('#myModal').modal('show');
             return;
         }
-        if ( startWeek >= endWeek) {
-            $('.modal-body').text('开始周次不应大于结束周次！');
+        if ( parseInt(startWeek) >= parseInt(endWeek)) {
+            $('.modal-body').text('开始周次应小于结束周次！');
             $('#myModal').modal('show');
             return;
         }

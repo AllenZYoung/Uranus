@@ -236,7 +236,7 @@
             $('#myModal').modal('show');
             return;
         }
-        if(startWeek >= endWeek){
+        if(parseInt(startWeek) >= parseInt(endWeek)){
             $('.modal-body').text('开始周次应该小于结束周次！');
             $('#myModal').modal('show');
             return;
