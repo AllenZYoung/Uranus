@@ -7,140 +7,167 @@
 	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程管理</title>
+	<title>学期管理</title>
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
 
     <!-- Bootstrap core CSS     -->
-    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
 
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
     <!--  Material Dashboard CSS    -->
     <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet"/>
-
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+          type='text/css'>
+
 </head>
 
 <body>
 
-	<div class="wrapper">
 
-	    <div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
-			<!--
-		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+<div class="wrapper">
 
-		        Tip 2: you can also add an image using data-image tag
-		    -->
+    <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
+        <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-			<div class="logo">
-				<a href="#" class="simple-text">
-					教务
-				</a>
-			</div>
+            Tip 2: you can also add an image using data-image tag
+        -->
 
-	    	<div class="sidebar-wrapper">
-	            <ul class="nav">
-	                <li>
-	                    <a href="{% url 'system:index' %}">
-	                        <i class="material-icons">today</i>
-	                        <p>学期管理</p>
-	                    </a>
-	                </li>
-	                <li class="active">
-	                    <a href="{% url 'system:index_course' %}">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
-	                    </a>
-	                </li>
-	            </ul>
-	    	</div>
-	    </div>
+        <div class="logo">
+            <a href="/system" class="simple-text">
+                教务
+            </a>
+        </div>
 
-	    <div class="main-panel">
-			<nav class="navbar navbar-transparent navbar-absolute">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="{% url 'system:index_course' %}">课程管理</a>
-					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-		 						</a>
-		 						<ul class="dropdown-menu">
-									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="active">
+                    <a href="term">
+                        <i class="material-icons">today</i>
+                        <p>学期管理</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="course">
+                        <i class="material-icons">dashboard</i>
+                        <p>课程管理</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card" data-color="blue">
-								<div class="card-header" data-background-color="blue">
-	                                <h4 class="title">创建学期</h4>
-									<p class="category">填写如下信息并创建学期</p>
-	                            </div>
-                                <form method="post" action="" onsubmit="return weekCheck()">
-                                 {% csrf_token %}
-	                            <div class="card-content">
-	                            	<div class="row">
-	                            		<div class="col-md-3">
-	                            			<label for="">年份</label>
-	                            			{{ form.year }}
-	                            		</div>
-	                            		<div class="col-md-3">
-	                            			<label for="">学期（春／秋）</label>
-	                            			{{ form.semester }}
-	                            		</div>
-	                            		<div class="col-md-3">
-	                            			<label for="">开始周次</label>
+    <div class="main-panel">
+        <nav class="navbar navbar-transparent navbar-absolute">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="term">返回</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">person</i>
+                                <p class="hidden-lg hidden-md">Profile</p>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'app:logout' %}">注销登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" data-color="blue">
+                            <div class="card-header" data-background-color="blue">
+                                <h4 class="title">创建学期</h4>
+                                <p class="category">填写如下信息并创建学期</p>
+                            </div>
+{#                            <form method="post" action="">#}
+                                {% csrf_token %}
+                                <div class="card-content">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="">年份</label>
+                                            {{ form.year }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="">学期（春／秋）</label>
+                                            {{ form.semester }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="">开始周次</label>
                                             {{ form.startWeek }}
-	                            		</div>
-	                            		<div class="col-md-3">
-	                            			<label for="">结束周次</label>
-	                            			{{ form.endWeek }}
-	                            		</div>
-	                            	</div>
-	                            	<div class="row">
-	                            		<div class="col-md-6">
-	                            			<button class="btn btn-info pull-right">创建学期</button>
-	                            		</div>
-	                            	</div>
-	                            </div>
-                                </form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="">结束周次</label>
+                                            {{ form.endWeek }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button class="btn btn-info pull-right" id="submit-data">创建学期</button>
+                                        </div>
+                                    </div>
+                                </div>
+{#                            </form>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<footer class="footer">
-				<div class="container-fluid">
-					<p class="copyright pull-right">
-						URANUS@2017
-					</p>
-				</div>
-			</footer>
-		</div>
-	</div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <p class="copyright pull-right">
+                    URANUS@2017
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    创建学期
+                </h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirm-btn" class="btn btn-primary" data-dismiss="modal">确定
+                </button>
+{#                <button type="button" class="btn btn-primary" id="confirm-btn">#}
+{#                    确定#}
+{#                </button>#}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
     <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -169,7 +196,6 @@
 
 
 
-
 	<!--   Core JS Files   -->
 	<script src="{% static 'assets/js/jquery-3.1.0.min.js' %}" type="text/javascript"></script>
 	<script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
@@ -190,24 +216,63 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="{%  static 'assets/js/demo.js' %}"></script>
 
-	<script type="text/javascript">
-        function weekCheck() {
-            var start = document.getElementById('id_startWeek').value;
-            var end = document.getElementById('id_endWeek').value;
-            if ( start > end) {
-                $('#myModal').modal({
-                keyboard: false
-                });
-                return false
-            }
-            return true
+<script>
+
+    $(document).ready(function () {
+
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
+
+    });
+
+    $('#submit-data').click(function () {
+        var year = $('#id_year').val() || "";
+        var semester = $('#id_semester').val() || "";
+        var startWeek = $('#id_startWeek').val() || "";
+        var endWeek = $('#id_endWeek').val() || "";
+
+        if(year=="" || semester=="" || startWeek=="" || endWeek==""){
+            $('.modal-body').text('数据不完整，请重新填写！');
+            $('#myModal').modal('show');
+            return;
         }
-    	$(document).ready(function(){
+        if(startWeek >= endWeek){
+            $('.modal-body').text('开始周次应该小于结束周次！');
+            $('#myModal').modal('show');
+            return;
+        }
 
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
 
-    	});
-	</script>
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax('{% url 'system:createTerm' %}', {
+            method: 'post',
+            data: {
+                    'csrfmiddlewaretoken': csrftoken,
+                    'year': year,
+                    'semester': semester,
+                    'startWeek': startWeek,
+                    'endWeek':endWeek
+            },
+            success: function (data) {
+                data = $.parseJSON(data);
+                var success_info = data['success'] || "";
+                var error_message = data['error_message'] || "";
+                if(success_info){
+                    $('.modal-body').text('创建成功！');
+                    $('#myModal').modal('show');
+                    $('#confirm-btn').click(function () {
+                        window.location = "/system/showTerm";
+                    });
+                }else{
+                    $('.modal-body').text(error_message);
+                    $('#myModal').modal('show');
+                }
+            }
+        });
+    });
+
+
+</script>
+
 
 </html>
