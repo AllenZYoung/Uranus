@@ -34,6 +34,7 @@ def create_homework(request):
         form = HomeworkForm()
         return render(request, 'teacher/create_homework.html', {'form': form, 'course': course})
     else:
+        data = {}
         course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         form = HomeworkForm(request.POST)
@@ -43,12 +44,14 @@ def create_homework(request):
             except:
                 file = None
             add_homework(form, course_id, request.user.username, file)
-            return HttpResponseRedirect('/teacher/homework?course_id=' + str(course_id))
+            data['success'] = 'true'
+            data['forward_url'] = '/teacher/homework?course_id=' + str(course_id)
+            # return HttpResponseRedirect('/teacher/homework?course_id=' + str(course_id))
         else:
-            error_message = '数据不合法'
-            return render(request, 'teacher/create_homework.html',
-                          {'form': form, 'course': course, 'error_message': error_message})
-
+            data['error_message'] = '数据不合法'
+            # return render(request, 'teacher/create_homework.html',
+            #               {'form': form, 'course': course, 'error_message': error_message})
+        return HttpResponse(json.dumps(data))
 
 @login_required(login_url='app:login')
 def edit_course(request):
@@ -59,6 +62,7 @@ def edit_course(request):
         form.set_init_data(course)
         return render(request, 'teacher/edit_course.html', {'form': form, 'course': course})
     else:
+        data = {}
         course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         form = EditCourseForm(request.POST)
@@ -69,10 +73,16 @@ def edit_course(request):
             course.classroom = form.cleaned_data['classroom']
             course.status = form.cleaned_data['status']
             course.save()
-            return redirect('/teacher/course_info?course_id=' + str(course_id))
+
+            data['success'] = 'true'
+            data['forward_url'] = '/teacher/course_info/?course_id=' + str(course_id)
+
+            # return redirect('/teacher/course_info?course_id=' + str(course_id))
         else:
-            return render(request, 'teacher/edit_course.html',
-                          {'form': form, 'course': course, 'error_message': '数据不合法!'})
+            data['error_message'] = '数据不合法，请重新填写！'
+            # return render(request, 'teacher/edit_course.html',
+            #               {'form': form, 'course': course, 'error_message': '数据不合法!'})
+        return HttpResponse(json.dumps(data))
 
 
 @login_required(login_url='app:login')
@@ -131,6 +141,7 @@ def create_resource(request):
         return render(request, 'teacher/create_resource.html',
                       {'course': course, 'teacher': teacher, })
     else:
+        data = {}
         course_id = request.session.get('course_id', None)
         course = get_object_or_404(Course, id=course_id)
         user = request.user
@@ -138,14 +149,21 @@ def create_resource(request):
         try:
             file = request.FILES['file']
         except:
-            return render(request, 'teacher/create_resource.html',
-                          {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
+            data['error_message'] = '文件为空，请重新上传！'
+            return HttpResponse(json.dumps(data));
+            # return render(request, 'teacher/create_resource.html',
+            #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         if file is None:
-            return render(request, 'teacher/create_resource.html',
-                          {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
+            data['error_message'] = '文件为空，请重新上传！'
+            return HttpResponse(json.dumps(data));
+            # return render(request, 'teacher/create_resource.html',
+            #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
         else:
             handle_uploaded_file(request, course_id, file)
-            return redirect('/teacher/resources?course_id=' + str(course_id))
+            data['success'] = 'true';
+            data['forward_url'] = '/teacher/resources?course_id=' + str(course_id)
+            return HttpResponse(json.dumps(data))
+            # return redirect('/teacher/resources?course_id=' + str(course_id))
 
 
 @login_required(login_url='app:login')
@@ -195,6 +213,7 @@ def edit_homework(request):
         return render(request, 'teacher/edit_homework.html',
                       {'course': course, 'workmeta_id': workmeta_id, 'form': homework_form})
     else:
+        data = {}
         teacher = User.objects.get(username=request.user.username)
         workmeta_id = request.POST.get('workmeta_id', None)
         course_id = request.session.get('course_id', None)
@@ -217,13 +236,15 @@ def edit_homework(request):
                 attachment = Attachment(file=f, workMeta=workmeta, type='workmeta')
                 attachment.save()
             workmeta.save()
-            return redirect('/teacher/homework/?course_id=' + str(course_id))
+            data['success'] = 'true'
+            data['forward_url'] = '/teacher/homework/?course_id=' + str(course_id)
+            # return redirect('/teacher/homework/?course_id=' + str(course_id))
         else:
-            error_message = '数据不合法'
-            return render(request, 'teacher/edit_homework.html',
-                          {'course': course, 'workmeta_id': workmeta_id, 'form': homework_form,
-                           'error_message': error_message})
-
+            data['error_message'] = '数据不合法'
+            # return render(request, 'teacher/edit_homework.html',
+            #               {'course': course, 'workmeta_id': workmeta_id, 'form': homework_form,
+            #                'error_message': error_message})
+        return HttpResponse(json.dumps(data))
 
 @login_required(login_url='app:login')
 def past_homeworks(request):
@@ -397,6 +418,7 @@ def add_comment_score(request):
                       {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
                        'attachments': attachments})
     else:
+        data = {}
         form = CommentAndScoreForm(request.POST)
         work_meta_id = request.GET.get('work_meta_id')
         homework_id = request.GET.get('work_id')
@@ -405,13 +427,16 @@ def add_comment_score(request):
                 .update(review=form.cleaned_data['review'], score=form.cleaned_data['score'])
             # return render(request, 'teacher/success.html',
             #               {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
-            return redirect('/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + str(course_id))
-        else:
-            error_message = '评论失败！'
-            return render(request, 'teacher/add_comment_score.html',
-                          {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
-                           'attachments': attachments, 'error_message': error_message})
+            data['success'] = 'true'
+            data['forward_url'] = '/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + str(course_id)
 
+            # return redirect('/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + str(course_id))
+        else:
+            data['error_message'] = '数据不合法，请重新填写！'
+            # return render(request, 'teacher/add_comment_score.html',
+            #               {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
+            #                'attachments': attachments, 'error_message': error_message})
+        return HttpResponse(json.dumps(data))
 
 @login_required(login_url='app:login')
 def score_manage(request):
@@ -530,6 +555,7 @@ def add_score_params(request):
         form.add_fields(teams)
         return render(request,'teacher/add_score_params.html',{'form':form})
     else:
+        data = {}
         form=ScoreParamForm(request.POST)
         if form.is_valid():
             workmeta=WorkMeta(course_id=course_id,user=user,title=form.cleaned_data['title'],content=form.cleaned_data['content'],
@@ -538,6 +564,10 @@ def add_score_params(request):
             for team in teams:
                 work=Work(workMeta=workmeta,team=team,score=request.POST.get(str(team.serialNum)),time=datetime.now())
                 work.save()
-            return redirect('/teacher/score_report')
+            data['success'] = 'true'
+            data['forward_url'] = '/teacher/score_report'
+            # return redirect('/teacher/score_report')
         else:
-            return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
+            data['error_message'] = '数据不合法，请重新填写！'
+            # return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
+        return HttpResponse(json.dumps(data))

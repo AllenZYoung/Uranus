@@ -34,9 +34,7 @@ class HomeworkForm(forms.Form):
 
 # comment and score form
 class CommentAndScoreForm(forms.Form):
-    # post_work_meta_id = forms.IntegerField()
-    # homework_id = forms.IntegerField()
-    score = forms.CharField()
+    score = forms.FloatField(min_value=0, max_value=100)
     review = forms.CharField()
 
 

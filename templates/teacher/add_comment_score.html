@@ -95,7 +95,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" onclick="javascript:window.history.back();window.location.reload();">返回</a>
+                <a class="navbar-brand" href="#"
+                   onclick="javascript:window.history.back();window.location.reload();">返回</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -114,92 +115,93 @@
         </div>
     </nav>
 
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" data-background-color="orange">
+                            <h4 class="title">作业信息</h4>
+                            <p class="category">团队：{{ homework.team.name }}</p>
+                        </div>
+                        <div class="card-content">
+                            <br>
+                            <div class="tim-typo">
+                                <p><span class="tim-note">小组编号</span>
+                                    {{ homework.team.serialNum }}
+                                </p>
+                            </div>
+                            <div class="tim-typo">
+                                <p><span class="tim-note">小组名称</span>
+                                    {{ homework.team.name }}
+                                </p>
+                            </div>
+                            <div class="tim-typo">
+                                <p><span class="tim-note">作业说明</span>
+                                    {{ homework.team.info }}
+                                </p>
+                            </div>
+                            <div class="tim-typo">
+                                <span class="tim-note">作业附件</span>
+                                <p>
+                                    {#                                        <a href="https://view.officeapps.live.com/op/view.aspx?src=http%3A//uranus.kahsolt.tk/static/uploads/file/%E4%BD%9C%E4%B8%9A1.docx">word文件</a>#}
+                                    {#                                        <br><a href="https://view.officeapps.live.com/op/view.aspx?src=http%3A//uranus.kahsolt.tk/static/uploads/user/%E5%AD%A6%E7%94%9F.xlsx">excel文件</a>#}
+                                    {% for attachment in attachments %}
+                                        <a href="/teacher{{ attachment.file.file.url }}">{{ attachment.file.file.name }}</a>
+                                        &nbsp;&nbsp;
+                                        <a href="{% url 'teacher:preview_source_online' %}?file={{ attachment.file.file }}"
+                                           target="_blank">[预览]</a>
+                                        <br>
 
-<div class="content">
-	            <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-md-12">
-	                        <div class="card">
-	                            <div class="card-header" data-background-color="orange">
-	                                <h4 class="title">作业信息</h4>
-	                                <p class="category">团队：{{ homework.team.name }}</p>
-	                            </div>
-	                            <div class="card-content">
-	                            	<br>
-                    				<div class="tim-typo">
-										<p><span class="tim-note">小组编号</span>
-											{{ homework.team.serialNum }}
-										</p>
-									</div>
-									<div class="tim-typo">
-										<p><span class="tim-note">小组名称</span>
-											{{ homework.team.name }}
-										</p>
-									</div>
-									<div class="tim-typo">
-										<p><span class="tim-note">作业说明</span>
-											{{ homework.team.info }}
-										</p>
-									</div>
-									<div class="tim-typo">
-										<span class="tim-note">作业附件</span>
-										<p>
-{#                                        <a href="https://view.officeapps.live.com/op/view.aspx?src=http%3A//uranus.kahsolt.tk/static/uploads/file/%E4%BD%9C%E4%B8%9A1.docx">word文件</a>#}
-{#                                        <br><a href="https://view.officeapps.live.com/op/view.aspx?src=http%3A//uranus.kahsolt.tk/static/uploads/user/%E5%AD%A6%E7%94%9F.xlsx">excel文件</a>#}
-                                            {% for attachment in attachments %}
-        <a href="{{ attachment.file.file.url }}">{{ attachment.file.file.name }}</a>&nbsp;&nbsp;
-            <a href="{% url 'teacher:preview_source_online' %}?file={{ attachment.file.file }}" target="_blank">[预览]</a>
-                                                <br>
+                                    {% endfor %}</p>
+                            </div>
 
-    {% endfor %}</p>
-                    				</div>
-
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="row">
-						<div class="col-md-12">
-	                        <div class="card">
-	                            <div class="card-header" data-background-color="orange">
-	                                <h4 class="title">评价作业</h4>
-	                            </div>
-	                            <div class="card-content">
-                                    {% if error_message %}
-                                        <p>{{ error_message }}</p>
-                                    {% endif %}
-	                                <form action="" method="post">
-                                        {% csrf_token %}
-	                                    <div class="row">
-	                                        <div class="col-md-6">
-												<div class="form-group">
-													<label class="col-md-12">得分</label>
-													<div>
-                                                        {{ form.score }}
-{#														<input type="text" class="form-control">#}
-													</div>
-												</div>
-	                                        </div>
-	                                        <div class="col-md-6">
-												<div class="form-group">
-													<label class="col-md-12">评语</label>
-													<div>
-                                                        {{ form.review }}
-{#														<input type="text" class="form-control">#}
-													</div>
-												</div>
-	                                        </div>
-	                                    </div>
-	                                    <button type="submit" class="btn btn-warning pull-right">提交</button>
-	                                    <div class="clearfix"></div>
-	                                </form>
-	                            </div>
-	                        </div>
-	                    </div>
-					</div>
-	            </div>
-	        </div>
-<footer class="footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" data-background-color="orange">
+                            <h4 class="title">评价作业</h4>
+                        </div>
+                        <div class="card-content">
+                            {% if error_message %}
+                                <p>{{ error_message }}</p>
+                            {% endif %}
+                            {#	                                <form action="" method="post">#}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-12">得分</label>
+                                        <div>
+                                            {{ form.score }}
+                                            {#														<input type="text" class="form-control">#}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-12">评语</label>
+                                        <div>
+                                            {{ form.review }}
+                                            {#														<input type="text" class="form-control">#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" id="submit-data" class="btn btn-warning pull-right">提交</button>
+                            <div class="clearfix"></div>
+                            {#	                                </form>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
         <div class="container-fluid">
             <p class="copyright pull-right">
                 URANUS@2017
@@ -207,7 +209,7 @@
         </div>
     </footer>
 </div>
-
+{% include 'modal.html' %}
 </body>
 <!--   Core JS Files   -->
 <script src="{% static 'assets/js/jquery-3.1.0.min.js' %}" type="text/javascript"></script>
@@ -228,7 +230,7 @@
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="{% static 'assets/js/demo.js' %}"></script>
-
+<script src="{% static 'assets/js/uranus.js' %}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -237,5 +239,20 @@
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 
+    });
+    $('#myModalLabel').text('评分与评价');
+    $(function () {
+        var url = window.location.href;
+        var params = url.substr(url.indexOf('?'), url.length);
+        var postUrl = "{% url 'teacher:add_comment_score' %}" + params;
+        $('#submit-data').click(function () {
+            var score = parseFloat($('#id_score').val()) || -1.0;
+            if (score < 0 || score > 100) {
+                $('.modal-body').text('分数应为0~100之间的实数！');
+                $('#myModal').modal('show');
+                return;
+            }
+            submitClick(postUrl, "评分评价成功！");
+        });
     });
 </script>
