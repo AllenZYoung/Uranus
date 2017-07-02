@@ -269,7 +269,7 @@ def query_unteamed_students(course_id):
 def generate_team_scores(course_id):
     course=get_object_or_404(Course,id=course_id)
     workmetas=WorkMeta.objects.filter(course=course)
-    teams=Team.objects.filter(course=course)
+    teams=Team.objects.filter(course=course,status='passed')
     datas=[]
     for workmeta in workmetas:
         works=[]
@@ -291,7 +291,7 @@ def generate_scores_excel(course_id):
     ws1.title='团队成绩报表'
     ws1['A1']='作业标题\团队'
     ws1['A'+str(len(data)+3)]='加权总成绩'
-    teams=Team.objects.filter(course_id=course_id)
+    teams=Team.objects.filter(course_id=course_id,status='passed')
 
     for i in range(len(teams)):
         ws1.cell(row=1,column=i+2,value=teams[i].name)

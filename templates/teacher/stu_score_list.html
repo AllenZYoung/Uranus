@@ -3,7 +3,7 @@
 <head>
     {% load app_tags %}
     <meta charset="UTF-8">
-    <title>作业基本信息</title>
+    <title>学生个人成绩</title>
     {% load static %}
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}"/>
     <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}"/>
@@ -59,17 +59,17 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
-                    <i class="material-icons">face</i>
-                    <p>团队管理</p>
-                </a>
-            </li>
+	                    <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
+	                        <i class="material-icons">face</i>
+	                        <p>团队管理</p>
+	                    </a>
+	                </li>
             <li class="active">
-                <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
-                    <i class="material-icons">assessment</i>
-                    <p>成绩管理</p>
-                </a>
-            </li>
+                    <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+                        <i class="material-icons">assessment</i>
+                        <p>成绩管理</p>
+                    </a>
+                </li>
             {#	                <li>#}
             {#	                    <a href="teacher_team.html">#}
             {#	                        <i class="material-icons">face</i>#}
