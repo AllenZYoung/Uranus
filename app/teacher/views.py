@@ -291,14 +291,12 @@ def download_stu_score_list(request):
         return response
     return Http404
 
-#下载所有学生及团队的excel
+#下载所有学生及团队的excel  url:/teacher/download_stu_teams
 @login_required(login_url='app:login')
 def download_team_members_all(request):
     file = get_team_members_all_excel_file_abspath()
-
-    course_id = request.session.get('course_id', None)
-    course = get_object_or_404(Course, id=course_id)
-
+    teacher = request.user
+    course = Enroll.objects.filter(user__username__contains=teacher).first().course
     create_stu_teams_excel(file, course)
     if os.path.exists(file):
         response = StreamingHttpResponse(file_iterator(file))

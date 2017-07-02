@@ -24,8 +24,7 @@ def reportTeam(team):
             t['leader'] = member.user.name
         else:
             t['member'].append(member.user.name)
-
-
+    return t
 
 
 # 数据整理: [所有团队信息字典的列表]
