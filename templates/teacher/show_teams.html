@@ -177,7 +177,9 @@
                                                     {% endfor %}
                                                 </select>
                                                 <input type="hidden" name="student_id" value="{{ student.id }}">
-                                                <button class="btn btn-warning" type="submit">调整至该队伍</button>
+                                                <button onclick="javascript.window.location.reload('{% url 'teacher:team_members' %}')"
+                                                        class="btn btn-warning" type="submit">调整至该队伍
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
