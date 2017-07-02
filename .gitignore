@@ -6,7 +6,9 @@
 */migrations/*
 *.DS_Store
 
-Uranus/DEPRECATED
+uploads/
+
+Uranus/DEPRECATED/
 Uranus/Uranus.log
 
 templates/teacher/pastcourse_teacher.html

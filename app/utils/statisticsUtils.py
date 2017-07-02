@@ -14,7 +14,8 @@ def sumGradeTeam(team):
     wms = WorkMeta.objects.filter(course=team.course)
     for wm in wms:
         w = Work.objects.filter(team=team, workMeta=wm).order_by('-time').first()
-        grade += w.score
+        if w:
+            grade += w.score
     return grade
 
 
