@@ -169,11 +169,11 @@
                                         <td>
                                             <form action="{% url 'teacher:adjust_team' %}" method="post">
                                                 {% csrf_token %}
-                                                    <select name="serial_num{{ student.username }}" title="调整至队伍">
-                                                        {% for team in teams %}
-                                                            <option value="{{ team.serialNum }}">{{ team.name }}</option>
-                                                        {% endfor %}
-                                                    </select>
+                                                <select name="serial_num{{ student.username }}" title="调整至队伍">
+                                                    {% for team in teams %}
+                                                        <option value="{{ team.serialNum }}">{{ team.name }}</option>
+                                                    {% endfor %}
+                                                </select>
                                                 <input type="hidden" name="student_id" value="{{ student.id }}">
                                                 <button class="btn btn-warning" type="submit">调整至该队伍</button>
                                             </form>
@@ -181,6 +181,9 @@
                                     </tr>
                                 {% endfor %}
                             </table>
+                        </div>
+                        <div class="card-content table-responsive">
+                            <a href='{% url 'teacher:download_stu_teams' %}' class="btn btn-warning">下载报表</a>
                         </div>
                     </div>
                 </div>

@@ -131,6 +131,8 @@ def create_stu_teams_excel(file,course):
     work_book = Workbook()
     team_stu_list = reportTeams(course)
     ws = work_book.get_active_sheet()
+    print(team_stu_list)
+
     ws.cell(row=1, column=1).value = '团队id'
     ws.cell(row=1, column=2).value = '团队名称'
     ws.cell(row=1, column=3).value = '队长'
@@ -140,10 +142,10 @@ def create_stu_teams_excel(file,course):
         num = i + 2
         ws.cell(row=num, column=1).value = team_stu_list[i]['id']
         ws.cell(row=num, column=2).value = team_stu_list[i]['name']
-        ws.cell(row=num, column=3).value = team_stu_list[i]['leader']
+        ws.cell(row=num, column=3).value = team_stu_list[i]['leader'].user.name
         column_index = 4
         for member in team_stu_list[i]['member']:
-            ws.cell(row=num, column=column_index).value = member
+            ws.cell(row=num, column=column_index).value = member.user.name
             column_index += 1
         work_book.save(filename=file)
 
