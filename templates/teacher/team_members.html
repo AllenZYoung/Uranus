@@ -146,7 +146,7 @@
                                         <td>{{ member.contribution }}</td>
                                         <td>
                                             <a href="{% url 'teacher:dismiss_member' %}?member_id={{ member.id }}&team_id={{ team.id }}">
-                                                <button>剔除</button>
+                                                <button class="btn btn-warning" type="submit">剔除</button>
                                             </a>
                                         </td>
                                     </tr>

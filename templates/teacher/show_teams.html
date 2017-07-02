@@ -141,7 +141,7 @@
                                         <td>{{ team.get_status_display }}</td>
                                         <td>
                                             <a href="{% url 'teacher:team_members' %}?team_id={{ team.id }}">
-                                                <button>团队成员</button>
+                                                <button class="btn btn-warning" type="submit">团队成员</button>
                                             </a>
                                         </td>
                                     </tr>
@@ -175,7 +175,7 @@
                                                         {% endfor %}
                                                     </select>
                                                 <input type="hidden" name="student_id" value="{{ student.id }}">
-                                                <input type="submit"  value="调整至该队伍">
+                                                <button class="btn btn-warning" type="submit">调整至该队伍</button>
                                             </form>
                                         </td>
                                     </tr>

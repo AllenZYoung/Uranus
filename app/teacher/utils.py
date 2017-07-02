@@ -138,9 +138,6 @@ def create_stu_teams_excel(file,course):
 
     for i in range(0,len(team_stu_list)):
         num = i + 2
-        print(team_stu_list[i]['id'])
-        print(team_stu_list[i]['name'])
-        print(team_stu_list[i]['leader'])
         ws.cell(row=num, column=1).value = team_stu_list[i]['id']
         ws.cell(row=num, column=2).value = team_stu_list[i]['name']
         ws.cell(row=num, column=3).value = team_stu_list[i]['leader']

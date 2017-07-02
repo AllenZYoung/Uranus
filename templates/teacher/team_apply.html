@@ -140,12 +140,12 @@
                                         <td>{{ team.name }}</td>
                                         <td>
                                             <a href="{% url 'teacher:team_members' %}?team_id={{ team.id }}">
-                                                                        <button>团队成员</button>
+                                                <button class="btn btn-warning" type="submit">团队成员</button>
                                             </a>
                                         </td>
                                         <td>
                                             <a href="{% url 'teacher:apply_manage' %}?team_id={{ team.id }}">
-                                                                                <button>申请管理</button>
+                                                <button class="btn btn-warning" type="submit">申请管理</button>
                                             </a>
                                         </td>
                                     </tr>
