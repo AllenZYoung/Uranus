@@ -101,6 +101,8 @@ def get_team_score_excel_file_abspath():
     # 第一次计算出各团队得分之后保存到excel表，以便老师下载
     # 各个团队得分的excel命名规范：termYear_termsemester_team_score_list.xlsx
     file_path = os.path.join(REPORT_ROOT, 'teamScores')
+    if not os.path.exists(file_path):
+        os.mkdir(file_path,)
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_team_score_list.xlsx'
     file = os.path.join(file_path, file_name)
     return file
@@ -112,6 +114,8 @@ def get_stu_score_excel_file_abspath():
 
     # 各人得分的excel命名规范：termYear_termsemester_stu_score_list.xlsx
     file_path = os.path.join(REPORT_ROOT, 'stuScores')
+    if not os.path.exists(file_path):
+        os.mkdir(file_path,)
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_score_list.xlsx'
     file = os.path.join(file_path, file_name)
     return file
@@ -175,7 +179,7 @@ def create_stu_score_excel(file, stu_list, stu_score_dict):
 
     print(stu_list)
     print(stu_score_dict)
-    num = 2;
+    num = 2
     for stu in stu_list:
         ws.cell(row=num, column=1).value = stu.username
         ws.cell(row=num, column=2).value = stu.name
@@ -270,9 +274,8 @@ def generate_team_scores(course_id):
     for workmeta in workmetas:
         works=[]
         for team in teams:
-            try:
-                work=Work.objects.get(workMeta=workmeta,team=team)
-            except ObjectDoesNotExist:
+            work=Work.objects.filter(workMeta=workmeta,team=team).order_by('-time').first()
+            if work is None:
                 work=Work(score=0,team=team)
             works.append(work)
         row_data=ScoreWrapper(workmeta=workmeta,works=works)
