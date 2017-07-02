@@ -199,7 +199,7 @@ def compute_team_score():
         work_list = Work.objects.filter(team=team)
         score = 0
         for work in work_list:
-            score += work.score * work.workMeta.proportion
+            score += (work.score or 0.0) * (work.workMeta.proportion or 0.0)
         team_score[team] = score
         score_list.append(score)
     return team_list, score_list, team_score
@@ -212,7 +212,7 @@ def compute_stu_score():
     for team in team_score:
         team_member = Member.objects.filter(team=team)
         for member in team_member:
-            score = team_score[team] * member.contribution
+            score = (team_score[team] or 0.0) * (member.contribution or 0.0)
             stu_score[member.user] = score
     return stu_score
 
