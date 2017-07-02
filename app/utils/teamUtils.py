@@ -86,8 +86,8 @@ def transferLeadership(team, user):
         log('不是学生', 'teamutils', LOG_LEVEL.ERROR)
         return False
 
-    Member.user.objects.filter(team=team, role='leader').update(role='member')
-    Member.user.objects.filter(team=team, user=user).update(role='leader')
+    Member.objects.filter(team=team, role='leader').update(role='member')
+    Member.objects.filter(team=team, user=user).update(role='leader')
     return True
 
 
@@ -217,3 +217,19 @@ def setContribution(user, contribution):
     Member.objects.filter(user=user).update(contribution=contribution)
     log('setContribution OK', 'teamutils', LOG_LEVEL.INFO)
     return curContrib + contribution
+
+# 按照团队角色对团队成员进行排序，newMoe > leader > member
+def sort_team_members(member_list):
+    newMoe = []
+    leader = []
+    member = []
+    for _member in member_list:
+        if _member.role == 'newMoe':
+            newMoe.append(_member)
+        elif _member.role == 'leader':
+            leader.append(_member)
+        else:
+            member.append(_member)
+    newMoe.extend(leader)
+    newMoe.extend(member)
+    return newMoe
