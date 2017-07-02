@@ -389,13 +389,10 @@ def add_comment_score(request):
     course_id = request.session.get('course_id', None)
     homework_id = request.GET.get('work_id')
     homework = get_object_or_404(Work, id=homework_id)
-    attachments = Attachment.objects.filter(workMeta_id=homework.workMeta_id)
+    # work_meta = WorkMeta.objects.filter(id=work_meta_id)
+    attachments = Attachment.objects.filter(work=homework)
     if request.method == 'GET':
         form = CommentAndScoreForm()
-        # form.initial['homework_id'] = homework_id
-        # form.fields['homework_id'].widget = forms.HiddenInput()
-        # form.initial['post_work_meta_id'] = work_meta_id
-        # form.fields['post_work_meta_id'].widget = forms.HiddenInput()
         return render(request, 'teacher/add_comment_score.html',
                       {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
                        'attachments': attachments})
