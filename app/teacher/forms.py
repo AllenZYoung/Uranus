@@ -77,3 +77,13 @@ class EditTeamForm(forms.Form):
         super(EditTeamForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+
+class ScoreParamForm(forms.Form):
+    title=forms.CharField(label='评分项标题')
+    content=forms.CharField(label='评分项内容',widget=widgets.Textarea)
+    proportion=forms.FloatField(label='总分折算占比',min_value=0,max_value=1)
+
+    def add_fields(self,teams):
+        for team in teams:
+            self.fields[team.serialNum]=forms.FloatField(min_value=0,max_value=100,label=team.name+' 成绩')

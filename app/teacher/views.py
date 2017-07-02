@@ -521,3 +521,26 @@ def generate_score_excel(request):
             return response
     else:
         return HttpResponse('generate excel failed!')
+
+
+@login_required(login_url='app:login')
+def add_score_params(request):
+    course_id = request.session.get('course_id', None)
+    teams = Team.objects.filter(course_id=course_id)
+    user=User.objects.get(username=request.user.username)
+    if request.method == 'GET':
+        form=ScoreParamForm()
+        form.add_fields(teams)
+        return render(request,'teacher/add_score_params.html',{'form':form})
+    else:
+        form=ScoreParamForm(request.POST)
+        if form.is_valid():
+            workmeta=WorkMeta(course_id=course_id,user=user,title=form.cleaned_data['title'],content=form.cleaned_data['content'],
+                             proportion=form.cleaned_data['proportion'],submits=1,startTime=datetime.now(),endTime=datetime.now())
+            workmeta.save()
+            for team in teams:
+                work=Work(workMeta=workmeta,team=team,score=form.cleaned_data[team.serialNum],time=datetime.now())
+                work.save()
+            return redirect('/teacher/score_report')
+        else:
+            return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
