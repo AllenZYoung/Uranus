@@ -18,11 +18,6 @@ def log(request):
 
 
 def test(request):
-    for user in User.objects.filter():
-        ret = isTeamLeader(user)
-        print(ret)
-        if isTeamLeader(user):
-            print('[Leader]' + user.username)
-        else:
-            print('[Member]' + user.username)
-    return HttpResponse('Test Finished')
+    from app.utils import reportUtils
+    reportUtils.test()
+    return HttpResponse('Test Finished<br/><a href="/log">See Log</a>')

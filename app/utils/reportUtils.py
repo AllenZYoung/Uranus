@@ -1,6 +1,6 @@
 from app.models import *
 from app.utils.logUtils import *
-
+from app.utils.statisticsUtils import *
 
 # 关于报表的工具集
 # by kahsolt
@@ -24,8 +24,6 @@ def reportTeam(team):
             t['leader'] = member.user.name
         else:
             t['member'].append(member.user.name)
-
-
 
 
 # 数据整理: [所有团队信息字典的列表]
@@ -57,7 +55,7 @@ def reportGradeTeam(team):
     return grade
 
 
-# 数据整理: [所有团队成绩的列表]
+# 数据整理: [某课的团队成绩报表]
 def reportGradeTeams(course):
     if not isinstance(course, Course):
         return None
@@ -70,7 +68,7 @@ def reportGradeTeams(course):
     return grades
 
 
-# 数据整理: {单个学生成绩的字典}
+# 数据整理: {单个学生总成绩的字典}
 def reportGradeStudent(user):
     if not isinstance(user, User):
         return None
@@ -84,13 +82,12 @@ def reportGradeStudent(user):
 
     ret = {
         'user': user,
-        'grade': 0,
+        'grade': getGradeStudent(user),
     }
-    # TODO: 根据贡献度计算总分??
     return ret
 
 
-# 所有学生成绩的列表
+# 数据整理: [某课的学生成绩报表]
 def reportGradeStudents(course):
     if not isinstance(course, Course):
         return None
@@ -101,3 +98,39 @@ def reportGradeStudents(course):
         g = reportGradeStudent(e.user)
         grades.append(g)
     return grades
+
+
+# 数据整理: [某个作业的所有分数]
+def reportGradeWorkMeta(workMeta):
+    if not isinstance(workMeta, WorkMeta):
+        return None
+
+    grade = []
+    teams = Team.objects.filter(course=workMeta.course)
+    for t in teams:
+        g = reportGradeTeam(t)
+        grade.append(g)
+    return grade
+
+
+# 数据整理: [某课的作业成绩报表]
+def reportGradeWorkMetas(course):
+    if not isinstance(course, Course):
+        return None
+
+    grades = []
+    wms = WorkMeta.objects.filter(course=course)
+    for wm in wms:
+        g = reportGradeWorkMeta(wm)
+        grades.append(g)
+    return grades
+
+
+##
+# 测试
+def test():
+    c = Course.objects.first()
+    log(reportTeams(c))
+    log(reportGradeTeams(c))
+    log(reportGradeStudents(c))
+    log(reportGradeWorkMetas(c))
