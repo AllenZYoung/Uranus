@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^attendance', attendance),  # 签到
     url(r'^apply_for_team', views.apply_for_team),  # 申请加入团队
     url(r'^process_apply', views.process_apply),  # 处理申请请求
+    url(r'^finish_team_bulid', views.finish_team_bulid),  # 处理申请请求
 ]
