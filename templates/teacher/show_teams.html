@@ -148,7 +148,9 @@
                                 {% endfor %}
                             </table>
                         </div>
-
+                        <div class="card-content table-responsive">
+                            <a href='{% url 'teacher:download_stu_teams' %}' class="btn btn-warning">下载团队成员报表</a>
+                        </div>
                         <p>{{ error_message }}</p>
                         <div class="card-content table-responsive">
                             <label>未组队的学生如下</label><br/>
@@ -175,16 +177,16 @@
                                                     {% endfor %}
                                                 </select>
                                                 <input type="hidden" name="student_id" value="{{ student.id }}">
-                                                <button class="btn btn-warning" type="submit">调整至该队伍</button>
+                                                <button onclick="javascript.window.location.reload('{% url 'teacher:team_members' %}')"
+                                                        class="btn btn-warning" type="submit">调整至该队伍
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             </table>
                         </div>
-                        <div class="card-content table-responsive">
-                            <a href='{% url 'teacher:download_stu_teams' %}' class="btn btn-warning">下载报表</a>
-                        </div>
+
                     </div>
                 </div>
             </div>
