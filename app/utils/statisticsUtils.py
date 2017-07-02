@@ -28,11 +28,11 @@ def sumGradeStudent(user):
         log('未加入任何团队', 'statisticsUils', LOG_LEVEL.ERROR)
         return False
     contrib = member.contribution
-    if contrib:
+    if not contrib:
         log('未设置个人贡献度', 'statisticsUils', LOG_LEVEL.INFO)
         return 0
 
-    return contrib * sumGradeTeam(member.team) or 0.0
+    return contrib * (sumGradeTeam(member.team) or 0.0)
 
 
 # 团队平均成绩
