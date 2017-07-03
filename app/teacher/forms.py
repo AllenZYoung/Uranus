@@ -90,3 +90,5 @@ class ScoreParamForm(forms.Form):
     def add_fields(self,teams):
         for team in teams:
             self.fields[team.serialNum]=forms.FloatField(min_value=0,max_value=100,label=team.name+' 成绩')
+
+

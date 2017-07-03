@@ -121,32 +121,42 @@
 												<td>{{ member.user.username }}</td>
 	                                        	<td>{{ member.user.name }}</td>
 												{% if user_role.role == 'leader' %}
-												{% if member.role == 'newMoe' %}
-												<td>---</td>
-												<td>
-	                                        		<a href="process_apply?id={{ member.id }}&res=y">
-														<button class="btn btn-success" href="process_apply">同意</button></a>
-													<a href="process_apply?id={{ member.id }}&res=n">
-														<button class="btn btn-success" href="process_apply">拒绝</button></a>
-	                                        	</td>
+													{% if member.role == 'newMoe' %}
+														<td>---</td>
+														<td>
+															<a href="process_apply?id={{ member.id }}&res=y">
+																<button class="btn btn-success" href="process_apply">同意</button></a>
+															<a href="process_apply?id={{ member.id }}&res=n">
+																<button class="btn btn-success" href="process_apply">拒绝</button></a>
+														</td>
+													{% else %}
+														<td>{{ member.get_role_display }}</td>
+														<td>已同意</td>
+													{% endif %}
 												{% else %}
-												<td>{{ member.get_role_display }}</td>
-												<td>已同意</td>
-												{% endif %}
-												{% else %}
-												<td>{{ member.get_role_display }}</td>
+													<td>{{ member.get_role_display }}</td>
 												{% endif %}
 	                                        </tr>
 											{% endfor %}
 	                                    </tbody>
 	                                </table>
 									<div class="tim-typo">
-										<button type="" class="btn btn-success pull-right">向老师提交</button>
-										{% if team.status == 'unsubmitted' %}
-										<button class="btn btn-success pull-right" disabled="disabled">结束组队</button></a>
-										{% else %}
-										<a href="finish_team_bulid">
-                        				<button class="btn btn-success pull-right">结束组队</button></a>
+										{% if user_role.role == 'leader' %}
+											{% if team.status == 'unsubmitted' %}
+											<a href="submit_team">
+											<button type="" class="btn btn-success pull-right">向老师提交</button></a>
+											<button class="btn btn-success pull-right" disabled="disabled">结束组队</button>
+											{% else %}
+											<button type="" class="btn btn-success pull-right" disabled="disabled">向老师提交</button>
+											<a href="finish_team_bulid">
+											<button class="btn btn-success pull-right">结束组队</button></a>
+											{% endif %}
+											{% if team.status == 'submitted' or team.status == 'passed' %}
+											<button type="" class="btn btn-success pull-right" disabled="disabled">解散团队</button>
+											{% else %}
+											<a href="dismiss_team">
+											<button type="" class="btn btn-success pull-right">解散团队</button></a>
+											{% endif %}
 										{% endif %}
                     				</div>
 	                            </div>

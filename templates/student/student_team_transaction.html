@@ -150,7 +150,7 @@
 	                                    <tbody>
 											{% for team in teams %}
 	                                        <tr>
-												{% if team.id == member.team.serialNum %}
+												{% if team.name == member.team.name %}
 												<td><a href="member_evaluation">{{ team.name }}</a></td>
 												{% else %}
 												<td>{{ team.name }}</td>
@@ -161,11 +161,11 @@
 	                                        	<td>
 	                                        		<td>
 														{% if team.status == '未完成组队' and member == 'None' %}
-														<a href="apply_for_team?id={{ team.id }}">
+														<a href="apply_for_team?name={{ team.name }}">
 														<button class="btn btn-info"
 																href="apply_for_team">申请加入</button></a>
 														{% else %}
-															{% if team.id == member.team.serialNum and member.role == 'newMoe'%}
+															{% if team.name == member.team.name and member.role == 'newMoe'%}
 															<button type="" class="btn btn-info" disabled="disabled">正在申请中...</button>
 															{% else %}
 															<button type="" class="btn btn-info" disabled="disabled">申请加入</button>

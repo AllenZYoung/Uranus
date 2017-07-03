@@ -22,7 +22,7 @@ def reportTeam(team):
     for member in members:
         if member.role == 'leader':
             t['leader'] = member
-        elif member.role == 'member':
+        else:
             t['member'].append(member)
     return t
 
