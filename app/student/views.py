@@ -310,3 +310,10 @@ def preview_source_online(request):
     log(url, 'preview_source_online')
     return redirect(url)
 
+@login_required(login_url='app:login')
+def viewNotice(request):
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notices = Notice.objects.filter(course=course)
+    return render(request,'student/student_course_announcement.html',{'notices':notices})
+

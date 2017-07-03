@@ -607,7 +607,16 @@ def add_score_params(request):
             # return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
         return HttpResponse(json.dumps(data))
 
-
+@login_required(login_url='app:login')
+def setNotice(request):
+    if request.method == 'GET':
+        user = request.user
+        course = Enroll.objects.filter(user__username__contains=user).first().course
+        notices = Notice.objects.filter(course=course)
+        return render(request, 'teacher/teacher_course_announcement.html',{'notices':notices,})
+    elif request.method == 'POST':
+        pass
+    return render(request,'teacher/teacher_course_announcement.html')
 
 def test(request):
     return render(request,'teacher/test.html')
