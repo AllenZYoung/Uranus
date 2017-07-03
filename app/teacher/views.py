@@ -539,6 +539,7 @@ def apply_manage(request):
     else:
         team_id = request.POST.get('team_id', None)
         team = get_object_or_404(Team, id=team_id)
+        # print(team)
         form = EditTeamForm(request.POST)
         if form.is_valid():
             team.info = form.cleaned_data['info']
@@ -548,7 +549,7 @@ def apply_manage(request):
                 print("auditTeamPassed done!")
             elif form.cleaned_data['status'] == 'rejected':
                 auditTeamRejected(team)
-            team.save()
+                team.save()
             return redirect('/teacher/team_apply')
         else:
             return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form, 'error_message': '数据不合法'})

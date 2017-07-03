@@ -65,8 +65,8 @@ class EditCourseForm(forms.Form):
 
 class EditTeamForm(forms.Form):
     STATUS = (
-        ('passed', '已通过'),
-        ('rejected', '已驳回')
+        ('passed', '通过'),
+        ('rejected', '驳回')
     )
     status = forms.ChoiceField(choices=STATUS, label='状态')
     info = forms.CharField(widget=widgets.Textarea, label='说明信息')
