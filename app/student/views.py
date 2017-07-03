@@ -13,7 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from app.utils import *
 from app.utils.authUtils import *
 from .utils import isXls
-from app.views import *
+import json
 # Create your views here.
 
 @login_required(login_url='app:login')
@@ -162,15 +162,21 @@ def workView(request):
     user = get_object_or_404(User, username=request.user.username)
     member = get_object_or_404(Member, user=user)
     if request.method == 'POST':
+        data = {}
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             ret = utils.submit_homework_file(request)
             if ret:
-                return redirect('/student/submits')
+                data['success'] = 'true'
+                data['forward_url'] = '/student/submits'
+                # return redirect('/student/submits')
             else:
-                return HttpResponse('Sumbit failed')
+                data['error_message'] = '提交失败，请重新提交！'
+                # return HttpResponse('Sumbit failed')
         else:
-            return HttpResponse('form is not valid')
+            data['error_message'] = '数据不合法，请重新填写提交！'
+            # return HttpResponse('form is not valid')
+        return HttpResponse(json.dumps(data))
     elif request.method == 'GET':
         form = UploadFileForm()
         if 'work_id' in request.GET:
@@ -210,9 +216,13 @@ def teamRoot(request):
 def student_team_build(request):
     user = get_object_or_404(User, username=request.user.username)
     if request.method == 'POST':
+        data = {}
         team_name = request.POST.get('team_name')
         createTeam(user, team_name)
-        return redirect('/student/student_team_build')
+        data['success'] = 'true'
+        data['forward_url'] = '/student/student_team_build'
+        return HttpResponse(json.dumps(data))
+        # return redirect('/student/student_team_build')
     enroll = Enroll.objects.get(user=user)
     teams = reportTeams(enroll.course, is_ordered=False)
     for i in range(len(teams)):

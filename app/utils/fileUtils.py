@@ -5,7 +5,8 @@ from app.utils.logUtils import log, LOG_LEVEL
 from app.models import *
 
 URL_API = 'https://view.officeapps.live.com/op/view.aspx?src='
-URL_BASE = 'http://uranus.kahsolt.tk' + MEDIA_URL
+SITE_BASE = 'http://uranus.kahsolt.tk'
+URL_BASE = SITE_BASE + MEDIA_URL
 
 
 TEXT_EXT = ['.txt', '.html', '.htm']
@@ -20,11 +21,12 @@ VIDEO_EXT = ['.mp4', '.webm', '.mpg', '.ogg', '.flv', '.f4v']
 
 # 文档在线预览url：doc/ppt/xls
 def docPreviewUrl(path):
-    if not isOfficeFile(path):
-        log(path + '不是office文档文件', 'docPreviewUrl', LOG_LEVEL.ERROR)
+    f = os.path.basename(path)
+    if not isOfficeFile(f):
+        log(f + '不是office文档文件', 'docPreviewUrl', LOG_LEVEL.ERROR)
         return '#'
 
-    url = os.path.join(URL_BASE, path)
+    url = os.path.join(SITE_BASE, path)
     url = urllib.parse.quote(url)
     url = URL_API + url
     return url
@@ -33,7 +35,7 @@ def docPreviewUrl(path):
 # 文件下载url
 def fileDownloadUrl(path):
     url = urllib.parse.quote(path)
-    url = os.path.join(URL_BASE, url)
+    url = os.path.join(SITE_BASE, url)
     return url
 
 
@@ -70,5 +72,6 @@ def test():
     fs = File.objects.filter()
     for f in fs:
         log(docPreviewUrl(f.file.url[1:]), 'docPreviewUrl')
+        log(fileDownloadUrl(f.file.url[1:]), 'fileDownloadUrl')
 
     log('='*50)

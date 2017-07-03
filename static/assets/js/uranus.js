@@ -11,7 +11,10 @@ function getInputData() {
             if ($(input).is(':required') && !input.files[0]) {
                 return false;
             }
-            formData.append($(input).attr('name'), input.files[0])
+            var fileList = input.files;
+            for (var j = 0; j < fileList.length; j++) {
+                formData.append($(input).attr('name'), fileList[j]);
+            }
         } else {
             var inputValue = $(input).val() || "";
             if ($(input).is(':required') && inputValue === "") {
@@ -121,29 +124,35 @@ function submitClick(postUrl, modalShowText) {
 }
 
 //删除提示
-function onDeleteMessage() {
-    var handleDeleteUrl = $(this).attr('href');
-    alert($(this).type());
-    alert('url:' + handleDeleteUrl);
-    $('#myModalLabel').text('删除');
-    $('.modal-body').text('确认删除？');
-    $('button #confirm-btn').text('是');
-    $('button #confirm-not-btn').text('否');
-    $('button #confirm-not-btn').css('display', '');
+function onDeleteMessage(deleteUrl) {
+    var handleDeleteUrl = deleteUrl;
+    // alert('url:' + handleDeleteUrl);
     $('#confirm-btn').click(function () {
         $.ajax({
             url: handleDeleteUrl,
             type: 'GET',
             data: {},
             success: function (data) {
-                if(data['success']){
-                    $('button #confirm-btn').css('display', 'none');
-                    $('button #confirm-not-btn').text('确定');
-                    window.location.reload();
+                data = $.parseJSON(data);
+                if (data['success']) {
+                    $('.modal-body').text('删除成功！');
+                    $('#confirm-btn').css('display', 'none');
+                    $('#confirm-not-btn').text('确定');
+                    $('#myModal').modal('show');
+                    $('#confirm-not-btn').click(function () {
+                        window.location.reload();
+                    });
                 }
             }
         });
     });
-    return false;
 
+    $('#myModalLabel').text('删除');
+    $('.modal-body').text('确认删除？');
+    $('#confirm-btn').text('是');
+    $('#confirm-not-btn').css('display', '');
+    $('#confirm-not-btn').text('否');
+    $('#myModal').modal('show');
+
+    return false;
 }

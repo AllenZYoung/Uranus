@@ -11,3 +11,6 @@ requests>=1.8
 opencv-python>=3.2
 numpy>=1.13.0
 urllib>=1.19.1
+
+[[extra]]
+cv2
