@@ -83,7 +83,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href={% url 'student:index' %}>返回</a>
+                    <a class="navbar-brand" href={% url 'teacher:course' %}>返回</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -109,24 +109,29 @@
                         <div class="card">
                             <div class="card-header" data-background-color="red">
                                 <h4 class="title">发布课程公告</h4>
-                                <p class="category">编辑课程公告发布</p>
+                                <p class="category">编辑课程公告并发布</p>
                             </div>
                             <div class="card-content">
-                                <form role="form">
-                                    <div class="form-group">
-                                        <label>请输入公告内容</label>
-                                        <textarea class="form-control" rows="2"></textarea>
-                                    </div>
+                                <form action="{% url 'teacher:setNotice' %}" method="post" enctype="multipart/form-data">
                                     <div class="tim-typo">
-                                        <button type="" class="btn btn-danger pull-right">发布公告</button>
+										<span class="tim-note">公告标题</span>
+											{{ form.title }}
+									</div>
+                                    <div class="tim-typo">
+										<span class="tim-note">公告内容</span>
+											{{ form.content }}
+									</div>
+                                    <div class="tim-typo">
+                                        <button type="submit" id='submit-data' class="btn btn-danger pull-right">发布公告</button>
                                     </div>
+                                    {% csrf_token %}
                                 </form>
                             </div>
                         </div>
                         <div class="card">
                             <div class="card-header" data-background-color="red">
                                 <h4 class="title">课程公告</h4>
-                                <p class="category">团队的课程最终成绩</p>
+                                <p class="category">查看本课程的公告</p>
                             </div>
                             <div class="card-content table-responsive">
                                 <form>
@@ -134,7 +139,7 @@
                                         <thead>
                                         <th>发布人</th>
                                         <th>发布时间</th>
-                                        <th>发布标题</th>
+                                        <th>公告标题</th>
                                         <th>公告内容</th>
                                         </thead>
                                         <tbody>

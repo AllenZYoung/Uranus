@@ -19,7 +19,11 @@ from app.teacher.utils import compute_stu_score,compute_team_score
 
 @login_required(login_url='app:login')
 def index(request):  # 也可以看做是“courseRoot函数”
-    return render(request, 'student/student_course.html')
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notice_new = Notice.objects.filter(course=course).order_by('-time').first()
+
+    return render(request, 'student/student_course.html',{'notice':notice_new})
 
 
 @login_required(login_url='app:login')  # 显示学生的课程信息
@@ -318,6 +322,6 @@ def preview_source_online(request):
 def viewNotice(request):
     user = request.user
     course = Enroll.objects.filter(user__username__contains=user).first().course
-    notices = Notice.objects.filter(course=course)
+    notices = Notice.objects.filter(course=course).order_by('-time')
     return render(request,'student/student_course_announcement.html',{'notices':notices})
 

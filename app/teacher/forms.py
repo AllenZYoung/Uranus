@@ -4,6 +4,7 @@ from datetime import datetime
 
 # define your custom forms here
 from django.forms import widgets
+from app.models import Notice
 
 
 class UploadFileForm(forms.Form):
@@ -92,8 +93,8 @@ class ScoreParamForm(forms.Form):
             self.fields[team.serialNum] = forms.FloatField(min_value=0, max_value=100, label=team.name + ' 成绩')
 
 
-class NoticeForm(forms.Form):
-    title = forms.CharField(max_length=128)
-    # content = forms.TextField()
-    # time = models.DateTimeField(blank=True, auto_now_add=True)
+class NoticeForm(forms.ModelForm):
+    class Meta:
+        model = Notice
+        fields = ['title','content']
 
