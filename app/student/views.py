@@ -163,22 +163,27 @@ def workView(request):
     member = get_object_or_404(Member, user=user)
     if request.method == 'POST':
         data = {}
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            ret = utils.submit_homework_file(request)
-            if ret:
-                data['success'] = 'true'
-                data['forward_url'] = '/student/submits'
-                # return redirect('/student/submits')
-            else:
-                data['error_message'] = '提交失败，请重新提交！'
-                # return HttpResponse('Sumbit failed')
-        else:
-            data['error_message'] = '数据不合法，请重新填写提交！'
-            # return HttpResponse('form is not valid')
+        if len(request.FILES.getlist('files')) == 0:
+            data['error_message'] = '文件为空，请重新上传！'
+            return HttpResponse(json.dumps(data))
+        utils.submit_homework_file(request)
+        data['success'] = 'true'
+        data['forward_url'] = '/teacher/resources'
         return HttpResponse(json.dumps(data))
+        # if form.is_valid():
+        #     ret = utils.submit_homework_file(request)
+        #     if ret:
+        #         data['success'] = 'true'
+        #         data['forward_url'] = '/student/submits'
+        #         # return redirect('/student/submits')
+        #     else:
+        #         data['error_message'] = '提交失败，请重新提交！'
+        #         # return HttpResponse('Sumbit failed')
+        # else:
+        #     data['error_message'] = '数据不合法，请重新填写提交！'
+        #     # return HttpResponse('form is not valid')
+        # return HttpResponse(json.dumps(data))
     elif request.method == 'GET':
-        form = UploadFileForm()
         if 'work_id' in request.GET:
             wid = request.GET['work_id']
             work = Work.objects.get(id=wid)
@@ -193,7 +198,6 @@ def workView(request):
             workMeta = WorkMeta.objects.get(id=wid)
             return render(request, 'student/student_task_details.html', {'workMeta': workMeta,
                                                                          'is_work': False,
-                                                                         'form': form,
                                                                          'member': member,})
     else:
         return render(request,'pages-error-404.html')
