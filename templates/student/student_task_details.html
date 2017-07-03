@@ -161,8 +161,8 @@
 												<tr>
 													<td><a href="s/{{ meta.file.file }}">{{ meta.file.file }}</a>
                                                     {% if meta.file.file.url|is_office %}
-                                                <a href="{% url 'student:preview_source_online' %}?file={{ meta.file.file }}" target="_blank">[预览]</a>
-                                            {% endif %}
+                                                        <a href="{% url 'student:preview_source_online' %}?file={{ meta.file.file }}" target="_blank">[预览]</a>
+                                                    {% endif %}
                                                     </td>
 													<td>{{ meta.file.user.name }}</td>
 													<td>{{ meta.file.time }}</td>

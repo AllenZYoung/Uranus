@@ -111,7 +111,7 @@
                                 <p class="category">各团队需符合组队要求</p>
                             </div>
                             <div class="card-content table-responsive">
-                                <form method="POST" action="" enctype="multipart/form-data">
+{#                                <form method="POST" action="" enctype="multipart/form-data">#}
                                     <table class="table table-hover">
                                         <thead>
                                         <tr>
@@ -119,12 +119,12 @@
                                             <td><input type="text" class="form-control" name="team_name"></td>
                                             {% csrf_token %}
                                             <td style="text-align: center">
-                                                <button type="submit" class="btn btn-info">提交</button>
+                                                <button type="submit" id="submit-data" class="btn btn-info">提交</button>
                                             </td>
                                         </tr>
                                         </thead>
                                     </table>
-                                </form>
+{#                                </form>#}
                             </div>
                         </div>
                         <div class="card">
