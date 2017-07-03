@@ -26,16 +26,18 @@ def docPreviewUrl(path):
         log(f + '不是office文档文件', 'docPreviewUrl', LOG_LEVEL.ERROR)
         return '#'
 
-    url = os.path.join(SITE_BASE, path)
+    url = os.path.join(URL_BASE, path)
     url = urllib.parse.quote(url)
     url = URL_API + url
+    log(url, 'docPreviewUrl')
     return url
 
 
 # 文件下载url
 def fileDownloadUrl(path):
     url = urllib.parse.quote(path)
-    url = os.path.join(SITE_BASE, url)
+    url = os.path.join(URL_BASE, url)
+    log(url, 'fileDownloadUrl')
     return url
 
 
