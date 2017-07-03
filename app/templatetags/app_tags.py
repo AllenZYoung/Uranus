@@ -1,4 +1,5 @@
 from django import template
+from app.utils.fileUtils import *
 register = template.Library()
 
 
@@ -12,3 +13,10 @@ def item_of_list(value, index):
 @register.filter(name='key')
 def value_of_key_from_dict(value, key):
     return value.get(key)
+
+
+@register.filter(name='is_office')
+def if_office(value):
+    if isOfficeFile(value):
+        return True
+    return False

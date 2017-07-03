@@ -141,7 +141,9 @@
                                                 <td>
                                                     {% for attach in attachments %}
                                                     <a href="{{ attach.file.file.url }}">{{ attach.file.file.name }}</a>&nbsp;&nbsp;
+                                                        {% if attach.file.file.url|is_office %}
                                                         <a href="{% url 'teacher:preview_source_online' %}?file={{ attach.file.file }}" target="_blank">[预览]</a>
+                                                        {% endif %}
                                                         <br>
                                                     {% endfor %}
                                                 </td>
