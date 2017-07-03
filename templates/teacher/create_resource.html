@@ -134,14 +134,13 @@
                                             <div class="col-md-3">
                                                 <div class="container kv-main">
                                                         <label >选择附件上传</label>
-                                                        <input id="file-zh" type="file" name="files" multiple>
+                                                        <input id="file-zh" type="file" name="files"  multiple>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <button class="btn btn-success" id="submit-data" type="submit">发布课程资源</button>
-                                                 <p>{{ error_message }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +188,9 @@
             language: 'zh',
             uploadUrl:'{% url 'teacher:create_resource' %}',
             // maxFileSize: 1000,
-            maxFilesNum:20
+            maxFilesNum:20,
+            uploadExtraData: { 'csrfmiddlewaretoken':'{{ csrf_token }}'} ,
+
         });
     </script>
 	<script type="text/javascript">

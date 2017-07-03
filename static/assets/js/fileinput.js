@@ -671,7 +671,7 @@
                 },
                 fileActionSettings: {
                     showRemove: true,
-                    showUpload: true,
+                    showUpload: false,
                     showZoom: true,
                     showDrag: true,
                     removeIcon: '<i class="glyphicon glyphicon-trash text-danger"></i>',
@@ -3800,7 +3800,7 @@
         uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',
         uploadClass: 'btn btn-default',
         uploadUrl: null,
-        uploadAsync: true,
+        uploadAsync: false,
         uploadExtraData: {},
         zoomModalHeight: 480,
         minImageWidth: null,
