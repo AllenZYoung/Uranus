@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance</title>
+    <form>
+        <input name="start_time"/>
+        <input name="end_time"/>
+        <button type="submit">开始签到</button>
+    </form>
+    <a href="attendance_view?action=1"><button>结束签到</button></a>
+    {% if not data.is_collected %}
+    <a href="attendance_view?action=2"><button>收集照片</button></a>
+    {% else %}
+    <a href="attendance_view?action=3"><button>停止收集</button></a>
+    {% endif %}
+</head>
+<body>
+
+</body>
+</html>

@@ -230,7 +230,7 @@ def student_team_build(request):
 @login_required(login_url='app:login')
 def apply_for_team(request):
     user = get_object_or_404(User, username=request.user.username)
-    member = joinTeam(user, Team.objects.get(serialNum=request.GET.get('id')))
+    member = joinTeam(user, Team.objects.get(name=request.GET.get('name')))
     if member:
         return redirect('/student/student_team_build')
     else:
@@ -253,4 +253,18 @@ def finish_team_bulid(request):
     user = get_object_or_404(User, username=request.user.username)
     team = Member.objects.get(user=user).team
     completeTeam(team)
+    return redirect('/student/student_team_build')
+
+@login_required(login_url='app:login')
+def submit_team(request):
+    user = get_object_or_404(User, username=request.user.username)
+    team = Member.objects.get(user=user).team
+    submitTeam(team)
+    return redirect('/student/student_team_build')
+
+@login_required(login_url='app:login')
+def dismiss_team(request):
+    user = get_object_or_404(User, username=request.user.username)
+    team = Member.objects.get(user=user).team
+    dismissTeam(team)
     return redirect('/student/student_team_build')
