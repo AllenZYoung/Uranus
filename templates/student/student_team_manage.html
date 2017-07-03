@@ -31,6 +31,7 @@
 <body>
 <div class="wrapper">
 
+    <<<<<<< HEAD
     <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
         <!--
             Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -95,177 +96,223 @@
                 </div>
             </div>
         </nav>
-
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header" data-background-color="green">
-                                <h4 class="title">{{ team.name }}的当前组队情况</h4>
-                                <p class="category">组建中的团队</p>
-                            </div>
-                            <div class="card-content">
-                                <h3 class="category">团队状态：{{ team.status }}</h3>
-                                {% if team.status == 'rejected' %}
-                                    <h4 class="category">被驳回，请解散团队后重新发起或加入团队</h4>
-                                {% elif team.status == 'unsubmitted' %}
-                                    <h4 class="category">未提交，请负责人向教师提交申请</h4>
-                                {% elif team.status == 'auditing' %}
-                                    <h4 class="category">审核中，教师正在审核申请</h4>
-                                {% elif team.status == 'passed' %}
-                                    <h4 class="category">组队成功！你们队伍的成员如下：</h4>
-                                {% else %}
-                                {% endif %}
-
-                                {#                                <h2 class="category"></h2>#}
-
-                            </div>
-                            <div class="card-content table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <th>学号</th>
-                                    <th>姓名</th>
-                                    <th>职务</th>
-                                    {% if user_role.role == 'leader' %}
-                                        <th>状态</th>
+        {% if team.status != 'passed' %}
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="green">
+                                    <h4 class="title">{{ team.name }}的当前组队情况</h4>
+                                    <p class="category">组建中的团队</p>
+                                </div>
+                                <div class="card-content">
+                                    <h3 class="category">团队状态：{{ team.status }}</h3>
+                                    {% if team.status == 'rejected' %}
+                                        <h4 class="category">被驳回，请解散团队后重新发起或加入团队</h4>
+                                    {% elif team.status == 'unsubmitted' %}
+                                        <h4 class="category">未提交，请负责人向教师提交申请</h4>
+                                    {% elif team.status == 'auditing' %}
+                                        <h4 class="category">审核中，教师正在审核申请</h4>
+                                    {% elif team.status == 'passed' %}
+                                        <h4 class="category">组队成功！你们队伍的成员如下：</h4>
+                                    {% else %}
                                     {% endif %}
-                                    </thead>
-                                    <tbody>
-                                    {% for member in member_list %}
-                                        <tr>
-                                            <td>{{ member.user.username }}</td>
-                                            <td>{{ member.user.name }}</td>
-                                            {% if user_role.role == 'leader' %}
-                                                {% if member.role == 'newMoe' %}
-                                                    <td>---</td>
-                                                    <td>
-                                                        <a href="process_apply?id={{ member.id }}&res=y">
-                                                            <button class="btn btn-success" href="process_apply">同意
-                                                            </button>
-                                                        </a>
-                                                        <a href="process_apply?id={{ member.id }}&res=n">
-                                                            <button class="btn btn-success" href="process_apply">拒绝
-                                                            </button>
-                                                        </a>
-                                                    </td>
+
+                                    {#                                <h2 class="category"></h2>#}
+
+                                </div>
+                                <div class="card-content table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <th>学号</th>
+                                        <th>姓名</th>
+                                        <th>职务</th>
+                                        {% if user_role.role == 'leader' %}
+                                            <th>状态</th>
+                                        {% endif %}
+                                        </thead>
+                                        <tbody>
+                                        {% for member in member_list %}
+                                            <tr>
+                                                <td>{{ member.user.username }}</td>
+                                                <td>{{ member.user.name }}</td>
+                                                {% if user_role.role == 'leader' %}
+                                                    {% if member.role == 'newMoe' %}
+                                                        <td>---</td>
+                                                        <td>
+                                                            <a href="process_apply?id={{ member.id }}&res=y">
+                                                                <button class="btn btn-success" href="process_apply">同意
+                                                                </button>
+                                                            </a>
+                                                            <a href="process_apply?id={{ member.id }}&res=n">
+                                                                <button class="btn btn-success" href="process_apply">拒绝
+                                                                </button>
+                                                            </a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>{{ member.get_role_display }}</td>
+                                                        <td>已同意</td>
+                                                    {% endif %}
                                                 {% else %}
                                                     <td>{{ member.get_role_display }}</td>
-                                                    <td>已同意</td>
                                                 {% endif %}
-                                            {% else %}
-                                                <td>{{ member.get_role_display }}</td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                                <div class="tim-typo">
-                                    {% if user_role.role == 'leader' %}
-                                        {% if team.status == 'incomplete' %}
-                                            <a href="finish_team_bulid">
-                                                <button class="btn btn-success pull-right">
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <div class="tim-typo">
+                                        {% if user_role.role == 'leader' %}
+                                            {% if team.status == 'incomplete' %}
+                                                <a href="finish_team_bulid">
+                                                    <button class="btn btn-success pull-right">
+                                                        结束组队
+                                                    </button>
+                                                </a>
+                                                <a type="" class="btn btn-success pull-right" disabled="disabled">
+                                                    向老师提交
+                                                </a>
+
+                                                <a href="dismiss_team">
+                                                    <button type="" class="btn btn-success pull-right">
+                                                        解散团队
+                                                    </button>
+                                                </a>
+                                            {% elif team.status == 'unsubmitted' %}
+
+                                                <button class="btn btn-success pull-right" disabled="disabled">
                                                     结束组队
                                                 </button>
-                                            </a>
-                                            <a type="" class="btn btn-success pull-right" disabled="disabled">
-                                                向老师提交
-                                            </a>
+                                                <a href="submit_team">
+                                                    <button type="" class="btn btn-success pull-right">向老师提交</button>
+                                                </a>
+                                                <a href="dismiss_team">
+                                                    <button type="" class="btn btn-success pull-right">解散团队</button>
+                                                </a>
+                                            {% elif team.status == 'auditing' %}
 
-                                            <a href="dismiss_team">
-                                                <button type="" class="btn btn-success pull-right">
-                                                    解散团队
+                                                <button class="btn btn-success pull-right" disabled="disabled">
+                                                    结束组队
                                                 </button>
-                                            </a>
-                                        {% elif team.status == 'unsubmitted' %}
-
-                                            <button class="btn btn-success pull-right" disabled="disabled">
-                                                结束组队
-                                            </button>
-                                            <a href="submit_team">
-                                                <button type="" class="btn btn-success pull-right">向老师提交</button>
-                                            </a>
-                                            <a href="dismiss_team">
-                                                <button type="" class="btn btn-success pull-right">解散团队</button>
-                                            </a>
-                                        {% elif team.status == 'auditing' %}
-
-                                            <button class="btn btn-success pull-right" disabled="disabled">
-                                                结束组队
-                                            </button>
-                                            <button type="" class="btn btn-success pull-right" disabled="disabled">
-                                                向老师提交
-                                            </button>
-                                            <button type="" class="btn btn-success pull-right" disabled="disabled">
-                                                解散团队
-                                            </button>
-                                        {% elif team.status == 'rejected' %}
-
-                                            <button class="btn btn-success pull-right" disabled="disabled">
-                                                结束组队
-                                            </button>
-                                            <button type="" class="btn btn-success pull-right" disabled="disabled">
-                                                向老师提交
-                                            </button>
-                                            <a href="dismiss_team">
-                                                <button type="" class="btn btn-success pull-right">
-                                                    解散团队
+                                                <button type="" class="btn btn-success pull-right" disabled="disabled">
+                                                    向老师提交
                                                 </button>
-                                            </a>
-                                        {% elif team.status == 'passed' %}
-
-                                            <button class="btn btn-success pull-right" disabled="disabled">
-                                                结束组队
-                                            </button>
-                                            <button type="" class="btn btn-success pull-right" disabled="disabled">
-                                                向老师提交
-                                            </button>
-                                            <a href="dismiss_team">
                                                 <button type="" class="btn btn-success pull-right" disabled="disabled">
                                                     解散团队
                                                 </button>
-                                            </a>
+                                            {% elif team.status == 'rejected' %}
+
+                                                <button class="btn btn-success pull-right" disabled="disabled">
+                                                    结束组队
+                                                </button>
+                                                <button type="" class="btn btn-success pull-right" disabled="disabled">
+                                                    向老师提交
+                                                </button>
+                                                <a href="dismiss_team">
+                                                    <button type="" class="btn btn-success pull-right">
+                                                        解散团队
+                                                    </button>
+                                                </a>
+                                            {% elif team.status == 'passed' %}
+
+                                                <button class="btn btn-success pull-right" disabled="disabled">
+                                                    结束组队
+                                                </button>
+                                                <button type="" class="btn btn-success pull-right" disabled="disabled">
+                                                    向老师提交
+                                                </button>
+                                                <a href="dismiss_team">
+                                                    <button type="" class="btn btn-success pull-right"
+                                                            disabled="disabled">
+                                                        解散团队
+                                                    </button>
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {% if user_role.role == 'leader' %}
-                            <div class="card">
-                                <div class="card-header" data-background-color="green">
-                                    <h4 class="title">为Uranus选择团队负责人</h4>
-                                </div>
-                                <form action="" method="GET" enctype="multipart/form-data">
-                                    <div class="card-content">
-                                        <div class="tim-typo">
-                                            <span class="tim-note">选择团队负责人</span>
-                                            <div class="btn-group">
-                                                <select name="user">
-                                                    <option value="0">更换负责人</option>
-                                                    {% for member in member_list %}
-                                                        {% if member.role == 'member' %}
-                                                            <option value="{{ member.user_id }}">{{ member.user.name }}</option>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </select>
-                                                {% csrf_token %}
+                            {% if user_role.role == 'leader' %}
+                                <div class="card">
+                                    <div class="card-header" data-background-color="green">
+                                        <h4 class="title">为Uranus选择团队负责人</h4>
+                                    </div>
+                                    <form action="" method="GET" enctype="multipart/form-data">
+                                        <div class="card-content">
+                                            <div class="tim-typo">
+                                                <span class="tim-note">选择团队负责人</span>
+                                                <div class="btn-group">
+                                                    <select name="user">
+                                                        <option value="0">更换负责人</option>
+                                                        {% for member in member_list %}
+                                                            {% if member.role == 'member' %}
+                                                                <option value="{{ member.user_id }}">{{ member.user.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                    {% csrf_token %}
+
+                                                </div>
 
                                             </div>
-
+                                            <div class="tim-typo">
+                                                <button type="submit" class="btn btn-success pull-right">提交团队申请</button>
+                                            </div>
                                         </div>
-                                        <div class="tim-typo">
-                                            <button type="submit" class="btn btn-success pull-right">提交团队申请</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        {% endif %}
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        {% else %}
+            <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-plain">
+                            <div class="card-header" data-background-color="orange">
+                                <h4 class="title">我的团队</h4>
+                                <p class="category">团队成员贡献度</p>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>角色</th>
+                                        <th>贡献度</th>
+                                    </tr>
+                                    {% for member in member_list %}
+                                        <tr>
+                                            <td>{{ member.user }}</td>
+                                            <td>{{ member.role }}</td>
+                                            <td>{{ member.contribution }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+
+                            {% if user_role.role == 'leader' %}
+                                <div class="card-content table-responsive">
+                                    <p>请上传贡献表
+                                    <form method="Post" action="" enctype="multipart/form-data">
+
+                                        {{ form.file }}
+
+                                        {% csrf_token %}
+                                        <input type="submit" value="点我上传"/>
+                                    </form>
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         <footer class="footer">
             <div class="container-fluid">
                 <p class="copyright pull-right">
@@ -273,8 +320,8 @@
                 </p>
             </div>
         </footer>
+        </div>
     </div>
-</div>
 </body>
 
 <!--   Core JS Files   -->

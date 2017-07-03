@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from app.utils import *
 from app.utils.authUtils import *
 from .utils import isXls
+from app.views import *
 # Create your views here.
 
 @login_required(login_url='app:login')
@@ -273,3 +274,13 @@ def dismiss_team(request):
 @login_required(login_url='app:login')
 def view_score(request):
     return render(request,'student/student_course_score.html')
+
+
+@login_required(login_url='app:login')
+def preview_source_online(request):
+    file = request.GET.get('file')
+    log('file_path=' + file, 'preview_source_online')
+    url = fileUtils.docPreviewUrl(file)
+    log(url, 'preview_source_online')
+    return redirect(url)
+

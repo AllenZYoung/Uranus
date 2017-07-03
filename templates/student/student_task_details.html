@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    {% load app_tags %}
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png" />
 	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
@@ -157,7 +158,11 @@
 
 												{% for meta in files %}
 												<tr>
-													<td><a href="s/{{ meta.file.file }}">{{ meta.file.file }}</a></td>
+													<td><a href="s/{{ meta.file.file }}">{{ meta.file.file }}</a>
+                                                    {% if meta.file.file.url|is_office %}
+                                                <a href="{% url 'student:preview_source_online' %}?file={{ meta.file.file }}" target="_blank">[预览]</a>
+                                            {% endif %}
+                                                    </td>
 													<td>{{ meta.file.user.name }}</td>
 													<td>{{ meta.file.time }}</td>
                                                     <td><a href="s/{{ meta.file.file }}"><button class="btn btn-info">下载</button></a></td>
