@@ -29,6 +29,7 @@ def docPreviewUrl(path):
     url = os.path.join(URL_BASE, path)
     url = urllib.parse.quote(url)
     url = URL_API + url
+    log(url, 'docPreviewUrl')
     return url
 
 
@@ -36,6 +37,7 @@ def docPreviewUrl(path):
 def fileDownloadUrl(path):
     url = urllib.parse.quote(path)
     url = os.path.join(URL_BASE, url)
+    log(url, 'fileDownloadUrl')
     return url
 
 

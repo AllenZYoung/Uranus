@@ -1,0 +1,7 @@
+【kahsolt】
+资源/作业附件显示名仍然带前缀"uploads/"
+教师删除资源返回了丑陋的json：http://uranus.kahsolt.tk/teacher/delete_file/?file_id=33&course_id=1
+已经是团队成员的学生还可以创建团队(页面提示成功，实际数据库无写入)，返回了丑陋的json：http://uranus.kahsolt.tk/student/student_team_build
+教师-成绩管理-个人/团队成绩：考虑成绩显示的时候取保留两位小数
+学生：课程资源-资源内容为空？
+【学生12211008】：此帐号当前没有团队，所以“我的团队”显示为404(神tm用户友好)，创建团队后返回json
