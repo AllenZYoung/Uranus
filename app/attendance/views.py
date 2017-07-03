@@ -25,8 +25,11 @@ def attendance_view(request):
     if not action_id:
         data['start_time'] = request.GET.get('start_time')
         data['end_time'] = request.GET.get('end_time')
+        data['is_ended'] = False
+        data['is_started'] = True
     elif action_id == '1': # 结束签到
         data['is_ended'] = True
+        data['is_started'] = False
     elif action_id == '2': # 收集照片
         data['is_collected'] = True
     elif action_id == '3': # 停止收集
