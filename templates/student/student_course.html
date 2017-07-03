@@ -153,7 +153,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-sm-6">
-							<a href="student_course_announcement.html">
+							<a href="{% url 'student:view_notice' %}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="red">
 										<i class="material-icons">dashboard</i>
@@ -164,7 +164,7 @@
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>怎么弄</p>
+											<p class="text-warning">最新公告：{{ notice.title }}</p>
 										</div>
 									</div>
 								</div>

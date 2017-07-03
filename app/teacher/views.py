@@ -9,8 +9,7 @@ from app.teacher.entities import *
 from django.conf import settings
 from app.templatetags import app_tags
 from app.utils import *
-
-
+import pprint
 # Create your views here.
 @login_required(login_url='app:login')
 def index(request):
@@ -389,12 +388,15 @@ def course(request):
     enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
     course = None
     present = datetime.now()
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notice_new = Notice.objects.filter(course=course).order_by('-time').first()
+
     for enroll in enrolls:
         if enroll.course.startTime.replace(tzinfo=None) <= present <= enroll.course.endTime.replace(tzinfo=None):
             course = enroll.course
             request.session['course_id'] = course.id
     teacher = User.objects.get(username=user.username)
-    return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course})
+    return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course,'notice':notice_new})
 
 
 @login_required(login_url='app:login')
@@ -539,6 +541,7 @@ def apply_manage(request):
     else:
         team_id = request.POST.get('team_id', None)
         team = get_object_or_404(Team, id=team_id)
+        # print(team)
         form = EditTeamForm(request.POST)
         if form.is_valid():
             team.info = form.cleaned_data['info']
@@ -548,7 +551,7 @@ def apply_manage(request):
                 print("auditTeamPassed done!")
             elif form.cleaned_data['status'] == 'rejected':
                 auditTeamRejected(team)
-            team.save()
+                team.save()
             return redirect('/teacher/team_apply')
         else:
             return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form, 'error_message': '数据不合法'})
@@ -606,7 +609,28 @@ def add_score_params(request):
             # return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
         return HttpResponse(json.dumps(data))
 
-
+@login_required(login_url='app:login')
+def setNotice(request):
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    user = User.objects.filter(username__contains=user).first()
+    notices = Notice.objects.filter(course=course).order_by('-time')
+    if request.method == 'GET':
+        form = NoticeForm()
+        return render(request, 'teacher/teacher_course_announcement.html',{'notices':notices,'form':form})
+    elif request.method == 'POST':
+        user = request.user
+        course = Enroll.objects.filter(user__username__contains=user).first().course
+        user = User.objects.filter(username__contains=user).first()
+        form = NoticeForm(request.POST)
+        if form.is_valid():
+            notice = Notice(course=course,user=user,title=form.cleaned_data['title'],
+                            content=form.cleaned_data['content'])
+            notice.save()
+            return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
+        else:
+            return HttpResponse('数据不合法，请重新填写！')
+    return render(request,'teacher/teacher_course_announcement.html')
 
 def test(request):
     return render(request,'teacher/test.html')

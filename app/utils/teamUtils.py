@@ -184,7 +184,7 @@ def auditTeamPassed(team):
     print(idnum)
     team.serialNum = idnum
 
-    # team.save()
+    team.save()
     print(team.name)
     print(team.status)
     print(team.serialNum)

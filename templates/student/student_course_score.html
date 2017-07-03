@@ -107,16 +107,16 @@
 	                                <table class="table table-hover">
 	                                    <thead>
 	                                        <th>团队名称</th>
-	                                    	<th>负责人</th>
+	                                    	<th>队长</th>
 	                                    	<th>团队人数</th>
 	                                    	<th>成绩</th>
 	                                    </thead>
 	                                    <tbody>
 	                                        <tr>
-	                                        	<td>Uranus</td>
-	                                        	<td>张抑之</td>
-	                                        	<td>8</td>
-	                                        	<td>99</td>
+	                                        	<td>{{ team.name }}</td>
+	                                        	<td>{{ leader }}</td>
+	                                        	<td>{{ num }}</td>
+	                                        	<td>{{ teamGrade }}</td>
 	                                        </tr>
 	                                    </tbody>
 	                                </table>
@@ -136,9 +136,9 @@
 	                                    </thead>
 	                                    <tbody>
 	                                        <tr>
-	                                        	<td>14211026</td>
-	                                        	<td>张抑之</td>
-	                                        	<td>99</td>
+	                                        	<td>{{ student.username }}</td>
+	                                        	<td>{{ student.name }}</td>
+	                                        	<td>{{ stuGrade }}</td>
 	                                        </tr>
 	                                    </tbody>
 	                                </table>

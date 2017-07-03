@@ -14,11 +14,16 @@ from app.utils import *
 from app.utils.authUtils import *
 from .utils import isXls
 import json
+from app.teacher.utils import compute_stu_score,compute_team_score
 # Create your views here.
 
 @login_required(login_url='app:login')
 def index(request):  # 也可以看做是“courseRoot函数”
-    return render(request, 'student/student_course.html')
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notice_new = Notice.objects.filter(course=course).order_by('-time').first()
+
+    return render(request, 'student/student_course.html',{'notice':notice_new})
 
 
 @login_required(login_url='app:login')  # 显示学生的课程信息
@@ -287,7 +292,22 @@ def dismiss_team(request):
 
 @login_required(login_url='app:login')
 def view_score(request):
-    return render(request,'student/student_course_score.html')
+    student = get_object_or_404(User, username=request.user.username)
+    stu_member = Member.objects.get(user=student)
+    stu_team = stu_member.team
+    dict = reportTeam(stu_team)
+    leader = dict['leader'].user.name
+    team_list, score_list, team_score = compute_team_score()
+    stuScoreDict = compute_stu_score()
+    teamGrade = 0
+    stuGrade = 0
+    #TODO 计算teamGrade和stuGrade，可以根据前面几行的函数
+    if stu_member is None:
+        return HttpResponse('404 not member')
+    num = 0
+    return render(request,'student/student_course_score.html',
+                  {'num':num,'team':stu_team,'student':student,'leader':leader,
+                   'teamGrade':teamGrade,'stuGrade':stuGrade})
 
 
 @login_required(login_url='app:login')
@@ -297,4 +317,11 @@ def preview_source_online(request):
     url = fileUtils.docPreviewUrl(file)
     log(url, 'preview_source_online')
     return redirect(url)
+
+@login_required(login_url='app:login')
+def viewNotice(request):
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notices = Notice.objects.filter(course=course).order_by('-time')
+    return render(request,'student/student_course_announcement.html',{'notices':notices})
 

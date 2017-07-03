@@ -4,6 +4,7 @@ from datetime import datetime
 
 # define your custom forms here
 from django.forms import widgets
+from app.models import Notice
 
 
 class UploadFileForm(forms.Form):
@@ -65,8 +66,8 @@ class EditCourseForm(forms.Form):
 
 class EditTeamForm(forms.Form):
     STATUS = (
-        ('passed', '已通过'),
-        ('rejected', '已驳回')
+        ('passed', '通过'),
+        ('rejected', '驳回')
     )
     status = forms.ChoiceField(choices=STATUS, label='状态')
     info = forms.CharField(widget=widgets.Textarea, label='说明信息')
@@ -78,17 +79,22 @@ class EditTeamForm(forms.Form):
 
 
 class ScoreParamForm(forms.Form):
-    title=forms.CharField(label='评分项标题')
-    content=forms.CharField(label='评分项内容',widget=widgets.Textarea)
-    proportion=forms.FloatField(label='总分折算占比',min_value=0,max_value=1)
+    title = forms.CharField(label='评分项标题')
+    content = forms.CharField(label='评分项内容', widget=widgets.Textarea)
+    proportion = forms.FloatField(label='总分折算占比', min_value=0, max_value=1)
 
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(ScoreParamForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
-    def add_fields(self,teams):
+    def add_fields(self, teams):
         for team in teams:
-            self.fields[team.serialNum]=forms.FloatField(min_value=0,max_value=100,label=team.name+' 成绩')
+            self.fields[team.serialNum] = forms.FloatField(min_value=0, max_value=100, label=team.name + ' 成绩')
 
+
+class NoticeForm(forms.ModelForm):
+    class Meta:
+        model = Notice
+        fields = ['title','content']
 

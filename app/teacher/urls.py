@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^generate_score_excel/',views.generate_score_excel,name='generate_score_excel'),
     url(r'^add_score_params/',views.add_score_params,name='add_score_params'),
     url(r'^test/',views.test,name='test'),
+    url(r'^setNotice$',views.setNotice,name='setNotice'),
 
 
 ]
