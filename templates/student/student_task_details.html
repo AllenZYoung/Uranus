@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load app_tags %}
+    {% load static %}
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png" />
 	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
@@ -124,12 +125,12 @@
 									{% if member.role == 'leader' %}
 										<div class="tim-typo">
 											<span class="tim-note">上传作业</span>
-											<form method="Post" action="" enctype="multipart/form-data" >
+{#											<form method="Post" action="" enctype="multipart/form-data" >#}
 												{% csrf_token %}
 												{{ form }}
 												<input name='workMeta_id' type="hidden" value='{{ workMeta.id }}'/>
-												<button type="submit" class="btn btn-info pull-right">提交</button>
-											</form>
+												<button type="submit" id="submit-data" class="btn btn-info pull-right">提交</button>
+{#											</form>#}
 										</div>
 									{% endif %}
 									{% else %}
@@ -189,7 +190,7 @@
 			</footer>
 	    </div>
 	</div>
-
+{% include 'modal.html' %}
 </body>
 
 	<!--   Core JS Files   -->
@@ -212,4 +213,13 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="/static/assets/js/demo.js"></script>
 
+    <script src="{% static  'assets/js/uranus.js'%}"></script>
+<script>
+    $('#myModalLabel').text('提交作业');
+    	$(function () {
+            $('#submit-data').click(function () {
+                submitClick("{% url 'student:work' %}", "提交成功！");
+            });
+        });
+    	</script>
 </html>
