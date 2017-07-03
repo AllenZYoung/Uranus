@@ -28,6 +28,7 @@
 
 <body>
 
+<<<<<<< HEAD
 <div class="wrapper">
 
     <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
@@ -201,6 +202,174 @@
         </footer>
     </div>
 </div>
+=======
+	<div class="wrapper">
+
+	    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
+			<!--
+		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+		        Tip 2: you can also add an image using data-image tag
+		    -->
+
+			<div class="logo">
+				<a href="#" class="simple-text">
+					学生
+				</a>
+			</div>
+
+	    	<div class="sidebar-wrapper">
+	            <ul class="nav">
+	                <li>
+	                    <a href="resources">
+	                        <i class="material-icons">dashboard</i>
+	                        <p>课程管理</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="workpage">
+	                        <i class="material-icons">content_copy</i>
+	                        <p>作业管理</p>
+	                    </a>
+	                </li>
+	                <li class="active">
+	                    <a href="teampage">
+	                        <i class="material-icons">face</i>
+	                        <p>团队管理</p>
+	                    </a>
+	                </li>
+	            </ul>
+	    	</div>
+	    </div>
+
+	    <div class="main-panel">
+			<nav class="navbar navbar-transparent navbar-absolute">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="teampage">返回</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+	 							   <i class="material-icons">person</i>
+	 							   <p class="hidden-lg hidden-md">Profile</p>
+		 						</a>
+		 						<ul class="dropdown-menu">
+									<li><a href="#">注销登录</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+	        <div class="content">
+	            <div class="container-fluid">
+	                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="blue">
+	                                <h4 class="title">组队要求</h4>
+	                                <p class="category">各团队需符合组队要求</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+									<form method="POST" action="" enctype="multipart/form-data">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<td style="text-align: center">团队名称</td>
+													<td><input type="text" class="form-control" name="team_name"></td>
+													{% csrf_token %}
+													<td style="text-align: center">
+														<button type="submit" class="btn btn-info">提交</button>
+													</td>
+												</tr>
+											</thead>
+										</table>
+									</form>
+								</div>
+	                        </div>
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="blue">
+	                                <h4 class="title">当前组队情况</h4>
+	                                <p class="category">当前发起的团队</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+									{% if member == 'None' %}
+									<div class="col-md-4">
+										<div class="form-info">
+											<label class="col-md-12">您的状态：未选择团队</label>
+										</div>
+	                                </div>
+	                                <div class="col-md-4">
+										<div class="form-info">
+											<label class="col-md-12 text-warning">请选择团队加入吧！</label>
+										</div>
+	                                </div>
+	                                <br><br>
+									{% endif %}
+	                                <table class="table table-hover">
+	                                    <thead>
+	                                        <th>团队名称</th>
+	                                    	<th>发起人</th>
+	                                    	<th>已有人数</th>
+	                                    	<th>组建状态</th>
+	                                    	<th>申请加入</th>
+	                                    </thead>
+	                                    <tbody>
+											{% for team in teams %}
+	                                        <tr>
+												{% if team.name == member.team.name %}
+												<td><a href="member_evaluation">{{ team.name }}</a></td>
+												{% else %}
+												<td>{{ team.name }}</td>
+												{% endif %}
+	                                        	<td>{{ team.leader.user.name }}</td>
+	                                        	<td>{{ team.count|add:1 }}</td>
+	                                        	<td>{{ team.status }}</td>
+	                                        	<td>
+	                                        		<td>
+														{% if team.status == '未完成组队' and member == 'None' %}
+														<a href="apply_for_team?name={{ team.name }}">
+														<button class="btn btn-info"
+																href="apply_for_team">申请加入</button></a>
+														{% else %}
+															{% if team.name == member.team.name and member.role == 'newMoe'%}
+															<button type="" class="btn btn-info" disabled="disabled">正在申请中...</button>
+															{% else %}
+															<button type="" class="btn btn-info" disabled="disabled">申请加入</button>
+															{% endif %}
+														{% endif %}
+													</td>
+	                                        	</td>
+	                                        </tr>
+											{% endfor %}
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+
+	        <footer class="footer">
+				<div class="container-fluid">
+					<p class="copyright pull-right">
+						URANUS@2017
+					</p>
+				</div>
+			</footer>
+	    </div>
+	</div>
+>>>>>>> mrrobot97/master
 
 </body>
 
