@@ -45,10 +45,10 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
     student = User.objects.filter(username=student_id).first()
     member_model = Member.objects.filter(user__username__contains=student_id).first()
     if member_model is None:
-        return render(request,'pages-error-404.html')
+        return redirect('/student/student_team_build')
     team = member_model.team
     if team is None:
-        return render(request, 'pages-error-404.html')
+        return redirect('/student/student_team_build')
 
     if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
         try:
