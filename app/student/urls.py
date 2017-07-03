@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from . import views
-from app.attendance.views import attendance, attendance_view
+from app.attendance.views import attendance
 
 app_name = 'student'
 urlpatterns = [
@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^work', views.workView, name='work'),  # 查看作业详情
     url(r'^teampage$',views.teamRoot, name='teampage') ,# 团队主页，其下有多个功能
     url(r'^mycourse$',views.my_course,name='my_course'),
-    url(r'^attendance_view', attendance_view),  # 签到
     url(r'^attendance', attendance),  # 签到
     url(r'^apply_for_team', views.apply_for_team),  # 申请加入团队
     url(r'^process_apply', views.process_apply),  # 处理申请请求
