@@ -1,6 +1,7 @@
 from django.db.models import Max
 from app.models import *
 from app.utils.logUtils import log, LOG_LEVEL
+from .reportUtils import reportTeam
 
 
 # 关于团队管理的工具集
@@ -123,11 +124,17 @@ def submitTeam(team):
         log('未审核且已冻结的团队才能提交申请', 'teamutils', LOG_LEVEL.ERROR)
         return False
     num = Member.objects.filter(team=team).count()
+    # print(num)
     if num < team.course.teamMeta.minNum or num > team.course.teamMeta.maxNum:
         log('不在人数限制范围', 'teamutils', LOG_LEVEL.ERROR)
         return False
-    num = Member.user.objects.filter(gender='female')
-    if num != 1:
+    users = reportTeam(team)
+    users['member'].append(users['leader'])
+    num = 0
+    for person in users['member']:
+        if person.user.gender == 'female':
+            num += 1
+    if num > 1:
         log('性别要求不合', 'teamutils', LOG_LEVEL.ERROR)
         return False
 
@@ -165,18 +172,27 @@ def auditTeamPassed(team):
     if team.status != 'auditing':
         log('未提交申请', 'teamutils', LOG_LEVEL.ERROR)
         return False
-
-    id = 1
-    if Team.objects.filter(course=team.course).count() > 0:
-        id = Team.objects.filter(course=team.course).aggregate(Max('serialNum')) + 1
+    teams = Team.objects.filter(course=team.course)
+    idnum = 1
+    if teams.count() > 0:
+        idnum = teams[0].serialNum
+        for team in Team.objects.filter(course=team.course):
+            if team.serialNum > idnum:
+                idnum = team.serialNum
+    idnum += 1
     team.status = 'passed'
-    team.serialNum = id
-    team.save()
+    print(idnum)
+    team.serialNum = idnum
+
+    # team.save()
+    print(team.name)
+    print(team.status)
+    print(team.serialNum)
     return team
 
 
 # 审核团队：拒绝
-def auditTeamRejected(team, info):
+def auditTeamRejected(team):
     if not isinstance(team, Team):
         return None
     if team.status != 'auditing':
@@ -184,7 +200,6 @@ def auditTeamRejected(team, info):
         return False
 
     team.status = 'rejected'
-    team.info = info
     team.save()
     return team
 
@@ -217,6 +232,7 @@ def setContribution(user, contribution):
     Member.objects.filter(user=user).update(contribution=contribution)
     log('setContribution OK', 'teamutils', LOG_LEVEL.INFO)
     return curContrib + contribution
+
 
 # 按照团队角色对团队成员进行排序，newMoe > leader > member
 def sort_team_members(member_list):
