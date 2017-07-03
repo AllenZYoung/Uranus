@@ -1,7 +1,7 @@
 from django.db.models import Max
 from app.models import *
 from app.utils.logUtils import log, LOG_LEVEL
-
+from .reportUtils import reportTeam
 
 # 关于团队管理的工具集
 # by kahsolt
@@ -123,10 +123,16 @@ def submitTeam(team):
         log('未审核且已冻结的团队才能提交申请', 'teamutils', LOG_LEVEL.ERROR)
         return False
     num = Member.objects.filter(team=team).count()
+    # print(num)
     if num < team.course.teamMeta.minNum or num > team.course.teamMeta.maxNum:
         log('不在人数限制范围', 'teamutils', LOG_LEVEL.ERROR)
         return False
-    num = Member.user.objects.filter(gender='female')
+    users = reportTeam(team)
+    users['member'].append(users['leader'])
+    num = 0
+    for person in users['member']:
+        if person.user.gender == 'female':
+            num += 1
     if num != 1:
         log('性别要求不合', 'teamutils', LOG_LEVEL.ERROR)
         return False

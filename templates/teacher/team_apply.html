@@ -129,14 +129,12 @@
                             <table class="table table-hover">
                                 <label>申请中的团队:</label><br/>
                                 <tr>
-                                    <th>团队编号</th>
                                     <th>团队名称</th>
                                     <th>团队成员</th>
                                     <th>申请管理</th>
                                 </tr>
                                 {% for team in teams %}
                                     <tr>
-                                        <td>{{ team.serialNum }}</td>
                                         <td>{{ team.name }}</td>
                                         <td>
                                             <a href="{% url 'teacher:team_members' %}?team_id={{ team.id }}">

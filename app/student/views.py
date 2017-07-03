@@ -269,3 +269,7 @@ def dismiss_team(request):
     team = Member.objects.get(user=user).team
     dismissTeam(team)
     return redirect('/student/student_team_build')
+
+@login_required(login_url='app:login')
+def view_score(request):
+    return render(request,'student/student_course_score.html')
