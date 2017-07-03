@@ -517,9 +517,9 @@
                 '    </div>\n' +
                 '  </div>\n' +
                 '</div>\n';
-            tProgress = '<div class="progress">\n' +
+            tProgress = '<div class="progress" style="width:70%;">\n' +
                 '    <div class="{class}" role="progressbar"' +
-                ' aria-valuenow="{percent}" aria-valuemin="0" aria-valuemax="100" style="width:{percent}%;">\n' +
+                ' aria-valuenow="{percent}" aria-valuemin="0" aria-valuemax="100" style="width:100%;">\n' +
                 '        {status}\n' +
                 '     </div>\n' +
                 '</div>';
