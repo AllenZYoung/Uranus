@@ -11,7 +11,10 @@ function getInputData() {
             if ($(input).is(':required') && !input.files[0]) {
                 return false;
             }
-            formData.append($(input).attr('name'), input.files[0])
+            var fileList = input.files;
+            for (var j = 0; j < fileList.length; j++) {
+                formData.append($(input).attr('name'), fileList[j]);
+            }
         } else {
             var inputValue = $(input).val() || "";
             if ($(input).is(':required') && inputValue === "") {
