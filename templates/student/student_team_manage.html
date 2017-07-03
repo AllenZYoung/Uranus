@@ -31,7 +31,6 @@
 <body>
 <div class="wrapper">
 
-    <<<<<<< HEAD
     <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
         <!--
             Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
@@ -89,7 +88,8 @@
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">注销登录</a></li>
+                                <li><a href="{% url 'app:profile' %}">个人中心</a></li>
+                                <li><a href="{% url 'app:logout' %}">注销登录</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -109,13 +109,13 @@
                                 <div class="card-content">
                                     <h3 class="category">团队状态：{{ team.status }}</h3>
                                     {% if team.status == 'rejected' %}
-                                        <h4 class="category">被驳回，请解散团队后重新发起或加入团队</h4>
+                                        <h4 class="category text-warning">被驳回，请解散团队后重新发起或加入团队</h4>
                                     {% elif team.status == 'unsubmitted' %}
-                                        <h4 class="category">未提交，请负责人向教师提交申请</h4>
+                                        <h4 class="category text-warning">未提交，请负责人向教师提交申请</h4>
                                     {% elif team.status == 'auditing' %}
-                                        <h4 class="category">审核中，教师正在审核申请</h4>
+                                        <h4 class="category text-warning">审核中，教师正在审核申请</h4>
                                     {% elif team.status == 'passed' %}
-                                        <h4 class="category">组队成功！你们队伍的成员如下：</h4>
+                                        <h4 class="category text-warning">组队成功！你们队伍的成员如下：</h4>
                                     {% else %}
                                     {% endif %}
 
@@ -164,6 +164,11 @@
                                     <div class="tim-typo">
                                         {% if user_role.role == 'leader' %}
                                             {% if team.status == 'incomplete' %}
+                                                <a href="dismiss_team">
+                                                    <button type="" class="btn btn-success pull-right">
+                                                        解散团队
+                                                    </button>
+                                                </a>
                                                 <a href="finish_team_bulid">
                                                     <button class="btn btn-success pull-right">
                                                         结束组队
@@ -173,46 +178,43 @@
                                                     向老师提交
                                                 </a>
 
-                                                <a href="dismiss_team">
-                                                    <button type="" class="btn btn-success pull-right">
-                                                        解散团队
-                                                    </button>
-                                                </a>
+
                                             {% elif team.status == 'unsubmitted' %}
 
+                                                <a href="dismiss_team">
+                                                    <button type="" class="btn btn-success pull-right">解散团队</button>
+                                                </a>
                                                 <button class="btn btn-success pull-right" disabled="disabled">
                                                     结束组队
                                                 </button>
                                                 <a href="submit_team">
                                                     <button type="" class="btn btn-success pull-right">向老师提交</button>
                                                 </a>
-                                                <a href="dismiss_team">
-                                                    <button type="" class="btn btn-success pull-right">解散团队</button>
-                                                </a>
-                                            {% elif team.status == 'auditing' %}
 
-                                                <button class="btn btn-success pull-right" disabled="disabled">
-                                                    结束组队
-                                                </button>
-                                                <button type="" class="btn btn-success pull-right" disabled="disabled">
-                                                    向老师提交
-                                                </button>
+                                            {% elif team.status == 'auditing' %}
                                                 <button type="" class="btn btn-success pull-right" disabled="disabled">
                                                     解散团队
                                                 </button>
-                                            {% elif team.status == 'rejected' %}
-
                                                 <button class="btn btn-success pull-right" disabled="disabled">
                                                     结束组队
                                                 </button>
                                                 <button type="" class="btn btn-success pull-right" disabled="disabled">
                                                     向老师提交
                                                 </button>
+
+                                            {% elif team.status == 'rejected' %}
                                                 <a href="dismiss_team">
                                                     <button type="" class="btn btn-success pull-right">
                                                         解散团队
                                                     </button>
                                                 </a>
+                                                <button class="btn btn-success pull-right" disabled="disabled">
+                                                    结束组队
+                                                </button>
+                                                <button type="" class="btn btn-success pull-right" disabled="disabled">
+                                                    向老师提交
+                                                </button>
+
                                             {% elif team.status == 'passed' %}
 
                                                 <button class="btn btn-success pull-right" disabled="disabled">
@@ -236,7 +238,7 @@
                             {% if user_role.role == 'leader' %}
                                 <div class="card">
                                     <div class="card-header" data-background-color="green">
-                                        <h4 class="title">为Uranus选择团队负责人</h4>
+                                        <h4 class="title">为 “{{ team.name }}” 团队选择负责人</h4>
                                     </div>
                                     <form action="" method="GET" enctype="multipart/form-data">
                                         <div class="card-content">
@@ -257,7 +259,7 @@
 
                                             </div>
                                             <div class="tim-typo">
-                                                <button type="submit" class="btn btn-success pull-right">提交团队申请</button>
+                                                <button type="submit" class="btn btn-success pull-right">确认</button>
                                             </div>
                                         </div>
                                     </form>
@@ -277,6 +279,11 @@
                             <div class="card-header" data-background-color="orange">
                                 <h4 class="title">我的团队</h4>
                                 <p class="category">团队成员贡献度</p>
+                            </div>
+                            <div>
+                                <div class="card-content">
+                                    <h4>团队创建成功！请设置团队成员贡献度</h4>
+                                </div>
                             </div>
                             <div class="card-content table-responsive">
                                 <table class="table table-hover">

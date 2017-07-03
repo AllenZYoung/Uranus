@@ -53,6 +53,7 @@ def create_homework(request):
             #               {'form': form, 'course': course, 'error_message': error_message})
         return HttpResponse(json.dumps(data))
 
+
 @login_required(login_url='app:login')
 def edit_course(request):
     if request.method == 'GET':
@@ -126,7 +127,7 @@ def resources(request):
     course = get_object_or_404(Course, id=course_id)
     user = request.user
     teacher = User.objects.get(username=user.username)
-    files = File.objects.filter(course_id=course_id,user=teacher)
+    files = File.objects.filter(course_id=course_id, user=teacher)
     return render(request, 'teacher/resources.html',
                   {'course': course, 'teacher': teacher, 'files': files})
 
@@ -137,9 +138,9 @@ def create_resource(request):
     course = get_object_or_404(Course, id=course_id)
     if request.method == 'GET':
         return render(request, 'teacher/create_resource.html',
-                      {'course': course,})
+                      {'course': course, })
     else:
-        data={}
+        data = {}
         if len(request.FILES.getlist('files')) == 0:
             data['error_message'] = '文件为空，请重新上传！'
             return HttpResponse(json.dumps(data))
@@ -148,37 +149,37 @@ def create_resource(request):
         data['success'] = 'true'
         data['forward_url'] = '/teacher/resources'
         return HttpResponse(json.dumps(data))
-    # if request.method == 'GET':
-    #     course_id = request.session.get('course_id', None)
-    #     course = get_object_or_404(Course, id=course_id)
-    #     user = request.user
-    #     teacher = User.objects.get(username=user.username)
-    #     return render(request, 'teacher/create_resource.html',
-    #                   {'course': course, 'teacher': teacher, })
-    # else:
-    #     data = {}
-    #     course_id = request.session.get('course_id', None)
-    #     course = get_object_or_404(Course, id=course_id)
-    #     user = request.user
-    #     teacher = User.objects.get(username=user.username)
-    #     try:
-    #         file = request.FILES['file']
-    #     except:
-    #         data['error_message'] = '文件为空，请重新上传！'
-    #         return HttpResponse(json.dumps(data));
-    #         # return render(request, 'teacher/create_resource.html',
-    #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
-    #     if file is None:
-    #         data['error_message'] = '文件为空，请重新上传！'
-    #         return HttpResponse(json.dumps(data));
-    #         # return render(request, 'teacher/create_resource.html',
-    #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
-    #     else:
-    #         handle_uploaded_file(request, course_id, file)
-    #         data['success'] = 'true';
-    #         data['forward_url'] = '/teacher/resources?course_id=' + str(course_id)
-    #         return HttpResponse(json.dumps(data))
-    #         # return redirect('/teacher/resources?course_id=' + str(course_id))
+        # if request.method == 'GET':
+        #     course_id = request.session.get('course_id', None)
+        #     course = get_object_or_404(Course, id=course_id)
+        #     user = request.user
+        #     teacher = User.objects.get(username=user.username)
+        #     return render(request, 'teacher/create_resource.html',
+        #                   {'course': course, 'teacher': teacher, })
+        # else:
+        #     data = {}
+        #     course_id = request.session.get('course_id', None)
+        #     course = get_object_or_404(Course, id=course_id)
+        #     user = request.user
+        #     teacher = User.objects.get(username=user.username)
+        #     try:
+        #         file = request.FILES['file']
+        #     except:
+        #         data['error_message'] = '文件为空，请重新上传！'
+        #         return HttpResponse(json.dumps(data));
+        #         # return render(request, 'teacher/create_resource.html',
+        #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
+        #     if file is None:
+        #         data['error_message'] = '文件为空，请重新上传！'
+        #         return HttpResponse(json.dumps(data));
+        #         # return render(request, 'teacher/create_resource.html',
+        #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
+        #     else:
+        #         handle_uploaded_file(request, course_id, file)
+        #         data['success'] = 'true';
+        #         data['forward_url'] = '/teacher/resources?course_id=' + str(course_id)
+        #         return HttpResponse(json.dumps(data))
+        #         # return redirect('/teacher/resources?course_id=' + str(course_id))
 
 
 @login_required(login_url='app:login')
@@ -261,6 +262,7 @@ def edit_homework(request):
             #                'error_message': error_message})
         return HttpResponse(json.dumps(data))
 
+
 @login_required(login_url='app:login')
 def past_homeworks(request):
     course_id = request.session.get('course_id', None)
@@ -327,7 +329,8 @@ def download_stu_score_list(request):
         return response
     return Http404
 
-#下载所有学生及团队的excel  url:/teacher/download_stu_teams
+
+# 下载所有学生及团队的excel  url:/teacher/download_stu_teams
 @login_required(login_url='app:login')
 def download_team_members_all(request):
     file = get_team_members_all_excel_file_abspath()
@@ -340,6 +343,7 @@ def download_team_members_all(request):
         response['Content-Disposition'] = 'attachment;filename=' + os.path.basename(file)
         return response
     return Http404
+
 
 # 显示当前已布置的作业
 @login_required(login_url='app:login')
@@ -443,7 +447,8 @@ def add_comment_score(request):
             # return render(request, 'teacher/success.html',
             #               {'name_space': 'teacher', 'forward_url': 'submitted_work_list', 'params': '?work_meta_id='+work_meta_id})
             data['success'] = 'true'
-            data['forward_url'] = '/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + str(course_id)
+            data['forward_url'] = '/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + str(
+                course_id)
 
             # return redirect('/teacher/submitted_work_list?work_meta_id=' + work_meta_id + '&course_id=' + str(course_id))
         else:
@@ -452,6 +457,7 @@ def add_comment_score(request):
             #               {'homework': homework, 'form': form, 'work_meta_id': work_meta_id,
             #                'attachments': attachments, 'error_message': error_message})
         return HttpResponse(json.dumps(data))
+
 
 @login_required(login_url='app:login')
 def score_manage(request):
@@ -470,87 +476,93 @@ def team_manage(request):
 @login_required(login_url='app:login')
 def teams(request):
     course_id = request.session.get('course_id', None)
-    course=get_object_or_404(Course,id=course_id)
-    teams=Team.objects.filter(course_id=course.id,status='passed')
-    unteamed_students=query_unteamed_students(course_id)
-    return render(request,'teacher/show_teams.html',{'course':course,'unteamed_students':unteamed_students,'teams':teams})
+    course = get_object_or_404(Course, id=course_id)
+    teams = Team.objects.filter(course_id=course.id, status='passed')
+    unteamed_students = query_unteamed_students(course_id)
+    return render(request, 'teacher/show_teams.html',
+                  {'course': course, 'unteamed_students': unteamed_students, 'teams': teams})
 
 
 @login_required(login_url='app:login')
 def team_members(request):
-    team_id=request.GET.get('team_id',None)
+    team_id = request.GET.get('team_id', None)
     course_id = request.session.get('course_id', None)
-    team=get_object_or_404(Team,id=team_id)
-    course=get_object_or_404(Course,id=course_id)
-    members=Member.objects.filter(team=team)
-    return render(request, 'teacher/team_members.html',{'team':team,'course':course,'members':members})
+    team = get_object_or_404(Team, id=team_id)
+    course = get_object_or_404(Course, id=course_id)
+    members = Member.objects.filter(team=team)
+    return render(request, 'teacher/team_members.html', {'team': team, 'course': course, 'members': members})
 
 
 @login_required(login_url='app:login')
 def adjust_team(request):
-    student_id=request.POST.get('student_id',None)
+    student_id = request.POST.get('student_id', None)
     course_id = request.session.get('course_id', None)
-    student=get_object_or_404(User,id=student_id)
-    course=get_object_or_404(Course,id=course_id)
-    serial_num=request.POST.get('serial_num'+student.username,None)
+    student = get_object_or_404(User, id=student_id)
+    course = get_object_or_404(Course, id=course_id)
+    serial_num = request.POST.get('serial_num' + student.username, None)
     if serial_num is None:
         return HttpResponse('请选择要调整至的队伍')
-    team=get_object_or_404(Team,serialNum=serial_num)
-    member=Member(team=team,user=student,role='member',contribution=0)
+    team = get_object_or_404(Team, serialNum=serial_num)
+    member = Member(team=team, user=student, role='member', contribution=0)
     member.save()
-    return redirect('/teacher/teams?student_id='+student_id)
+    return redirect('/teacher/teams?student_id=' + student_id)
 
 
 @login_required(login_url='app:login')
 def dismiss_member(request):
-    team_id=request.GET.get('team_id',None)
-    member_id=request.GET.get('member_id',None)
-    member=get_object_or_404(Member,id=member_id)
+    team_id = request.GET.get('team_id', None)
+    member_id = request.GET.get('member_id', None)
+    member = get_object_or_404(Member, id=member_id)
     member.delete()
-    return redirect('/teacher/team_members?team_id='+team_id)
+    return redirect('/teacher/team_members?team_id=' + team_id)
 
 
 @login_required(login_url='app:login')
 def team_apply(request):
-    course_id=request.session.get('course_id', None)
-    course=get_object_or_404(Course,id=course_id)
-    teams=Team.objects.filter(course=course,status='auditing')
-    return render(request,'teacher/team_apply.html',{'teams':teams,'course':course})
+    course_id = request.session.get('course_id', None)
+    course = get_object_or_404(Course, id=course_id)
+    teams = Team.objects.filter(course=course, status='auditing')
+    return render(request, 'teacher/team_apply.html', {'teams': teams, 'course': course})
 
 
 @login_required(login_url='app:login')
 def apply_manage(request):
     if request.method == 'GET':
-        team_id=request.GET.get('team_id',None)
-        team=get_object_or_404(Team,id=team_id)
-        form=EditTeamForm()
-        return render(request,'teacher/apply_manage.html',{'team':team,'form':form})
+        team_id = request.GET.get('team_id', None)
+        team = get_object_or_404(Team, id=team_id)
+        form = EditTeamForm()
+        return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form})
     else:
-        team_id=request.POST.get('team_id',None)
-        team=get_object_or_404(Team,id=team_id)
-        form=EditTeamForm(request.POST)
+        team_id = request.POST.get('team_id', None)
+        team = get_object_or_404(Team, id=team_id)
+        form = EditTeamForm(request.POST)
         if form.is_valid():
-            team.status=form.cleaned_data['status']
-            team.info=form.cleaned_data['info']
+            team.info = form.cleaned_data['info']
+
+            if form.cleaned_data['status'] == 'passed':
+                auditTeamPassed(team)
+                print("auditTeamPassed done!")
+            elif form.cleaned_data['status'] == 'rejected':
+                auditTeamRejected(team)
             team.save()
             return redirect('/teacher/team_apply')
         else:
-            return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form,'error_message':'数据不合法'})
+            return render(request, 'teacher/apply_manage.html', {'team': team, 'form': form, 'error_message': '数据不合法'})
 
 
 # 生成所有团队每次作业的成绩报表
 @login_required(login_url='app:login')
 def score_report(request):
     course_id = request.session.get('course_id', None)
-    scores=generate_team_scores(course_id)
-    teams=Team.objects.filter(course_id=course_id,status='passed')
-    return render(request,'teacher/score_report.html',{'datas':scores,'teams':teams})
+    scores = generate_team_scores(course_id)
+    teams = Team.objects.filter(course_id=course_id, status='passed')
+    return render(request, 'teacher/score_report.html', {'datas': scores, 'teams': teams})
 
 
 @login_required(login_url='app:login')
 def generate_score_excel(request):
     course_id = request.session.get('course_id', None)
-    dest=generate_scores_excel(course_id)
+    dest = generate_scores_excel(course_id)
     if os.path.exists(dest):
         with open(dest, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -563,21 +575,24 @@ def generate_score_excel(request):
 @login_required(login_url='app:login')
 def add_score_params(request):
     course_id = request.session.get('course_id', None)
-    teams = Team.objects.filter(course_id=course_id,status='passed')
-    user=User.objects.get(username=request.user.username)
+    teams = Team.objects.filter(course_id=course_id, status='passed')
+    user = User.objects.get(username=request.user.username)
     if request.method == 'GET':
-        form=ScoreParamForm()
+        form = ScoreParamForm()
         form.add_fields(teams)
-        return render(request,'teacher/add_score_params.html',{'form':form})
+        return render(request, 'teacher/add_score_params.html', {'form': form})
     else:
         data = {}
-        form=ScoreParamForm(request.POST)
+        form = ScoreParamForm(request.POST)
         if form.is_valid():
-            workmeta=WorkMeta(course_id=course_id,user=user,title=form.cleaned_data['title'],content=form.cleaned_data['content'],
-                             proportion=form.cleaned_data['proportion'],submits=1,startTime=datetime.now(),endTime=datetime.now())
+            workmeta = WorkMeta(course_id=course_id, user=user, title=form.cleaned_data['title'],
+                                content=form.cleaned_data['content'],
+                                proportion=form.cleaned_data['proportion'], submits=1, startTime=datetime.now(),
+                                endTime=datetime.now())
             workmeta.save()
             for team in teams:
-                work=Work(workMeta=workmeta,team=team,score=request.POST.get(str(team.serialNum)),time=datetime.now())
+                work = Work(workMeta=workmeta, team=team, score=request.POST.get(str(team.serialNum)),
+                            time=datetime.now())
                 work.save()
             data['success'] = 'true'
             data['forward_url'] = '/teacher/score_report'
