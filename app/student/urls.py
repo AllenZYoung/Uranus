@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^process_apply', views.process_apply),  # 处理申请请求
     url(r'^finish_team_bulid', views.finish_team_bulid),  # 结束组队
     url(r'^dismiss_team', views.dismiss_team),  # 解散团队
+    url(r'^finish_team_bulid', views.finish_team_bulid),  # 处理申请请求
+    url(r'^preview_source_online/', views.preview_source_online, name='preview_source_online')
+
 ]

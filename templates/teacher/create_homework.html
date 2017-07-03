@@ -213,10 +213,23 @@
         	demo.initDashboardPageCharts();
 
     	});
-
     	$('#myModalLabel').text('发布作业');
+
     	$(function () {
+
             $('#submit-data').click(function () {
+                var year = parseInt($('#id_endTime_year').val()) || 0;
+                var month = parseInt($('#id_endTime_month').val()) || 1;
+                var day = parseInt($('#id_endTime_day').val()) || 0;
+
+                var endTime = new Date(year, month-1, day).getTime();
+                var nowTime = new Date().getTime();
+
+    	        if(endTime <= nowTime){
+                    $('.modal-body').text('截止时间应大于当前发布时间！');
+                    $('#myModal').modal('show');
+                    return;
+                }
                 submitClick("{% url 'teacher:create_homework' %}", "发布成功");
             });
         });

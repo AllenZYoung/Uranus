@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from app.utils import *
 from app.utils.authUtils import *
 from .utils import isXls
+from app.views import *
 # Create your views here.
 
 @login_required(login_url='app:login')
@@ -255,6 +256,7 @@ def finish_team_bulid(request):
     completeTeam(team)
     return redirect('/student/student_team_build')
 
+
 @login_required(login_url='app:login')
 def submit_team(request):
     user = get_object_or_404(User, username=request.user.username)
@@ -268,3 +270,13 @@ def dismiss_team(request):
     team = Member.objects.get(user=user).team
     dismissTeam(team)
     return redirect('/student/student_team_build')
+
+
+@login_required(login_url='app:login')
+def preview_source_online(request):
+    file = request.GET.get('file')
+    log('file_path=' + file, 'preview_source_online')
+    url = fileUtils.docPreviewUrl(file)
+    log(url, 'preview_source_online')
+    return redirect(url)
+
