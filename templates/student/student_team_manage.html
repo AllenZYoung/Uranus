@@ -96,6 +96,7 @@
 				</div>
 			</nav>
 
+			{% if team.status != 'passed'%}
 			<div class="content">
 	            <div class="container-fluid">
 	                <div class="row">
@@ -196,7 +197,51 @@
 	                </div>
 	            </div>
 	        </div>
+			{% else %}
+			<div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-plain">
+                            <div class="card-header" data-background-color="orange">
+                                <h4 class="title">我的团队</h4>
+                                <p class="category">团队成员贡献度</p>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>角色</th>
+                                        <th>贡献度</th>
+                                    </tr>
+                                    {% for member in member_list %}
+                                        <tr>
+                                            <td>{{ member.user }}</td>
+                                            <td>{{ member.role }}</td>
+                                            <td>{{ member.contribution }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
 
+							{% if user_role.role == 'leader' %}
+                            <div class="card-content table-responsive">
+                                <p>请上传贡献表
+                                <form method="Post" action="" enctype="multipart/form-data">
+
+                                    {{ form.file }}
+
+                                    {% csrf_token %}
+                                    <input type="submit" value="点我上传"/>
+                                </form>
+                                </p>
+                            </div>
+							{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+			{% endif %}
 			<footer class="footer">
 				<div class="container-fluid">
 					<p class="copyright pull-right">

@@ -126,7 +126,7 @@ def resources(request):
     course = get_object_or_404(Course, id=course_id)
     user = request.user
     teacher = User.objects.get(username=user.username)
-    files = File.objects.filter(course_id=course_id,user=teacher)
+    files = File.objects.filter(course_id=course_id,user=teacher).order_by('-time')
     return render(request, 'teacher/resources.html',
                   {'course': course, 'teacher': teacher, 'files': files})
 
@@ -213,7 +213,10 @@ def delete_file(request):
     if os.path.isfile(location):
         os.remove(location)
     file.delete()
-    return redirect('/teacher/resources/?course_id=' + str(course_id))
+    data = {}
+    data['success'] = 'true'
+    return HttpResponse(json.dumps(data))
+    # return redirect('/teacher/resources/?course_id=' + str(course_id))
 
 
 @login_required(login_url='app:login')
@@ -586,3 +589,7 @@ def add_score_params(request):
             data['error_message'] = '数据不合法，请重新填写！'
             # return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
         return HttpResponse(json.dumps(data))
+
+
+def test(request):
+    return render(request,'teacher/test.html')
