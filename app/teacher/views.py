@@ -11,6 +11,7 @@ from app.templatetags import app_tags
 from app.utils import *
 import pprint
 from django.core.exceptions import ObjectDoesNotExist
+import json
 
 
 # Create your views here.
@@ -370,7 +371,6 @@ def course(request):
     enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
     course = None
     present = datetime.now()
-    course = Enroll.objects.filter(user__username__contains=user).first().course
     notice_new = Notice.objects.filter(course=course).order_by('-time').first()
 
     for enroll in enrolls:
@@ -634,6 +634,7 @@ def setNotice(request):
         form = NoticeForm()
         return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
     elif request.method == 'POST':
+        data = {}
         user = request.user
         course = Enroll.objects.filter(user__username__contains=user).first().course
         user = User.objects.filter(username__contains=user).first()
@@ -643,10 +644,15 @@ def setNotice(request):
                             content=form.cleaned_data['content'])
             notice.save()
             form.clean()
-            return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
+
+            data['success'] = 'true'
+            data['forward_url'] = '/teacher/setNotice'
+            # return HttpResponse(json.dumps(data))
+            # return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
         else:
-            return HttpResponse('数据不合法，请重新填写！')
-    return render(request, 'teacher/teacher_course_announcement.html')
+            data = '数据不合法，请重新填写！'
+        return HttpResponse(json.dumps(data))
+    # return render(request, 'teacher/teacher_course_announcement.html')
 
 
 
