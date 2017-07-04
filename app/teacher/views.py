@@ -189,8 +189,9 @@ def homework(request):
     works = WorkMeta.objects.filter(course_id=course_id)
     homeworks = []
     for work in works:
-        attachments = Attachment.objects.filter(workMeta_id=work.id, type='workmeta')
-        homeworks.append(Homework(work, attachments))
+        if work.submits != -10:
+            attachments = Attachment.objects.filter(workMeta_id=work.id, type='workmeta')
+            homeworks.append(Homework(work, attachments))
     return render(request, 'teacher/homework.html', {'homeworks': homeworks, 'course': course})
 
 
@@ -353,7 +354,12 @@ def download_team_members_all(request):
 def show_works(request):
     course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
-    workmetas = WorkMeta.objects.filter(course_id=course_id)
+    workmetas_raw = WorkMeta.objects.filter(course_id=course_id)
+    workmetas = []
+    for workmeta in workmetas_raw:
+        print(workmeta.endTime)
+        if workmeta.submits != -10:
+            workmetas.append(workmeta)
     # works=[]
     # for workmeta in workmetas:
     #     works.extend(Work.objects.filter(workMeta=workmeta))
@@ -594,7 +600,7 @@ def add_score_params(request):
         if form.is_valid():
             workmeta = WorkMeta(course_id=course_id, user=user, title=form.cleaned_data['title'],
                                 content=form.cleaned_data['content'],
-                                proportion=form.cleaned_data['proportion'], submits=1, startTime=datetime.now(),
+                                proportion=form.cleaned_data['proportion'], submits=-10, startTime=datetime.now(),
                                 endTime=datetime.now())
             workmeta.save()
             for team in teams:
