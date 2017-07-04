@@ -173,7 +173,7 @@ def workView(request):
             return HttpResponse(json.dumps(data))
         utils.submit_homework_file(request)
         data['success'] = 'true'
-        data['forward_url'] = '/teacher/resources'
+        data['forward_url'] = '/student/submits'
         return HttpResponse(json.dumps(data))
         # if form.is_valid():
         #     ret = utils.submit_homework_file(request)

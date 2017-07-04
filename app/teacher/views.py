@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, Http404, JsonResponse
 from app.models import *
 from app.teacher.forms import *
 from app.teacher.utils import *
@@ -634,3 +634,40 @@ def setNotice(request):
 
 def test(request):
     return render(request,'teacher/test.html')
+
+
+data = {'is_ended': True,
+        'is_started': False,
+        'is_collected': False}
+
+def attendance_view(request):
+    action_id = request.GET.get('action')
+    if action_id == '0': # 开始签到
+        data['is_ended'] = False
+        data['is_started'] = True
+        data['is_collected'] = False
+        return render(request, 'teacher/teacher_check.html', {'data': data, })
+    elif action_id == '1': # 结束签到
+        data['is_ended'] = True
+        data['is_started'] = False
+        data['is_collected'] = False
+        return render(request, 'teacher/teacher_check.html', {'data': data})
+    elif action_id == '2': # 收集照片
+        data['is_collected'] = True
+        return render(request, 'teacher/teacher_collect.html', {'data': data,
+                                                                'users': showToday(),})
+    elif action_id == '3': # 停止收集
+        data['is_collected'] = False
+        return render(request, 'teacher/teacher_collect.html', {'data': data,
+                                                                'users': showToday(),})
+    elif action_id == '4': # 向客户端发送数据
+        return JsonResponse(data.copy())
+
+def teacher_attendance(request):
+    return render(request, 'teacher/teacher_attendence.html')
+
+def teacher_collect(request):
+    return render(request, 'teacher/teacher_collect.html', {'data': data})
+
+def teacher_check(request):
+    return render(request, 'teacher/teacher_check.html', {'users': showToday(),})
