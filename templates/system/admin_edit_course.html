@@ -87,6 +87,7 @@
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a href="{% url 'app:profile' %}">个人中心</a></li>
                                 <li><a href="{% url 'app:logout' %}">注销登录</a></li>
                             </ul>
                         </li>
@@ -154,7 +155,7 @@
                                                                 <input class="form-control" size="16" type="text" value="{{courseInfo.endTime.date|date:"Y-m-d" }} "  readonly>
                                                                 <span class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.bmp' %})"><span class="glyphicon glyphicon-calendar"></span></span>
                                                             </div>
-                                                            <input type="hidden"  id="id_endTime"  name="endTime" value="" /><br/>
+                                                            <input type="hidden"  id="id_endTime"  name="endTime" value="{{courseInfo.endTime.date|date:"Y-m-d" }}" /><br/>
                                                         </div>
                                                     </fieldset>
                                          </form>
