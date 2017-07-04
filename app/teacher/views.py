@@ -151,37 +151,6 @@ def create_resource(request):
         data['success'] = 'true'
         data['forward_url'] = '/teacher/resources'
         return HttpResponse(json.dumps(data))
-        # if request.method == 'GET':
-        #     course_id = request.session.get('course_id', None)
-        #     course = get_object_or_404(Course, id=course_id)
-        #     user = request.user
-        #     teacher = User.objects.get(username=user.username)
-        #     return render(request, 'teacher/create_resource.html',
-        #                   {'course': course, 'teacher': teacher, })
-        # else:
-        #     data = {}
-        #     course_id = request.session.get('course_id', None)
-        #     course = get_object_or_404(Course, id=course_id)
-        #     user = request.user
-        #     teacher = User.objects.get(username=user.username)
-        #     try:
-        #         file = request.FILES['file']
-        #     except:
-        #         data['error_message'] = '文件为空，请重新上传！'
-        #         return HttpResponse(json.dumps(data));
-        #         # return render(request, 'teacher/create_resource.html',
-        #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
-        #     if file is None:
-        #         data['error_message'] = '文件为空，请重新上传！'
-        #         return HttpResponse(json.dumps(data));
-        #         # return render(request, 'teacher/create_resource.html',
-        #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
-        #     else:
-        #         handle_uploaded_file(request, course_id, file)
-        #         data['success'] = 'true';
-        #         data['forward_url'] = '/teacher/resources?course_id=' + str(course_id)
-        #         return HttpResponse(json.dumps(data))
-        #         # return redirect('/teacher/resources?course_id=' + str(course_id))
 
 
 @login_required(login_url='app:login')

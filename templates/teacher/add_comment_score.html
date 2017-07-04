@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>作业基本信息</title>
     {% load static %}
+    {% load app_tags %}
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}"/>
     <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -151,8 +152,10 @@
                                 <span class="tim-note">作业附件</span>
                                 <p>
                                     {% for attachment in attachments %}
-                                        <a href="{{ attachment.file.file.url }}">{{ attachment.file.file.name }}</a>
+                                        <a href="{{ attachment.file.file.url }}">{{ attachment.file.file.name|base_name }}</a>
+                                        {% if attachment.file.file.url|is_office %}
                                         <a href="{% url 'teacher:preview_source_online' %}?file={{ attachment.file.file }}" target="_blank">[预览]</a>
+                                        {% endif %}
                                         <br>
                                     {% endfor %}
                                 </p>

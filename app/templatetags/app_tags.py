@@ -20,3 +20,9 @@ def if_office(value):
     if isOfficeFile(value):
         return True
     return False
+
+
+@register.filter(name='base_name')
+def file_base_name(value):
+    return os.path.basename(value)
+

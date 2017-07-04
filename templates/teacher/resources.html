@@ -34,6 +34,7 @@
     <meta charset="UTF-8">
     <title>删除课程资源</title>
     {% load static %}
+    {% load app_tags %}
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/apple-icon.png' %}"/>
     <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -171,7 +172,7 @@
                                 <tbody>
                                 {% for file in files %}
                                     <tr>
-                                        <td>{{ file.file.name }}</td>
+                                        <td>{{ file.file.name|base_name }}</td>
                                         <td>{{ file.get_type_display }}</td>
                                         <td>{{ file.time }}</td>
                                         <td>{{ file.user.name }}</td>
