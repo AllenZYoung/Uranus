@@ -46,25 +46,25 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li>
-                <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:course' %}">
                     <i class="material-icons">dashboard</i>
                     <p>课程管理</p>
                 </a>
             </li>
             <li class="active">
-                <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:task' %}">
                     <i class="material-icons">content_copy</i>
                     <p>作业管理</p>
                 </a>
             </li>
             <li>
-                <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:team_manage' %}">
                     <i class="material-icons">face</i>
                     <p>团队管理</p>
                 </a>
             </li>
             <li>
-                <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:score_manage' %}">
                     <i class="material-icons">assessment</i>
                     <p>成绩管理</p>
                 </a>
@@ -75,18 +75,6 @@
                     <p>签到</p>
                 </a>
             </li>
-            {#	                <li>#}
-            {#	                    <a href="teacher_team.html">#}
-            {#	                        <i class="material-icons">face</i>#}
-            {#	                        <p>学生团队管理</p>#}
-            {#	                    </a>#}
-            {#	                </li>#}
-            {#	                <li>#}
-            {#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
-            {#	                        <i class="material-icons">receipt</i>#}
-            {#	                        <p>往期课程</p>#}
-            {#	                    </a>#}
-            {#	                </li>#}
         </ul>
     </div>
 </div>
@@ -128,7 +116,7 @@
                     <div class="card">
                         <div class="card-header" data-background-color="orange">
                             <h4 class="title">评价作业</h4>
-                            <p class="category">评价已截止的作业</p>
+                            <p class="category">评价学生提交的作业</p>
                         </div>
                         <div class="card-content table-responsive">
                             <table class="table table-hover">

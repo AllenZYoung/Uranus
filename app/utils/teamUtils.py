@@ -125,9 +125,9 @@ def submitTeam(team):
         return False
     num = Member.objects.filter(team=team).count()
     # print(num)
-    if num < team.course.teamMeta.minNum or num > team.course.teamMeta.maxNum:
-        log('不在人数限制范围', 'teamutils', LOG_LEVEL.ERROR)
-        return False
+    # if num < team.course.teamMeta.minNum or num > team.course.teamMeta.maxNum:
+    #     log('不在人数限制范围', 'teamutils', LOG_LEVEL.ERROR)
+    #     return False
     users = reportTeam(team)
     users['member'].append(users['leader'])
     num = 0

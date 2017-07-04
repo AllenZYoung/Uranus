@@ -158,7 +158,7 @@ def create_resource(request):
 def homework(request):
     course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
-    works = WorkMeta.objects.filter(course_id=course_id)
+    works = WorkMeta.objects.filter(course_id=course_id).order_by('-startTime')
     homeworks = []
     for work in works:
         if work.submits != -10:
@@ -490,9 +490,18 @@ def adjust_team(request):
     if serial_num is None:
         return HttpResponse('请选择要调整至的队伍')
     team = get_object_or_404(Team, serialNum=serial_num)
-    member = Member(team=team, user=student, role='member', contribution=0)
-    member.save()
-    return redirect('/teacher/team_members/?team_id=' + str(team.id))
+    try:
+        captin=Member.objects.get(team=team,role='leader')
+    except:
+        captin=None
+    # 没有队长就将这个人设置为队长(不能没有队长)
+    if captin is None:
+        member = Member(team=team, user=student, role='leader', contribution=0)
+        member.save()
+    else:
+        member = Member(team=team, user=student, role='member', contribution=0)
+        member.save()
+    return redirect('/teacher/teams?student_id=' + student_id)
 
 
 @login_required(login_url='app:login')
@@ -629,6 +638,7 @@ def setNotice(request):
             notice = Notice(course=course, user=user, title=form.cleaned_data['title'],
                             content=form.cleaned_data['content'])
             notice.save()
+            form.clean()
             return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
         else:
             return HttpResponse('数据不合法，请重新填写！')

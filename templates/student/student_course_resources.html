@@ -118,7 +118,7 @@
                                     <tbody>
                                     {% for meta in file_meta %}
                                         <tr>
-                                            <td><a href="s/{{ meta.file }}">{{ meta.file|base_name }}</a>
+                                            <td><a href="{{ meta.file.url }}">{{ meta.file.name|base_name }}</a>
                                             {% if meta.file.url|is_office %}
                                                 <a href="{% url 'student:preview_source_online' %}?file={{ meta.file }}" target="_blank">[预览]</a>
                                             {% endif %}
@@ -127,7 +127,7 @@
                                             <td>{{ meta.time }}</td>
                                             <td>{{ meta.user.name }}</td>
                                             <td>
-                                                <a href="s/{{ meta.file }}">
+                                                <a href="{{ meta.file.url }}">
                                                     <button class="btn btn-success"
                                                             onclick="demo.showNotification('top','right')">下载
                                                     </button>
