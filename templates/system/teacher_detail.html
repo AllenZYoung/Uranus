@@ -102,22 +102,22 @@
 	                            <div class="card-content table-responsive">
                                     <div>
                                         {% if firstLoad %}
-                                            <form method="Post" action="{% url 'system:uploadTeachers' %}" enctype="multipart/form-data" >
+{#                                            <form method="Post" action="{% url 'system:uploadTeachers' %}" enctype="multipart/form-data" >#}
                                                 <input name="courseId" type="hidden"  value='{{ courseId }}' >
                                                 {% csrf_token %}
                                                 {{ form.filefield }}
                                                 <button class="btn btn-warning">导入</button>
                                                 <a href="{{ url }}" class="btn btn-info" >模板下载</a>
-                                            </form>
+{#                                            </form>#}
                                         {% endif %}
                                         {% if isReloadable %}
-                                            <form method="Post" action="{% url 'system:uploadTeachers' %}" enctype="multipart/form-data" >
+{#                                            <form method="Post" action="{% url 'system:uploadTeachers' %}" enctype="multipart/form-data" >#}
                                                 <input name="courseId" type="hidden"  value='{{ courseId }}' >
                                                 {% csrf_token %}
                                                 {{ form.filefield }}
                                                 <button class="btn btn-warning">重新导入</button>
                                                 <a href="{{ url }}" class="btn btn-info" >模板下载</a>
-                                            </form>
+{#                                            </form>#}
                                         {% endif %}
                                     </div>
 	                                <table class="table table-hover">
