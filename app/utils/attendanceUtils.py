@@ -1,4 +1,5 @@
 from app.utils.logUtils import log, LOG_LEVEL
+from app.utils.authUtils import isStudent
 from datetime import datetime
 from app.models import *
 from openpyxl import *
@@ -59,11 +60,12 @@ def writeAttendanceReport(file, course_id, attendance=None):
     num = 2
     users = Enroll.objects.filter(course_id=course_id)
     for user in users:
-        ws.cell(row=num, column=1).value = user.username
-        ws.cell(row=num, column=2).value = user.name
-        if user in attendance_stu:
-            ws.cell(row=num, column=3).value = '1'
-        else:
-            ws.cell(row=num, column=3).value = '0'
-        num += 1
+        if isStudent(user.user):
+            ws.cell(row=num, column=1).value = str(user.user.username)
+            ws.cell(row=num, column=2).value = str(user.user.name)
+            if user in attendance_stu:
+                ws.cell(row=num, column=3).value = '1'
+            else:
+                ws.cell(row=num, column=3).value = '0'
+            num += 1
     work_book.save(filename=file)

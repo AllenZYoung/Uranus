@@ -121,7 +121,7 @@
 									<br>
 	                                <div class="tim-typo">
 										<p><span class="tim-note">使用指南</span>
-											<p>轮询（Polling）是一种CPU决策如何提供周边设备服务的方式，又称“程控输出入”（Programmed I/O）。轮询法的概念是，由CPU定时发出询问，依序询问每一个周边设备是否需要其服</p>
+											<p>·课程学生需在签到前进行收集照片流程<br><br>·点击开始签到，并打开客户端程序，发起一次签到（一天发起一次）</p>
 										</p>
 									</div>
 									<div class="tim-typo">
@@ -139,6 +139,11 @@
 											</div>
 											</a>
 											{% endif %}
+											<a href="{% url 'teacher:downloadAttendanceReport' %}">
+											<div class="col-md-6">
+												<button class="btn btn-warning">下载当日签到报表</button>
+											</div>
+											</a>
 										</div>
 									</div>
 								</div>
