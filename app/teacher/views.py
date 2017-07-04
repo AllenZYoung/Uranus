@@ -392,10 +392,10 @@ def submitted_work_list(request):
     course = get_object_or_404(Course, id=course_id)
     work_meta_id = request.GET.get('work_meta_id')
     workmeta = WorkMeta.objects.get(id=work_meta_id)
-    teams=Team.objects.filter(course=course,status='passed')
+    teams = Team.objects.filter(course=course, status='passed')
     works = []
     for team in teams:
-        work=Work.objects.filter(workMeta=workmeta,team=team).order_by('-time').last()
+        work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').last()
         if work:
             works.append(work)
     attachment_team_dict = {}
@@ -405,7 +405,7 @@ def submitted_work_list(request):
             attachment_team_dict[work.team] = attachments
 
     return render(request, 'teacher/submitted_work_list.html',
-                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id,})
+                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id, })
 
 
 # 设置分数和评论
@@ -550,8 +550,8 @@ def score_report(request):
 @login_required(login_url='app:login')
 def single_workmeta_report(request):
     course_id = request.session.get('course_id', None)
-    workmeta_id=request.GET.get('workmeta_id',None)
-    dest=generate_single_workmeta_exccel(course_id,workmeta_id)
+    workmeta_id = request.GET.get('workmeta_id', None)
+    dest = generate_single_workmeta_exccel(course_id, workmeta_id)
     return download(dest)
 
 
@@ -661,13 +661,16 @@ def attendance_view(request):
     elif action_id == '4': # 向客户端发送数据
         return JsonResponse(data.copy())
 
+
 @login_required(login_url='app:login')
 def teacher_attendance(request):
     return render(request, 'teacher/teacher_attendence.html')
 
+
 @login_required(login_url='app:login')
 def teacher_collect(request):
     return render(request, 'teacher/teacher_collect.html', {'data': data})
+
 
 @login_required(login_url='app:login')
 def teacher_check(request):
