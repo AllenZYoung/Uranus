@@ -10,7 +10,7 @@ def showToday():
     startTime = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 9, 0, 0, 0)
     endTime = datetime.now()
     attendances = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
-    return attendances
+    return _distinct(attendances)
 
 
 def showTimeBetween(startTime, endTime):
@@ -18,7 +18,17 @@ def showTimeBetween(startTime, endTime):
         return None
 
     attendances = Attendance.objects.filter(time__range=(startTime, endTime)).order_by('time')
-    return attendances
+    return _distinct(attendances)
+
+
+def _distinct(atts):
+    ret = []
+    u = []
+    for att in atts:
+        if not att.user in u:
+            u.append(att.user)
+            ret.append(att)
+    return ret
 
 
 def addAttendance(user):
