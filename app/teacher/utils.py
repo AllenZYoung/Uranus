@@ -11,9 +11,9 @@ from app.teacher.entities import *
 from django.core.exceptions import *
 
 
-def handle_uploaded_file(request,course_id,f):
-    teacher=get_object_or_404(User,username=request.user.username)
-    file=File(course_id=course_id,time=datetime.now(),file=f,user=teacher)
+def handle_uploaded_file(request, course_id, f):
+    teacher = get_object_or_404(User, username=request.user.username)
+    file = File(course_id=course_id, time=datetime.now(), file=f, user=teacher)
     file.save()
 
 
@@ -50,18 +50,18 @@ def students_to_course(students_id, course_id):
         enroll.save()
 
 
-def add_homework(homework_form, course_id, username,file):
+def add_homework(homework_form, course_id, username, file):
     content = homework_form.cleaned_data['content']
     proportion = homework_form.cleaned_data['proportion']
     submits = homework_form.cleaned_data['submits']
     endTime = homework_form.cleaned_data['endTime']
-    title=homework_form.cleaned_data['title']
+    title = homework_form.cleaned_data['title']
     teacher = get_object_or_404(User, username=username)
-    workmeta = WorkMeta(course_id=course_id, user=teacher, content=content,title=title,
+    workmeta = WorkMeta(course_id=course_id, user=teacher, content=content, title=title,
                         proportion=proportion, submits=submits, startTime=datetime.now(), endTime=endTime)
     workmeta.save()
     if file is not None:
-        f=File(course_id=course_id,user=teacher,file=file,type='text',time=datetime.now())
+        f = File(course_id=course_id, user=teacher, file=file, type='text', time=datetime.now())
         f.save()
         attachment = Attachment(file=f, workMeta=workmeta, type='workmeta')
         attachment.save()
@@ -80,7 +80,8 @@ def get_past_homeworks(username):
             homeworks.extend(workmetas)
     return homeworks
 
-#获取当前学期
+
+# 获取当前学期
 def get_now_term():
     now_term = Term.objects.all().order_by('-id')[0]
     return now_term
@@ -94,7 +95,7 @@ def get_team_score_excel_file_abspath():
     # 各个团队得分的excel命名规范：termYear_termsemester_team_score_list.xlsx
     file_path = os.path.join(REPORT_ROOT, 'teamScores')
     if not os.path.exists(file_path):
-        os.mkdir(file_path,)
+        os.mkdir(file_path, )
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_team_score_list.xlsx'
     file = os.path.join(file_path, file_name)
     return file
@@ -107,10 +108,11 @@ def get_stu_score_excel_file_abspath():
     # 各人得分的excel命名规范：termYear_termsemester_stu_score_list.xlsx
     file_path = os.path.join(REPORT_ROOT, 'stuScores')
     if not os.path.exists(file_path):
-        os.mkdir(file_path,)
+        os.mkdir(file_path, )
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_score_list.xlsx'
     file = os.path.join(file_path, file_name)
     return file
+
 
 # 获取所有的团队学生表的excel的完整路径名
 def get_team_members_all_excel_file_abspath():
@@ -122,8 +124,9 @@ def get_team_members_all_excel_file_abspath():
     file = os.path.join(file_path, file_name)
     return file
 
+
 # 保存所有的学生和团队信息到excel
-def create_stu_teams_excel(file,course):
+def create_stu_teams_excel(file, course):
     work_book = Workbook()
     team_stu_list = reportTeams(course)
     ws = work_book.get_active_sheet()
@@ -132,9 +135,9 @@ def create_stu_teams_excel(file,course):
     ws.cell(row=1, column=1).value = '团队id'
     ws.cell(row=1, column=2).value = '团队名称'
     ws.cell(row=1, column=3).value = '队长'
-    ws.cell(row=1,column=4).value = '队员'
+    ws.cell(row=1, column=4).value = '队员'
 
-    for i in range(0,len(team_stu_list)):
+    for i in range(0, len(team_stu_list)):
         num = i + 2
         ws.cell(row=num, column=1).value = team_stu_list[i]['id']
         ws.cell(row=num, column=2).value = team_stu_list[i]['name']
@@ -154,8 +157,8 @@ def create_team_score_excel(file, team_list, score_list):
     ws.cell(row=1, column=2).value = '团队名称'
     ws.cell(row=1, column=3).value = '分数'
 
-    for i in range(0,len(team_list)):
-        num = i+2;
+    for i in range(0, len(team_list)):
+        num = i + 2;
         ws.cell(row=num, column=1).value = team_list[i].serialNum
         ws.cell(row=num, column=2).value = team_list[i].name
         ws.cell(row=num, column=3).value = score_list[i]
@@ -180,8 +183,7 @@ def create_stu_score_excel(file, stu_list, stu_score_dict):
     work_book.save(filename=file)
 
 
-
-#计算团队得分
+# 计算团队得分
 def compute_team_score():
     # now_term = get_now_term()
     team_list = get_team_list_in_now_course()
@@ -192,7 +194,7 @@ def compute_team_score():
         score = 0
         for work in work_list:
             score += (work.score or 0.0) * (work.workMeta.proportion or 0.0)
-        team_score[team] = round(score,2)
+        team_score[team] = round(score, 2)
         score_list.append(score)
     return team_list, score_list, team_score
 
@@ -205,9 +207,8 @@ def compute_stu_score():
         team_member = Member.objects.filter(team=team)
         for member in team_member:
             score = (team_score[team] or 0.0) * (member.contribution or 0.0)
-            stu_score[member.user] = round(score,2)
+            stu_score[member.user] = round(score, 2)
     return stu_score
-
 
 
 # 获取当前学期的所有team,并排序
@@ -229,7 +230,7 @@ def get_stu_list_in_now_course():
     stu_list = []
     for member in members_list:
         stu_list.append(member.user)
-    stu_list = sorted(stu_list, key=lambda x : x.username)
+    stu_list = sorted(stu_list, key=lambda x: x.username)
     return stu_list
 
 
@@ -246,12 +247,12 @@ def file_iterator(file_name, chunk_size=512):
 
 # 获取某一门课程中没有团队的学生
 def query_unteamed_students(course_id):
-    course=get_object_or_404(Course, id=course_id)
-    enrolls=Enroll.objects.filter(course=course,user__role='student')
-    unteamed_students=[]
+    course = get_object_or_404(Course, id=course_id)
+    enrolls = Enroll.objects.filter(course=course, user__role='student')
+    unteamed_students = []
     for enroll in enrolls:
         try:
-            member=Member.objects.get(user=enroll.user)
+            member = Member.objects.get(user=enroll.user)
         except:
             unteamed_students.append(enroll.user)
     return unteamed_students
@@ -259,47 +260,47 @@ def query_unteamed_students(course_id):
 
 # 生成所有团队的所有成绩报表
 def generate_team_scores(course_id):
-    course=get_object_or_404(Course,id=course_id)
-    workmetas=WorkMeta.objects.filter(course=course)
-    teams=Team.objects.filter(course=course,status='passed')
-    datas=[]
+    course = get_object_or_404(Course, id=course_id)
+    workmetas = WorkMeta.objects.filter(course=course)
+    teams = Team.objects.filter(course=course, status='passed')
+    datas = []
     for workmeta in workmetas:
-        works=[]
+        works = []
         for team in teams:
-            work=Work.objects.filter(workMeta=workmeta,team=team).order_by('-time').first()
+            work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').first()
             if work is None:
-                work=Work(score=0,team=team)
+                work = Work(score=0, team=team)
             works.append(work)
-        row_data=ScoreWrapper(workmeta=workmeta,works=works)
+        row_data = ScoreWrapper(workmeta=workmeta, works=works)
         datas.append(row_data)
     return datas
 
 
 def generate_scores_excel(course_id):
-    data=generate_team_scores(course_id)
-    wb=Workbook()
-    dest=os.path.join(REPORT_ROOT,'teams_scores_'+str(course_id)+'.xlsx')
-    ws1=wb.active
-    ws1.title='团队成绩报表'
-    ws1['A1']='作业标题\团队'
-    ws1['A'+str(len(data)+3)]='加权总成绩'
-    teams=Team.objects.filter(course_id=course_id,status='passed')
+    data = generate_team_scores(course_id)
+    wb = Workbook()
+    dest = os.path.join(REPORT_ROOT, 'teams_scores_' + str(course_id) + '.xlsx')
+    ws1 = wb.active
+    ws1.title = '团队成绩报表'
+    ws1['A1'] = '作业标题\团队'
+    ws1['A' + str(len(data) + 3)] = '加权总成绩'
+    teams = Team.objects.filter(course_id=course_id, status='passed')
 
     for i in range(len(teams)):
-        ws1.cell(row=1,column=i+2,value=teams[i].name)
+        ws1.cell(row=1, column=i + 2, value=teams[i].name)
 
     for i in range(len(data)):
-        ws1.cell(row=i+2,column=1,value=data[i].workmeta.title)
-        works=data[i].works
+        ws1.cell(row=i + 2, column=1, value=data[i].workmeta.title)
+        works = data[i].works
         for j in range(len(works)):
-            ws1.cell(row=i+2,column=j+2,value=works[j].score)
+            ws1.cell(row=i + 2, column=j + 2, value=works[j].score)
 
     # 根据每次作业的权重，计算总成绩
     for i in range(len(teams)):
-        sum=0
+        sum = 0
         for j in range(len(data)):
-            weight=data[j].workmeta.proportion
-            sum+=weight*data[j].works[i].score
-        ws1.cell(row=len(data)+3,column=i+2,value=sum)
+            weight = data[j].workmeta.proportion
+            sum += weight * data[j].works[i].score
+        ws1.cell(row=len(data) + 3, column=i + 2, value=sum)
     wb.save(filename=dest)
     return dest
