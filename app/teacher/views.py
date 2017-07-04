@@ -370,7 +370,6 @@ def course(request):
     enrolls = Enroll.objects.filter(user__username=user.username, user__role='teacher')
     course = None
     present = datetime.now()
-    course = Enroll.objects.filter(user__username__contains=user).first().course
     notice_new = Notice.objects.filter(course=course).order_by('-time').first()
 
     for enroll in enrolls:
