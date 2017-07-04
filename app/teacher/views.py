@@ -10,6 +10,7 @@ from django.conf import settings
 from app.templatetags import app_tags
 from app.utils import *
 import pprint
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -540,13 +541,30 @@ def apply_manage(request):
 # 生成所有团队每次作业的成绩报表
 @login_required(login_url='app:login')
 def score_report(request):
-    course_id = request.session.get('course_id', None)
-    scores = generate_team_scores(course_id)
-    teams = Team.objects.filter(course_id=course_id, status='passed')
-    return render(request, 'teacher/score_report.html', {'datas': scores, 'teams': teams})
+    if request.method == 'GET':
+        form = UploadFileForm()
+        course_id = request.session.get('course_id', None)
+        scores = generate_team_scores(course_id)
+        teams = Team.objects.filter(course_id=course_id, status='passed')
+        return render(request, 'teacher/score_report.html',
+                      {'datas': scores, 'teams': teams, 'form': form})
+    else:
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            if request.FILES['file'].name.split('.')[-1] == ('xlsx' or 'xls'):
+                try:
+                    handle_uploaded_proportion(request, f=request.FILES['file'])
+                except ObjectDoesNotExist as e:
+                    error_message = "XLS obeject not exists"
+                    return render(request, 'pages-error-404.html')
+                return redirect('/teacher/score_report')
+            elif not isXls(request.FILES['file'].name):  # 文件不是xlsx
+                error_message = '文件格式错误，请上传Excel文件（.xlsx)'
+                form = UploadFileForm()
+                return render(request, 'pages-error-404.html')
+    return redirect('/teacher/score_report')  # 生成单次作业的成绩报表
 
 
-# 生成单次作业的成绩报表
 @login_required(login_url='app:login')
 def single_workmeta_report(request):
     course_id = request.session.get('course_id', None)
@@ -624,7 +642,7 @@ data = {'is_ended': True,
 
 def attendance_view(request):
     action_id = request.GET.get('action')
-    if action_id == '0': # 开始签到
+    if action_id == '0':  # 开始签到
         course_id = request.session.get('course_id', None)
         data['is_ended'] = False
         data['is_started'] = True
@@ -636,29 +654,29 @@ def attendance_view(request):
         return render(request, 'teacher/teacher_check.html', {'data': data,
                                                               'attendance': attendance,
                                                               'unattendance': unattendance, })
-    elif action_id == '1' or action_id is None or not action_id or action_id == '': # 结束签到
+    elif action_id == '1' or action_id is None or not action_id or action_id == '':  # 结束签到
         course_id = request.session.get('course_id', None)
         data['is_ended'] = True
         data['is_started'] = False
         data['is_collected'] = False
         enrolls = Enroll.objects.filter(course_id=course_id)
-        attendance =  showToday()
+        attendance = showToday()
         attendance_id = [item.user_id for item in attendance]
         unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
         return render(request, 'teacher/teacher_check.html', {'data': data,
                                                               'attendance': attendance,
-                                                              'unattendance': unattendance,})
-    elif action_id == '2': # 收集照片
+                                                              'unattendance': unattendance, })
+    elif action_id == '2':  # 收集照片
         data['is_collected'] = True
         data['is_started'] = False
         data['is_ended'] = True
-        return render(request, 'teacher/teacher_collect.html', {'data': data,})
-    elif action_id == '3': # 停止收集
+        return render(request, 'teacher/teacher_collect.html', {'data': data, })
+    elif action_id == '3':  # 停止收集
         data['is_collected'] = False
         data['is_started'] = False
         data['is_ended'] = True
-        return render(request, 'teacher/teacher_collect.html', {'data': data,})
-    elif action_id == '4': # 向客户端发送数据
+        return render(request, 'teacher/teacher_collect.html', {'data': data, })
+    elif action_id == '4':  # 向客户端发送数据
         return JsonResponse(data.copy())
 
 
@@ -699,6 +717,7 @@ def downloadAttendanceReport(request):
     fp = os.path.join(REPORT_ROOT, fp)
     course_id = request.session.get('course_id', None)
     writeAttendanceReport(course_id, fp)
+
     def read_file(fn, buf_size=102400):
         f = open(fn, 'rb')
         while True:

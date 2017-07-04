@@ -71,7 +71,7 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
     elif request.method == 'POST' : # 设置贡献度（权重）
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print("form is VALID!") # 表单无效
+            print("form is VALID!") # 表单有效
             if isTeamLeader(student):
                 print("Leader here!") # 是队长
                 if request.FILES['file'].name.split('.')[-1] == 'xlsx':

@@ -13,6 +13,7 @@ from app.teacher.entities import *
 from django.core.exceptions import *
 from django.utils.http import urlquote
 
+
 def handle_uploaded_file(request, course_id, f):
     teacher = get_object_or_404(User, username=request.user.username)
     file = File(course_id=course_id, time=datetime.now(), file=f, user=teacher)
@@ -271,7 +272,7 @@ def generate_team_scores(course_id):
         for team in teams:
             work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').first()
             if work is None:
-                work=Work(score=-1,team=team)
+                work = Work(score=-1, team=team)
             works.append(work)
         row_data = ScoreWrapper(workmeta=workmeta, works=works)
         datas.append(row_data)
@@ -297,7 +298,7 @@ def generate_scores_excel(course_id):
         for j in range(len(works)):
             if works[j].score:
                 if works[j].score == -1:
-                    ws1.cell(row=i+2,column=j+2,value='未提交')
+                    ws1.cell(row=i + 2, column=j + 2, value='未提交')
                 else:
                     ws1.cell(row=i + 2, column=j + 2, value=works[j].score)
             else:
@@ -306,15 +307,15 @@ def generate_scores_excel(course_id):
     for i in range(len(teams)):
         sum = 0
         for j in range(len(data)):
-            weight=data[j].workmeta.proportion
+            weight = data[j].workmeta.proportion
             if data[j].works[i].score and data[j].works[i].score > 0:
-                sum+=weight*data[j].works[i].score
-        ws1.cell(row=len(data)+3,column=i+2,value=sum)
+                sum += weight * data[j].works[i].score
+        ws1.cell(row=len(data) + 3, column=i + 2, value=sum)
     wb.save(filename=dest)
     return dest
 
 
-def generate_single_workmeta_exccel(course_id,workmeta_id):
+def generate_single_workmeta_exccel(course_id, workmeta_id):
     course = get_object_or_404(Course, id=course_id)
     workmeta = WorkMeta.objects.get(id=workmeta_id)
     teams = Team.objects.filter(course=course, status='passed')
@@ -323,23 +324,23 @@ def generate_single_workmeta_exccel(course_id,workmeta_id):
         work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').last()
         if work:
             works.append(work)
-    wb=Workbook()
-    ws1=wb.active
-    ws1.title='小组成绩报表'
-    ws1['A1']='小组名称'
-    ws1['B1']='小组成绩'
+    wb = Workbook()
+    ws1 = wb.active
+    ws1.title = '小组成绩报表'
+    ws1['A1'] = '小组名称'
+    ws1['B1'] = '小组成绩'
     for i in range(len(teams)):
-        team=teams[i]
-        ws1.cell(row=i+2,column=1,value=team.name)
+        team = teams[i]
+        ws1.cell(row=i + 2, column=1, value=team.name)
         work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').last()
         if work:
             if work.score:
-                ws1.cell(row=i+2,column=2,value=work.score)
+                ws1.cell(row=i + 2, column=2, value=work.score)
             else:
                 ws1.cell(row=i + 2, column=2, value='尚未评分')
         else:
             ws1.cell(row=i + 2, column=2, value='未提交')
-    dest = os.path.join(REPORT_ROOT,  workmeta.title+'_score_report'+'.xlsx')
+    dest = os.path.join(REPORT_ROOT, workmeta.title + '_score_report' + '.xlsx')
     wb.save(filename=dest)
     return dest
 
@@ -354,3 +355,49 @@ def download(dest):
             return response
     else:
         return HttpResponse('generate excel failed!')
+
+
+def handle_uploaded_proportion(request, f=None):
+    datenow = datetime.now()
+    user = request.user
+    user = User.objects.filter(username__contains=user).first()
+    course = Enroll.objects.filter(user=user).first().course
+    filedate = datenow.strftime('%Y%m%d-%H%M%S')
+    path = UPLOAD_ROOT
+    log(path, 'handle_uploaded_user')
+    filepath = os.path.join(path, filedate + '_' + f.name)
+    log(filepath, 'handle_uploaded_user')
+
+    with open(filepath, 'wb+') as de:
+        for chunk in f.chunks():
+            de.write(chunk)
+    # 导入exel
+    wb = load_workbook(filepath)
+    log('导入exel', 'handle_uploaded_user')
+    table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+
+    workMetas = WorkMeta.objects.filter(course=course)
+    ctrlProp = 0
+    standardProp = 1
+    for i in range(2, table.max_row + 1):
+        if table.cell(row=i, column=1).value is None:
+            # '为空，应跳过'
+            continue
+        print('正在导入第' + str(i - 1) + '行...')
+        workMeta_id = table.cell(row=i, column=1).value
+        workMeta_pro = table.cell(row=i, column=2).value
+        ctrlProp += workMeta_pro
+        if ctrlProp < standardProp:
+            WorkMeta.objects.filter(id=workMeta_id).update(proportion=workMeta_pro)
+        else:
+            break
+    if ctrlProp == standardProp:
+        log('setProportion OK', 'teacher/utils', LOG_LEVEL.INFO)
+    else:
+        log('setProportion FAILED', 'teacher/utils', LOG_LEVEL.INFO)
+
+        # student = User.objects.filter(username=student_id).first()
+        # if student is not None:
+        #     Member.objects.filter(user=student).update(contribution=student_contribution)
+        # else:
+        #     return None

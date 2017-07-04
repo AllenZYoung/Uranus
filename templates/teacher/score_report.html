@@ -126,7 +126,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header" data-background-color="orange">
+                        <div class="card-header" data-background-color="blue">
                             <h4 class="title">作业成绩报表</h4>
                             <p class="category">下载作业得分总表</p>
                         </div>
@@ -178,7 +178,7 @@
                     </div>
                     <div class="card">
 
-                        <div class="card-header" data-background-color="orange">
+                        <div class="card-header" data-background-color="blue">
                             <h4 class="title">其他评分项</h4>
                             <p class="category">显示其他评分项</p>
                         </div>
@@ -215,9 +215,48 @@
                                 </tbody>
                             </table>
                         </div>
+
                         <div class="row">
                             <div class="col-md-12" style="padding: 10px 40px 20px 40px;">
                                 <a href="{% url 'teacher:generate_score_excel' %}" class="btn btn-warning">下载作业成绩报表</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="col-md-12">
+                            <div class="card-header" data-background-color="blue">
+                                <h4 class="title">设置评分占比</h4>
+                            </div>
+
+                            <div class="card-content">
+                                <p>请上传各个评分项的分数占比（excel表格)，格式如下</p>
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>
+                                            作业/评分项ID
+                                        </th>
+                                        <th> 分数占比
+                                        </th>
+                                    </tr>
+                                    <tbody>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        0.1
+                                    </td>
+                                    </tbody>
+                                </table>
+
+                                <form method="Post" action="" enctype="multipart/form-data">
+
+                                    {{ form.file }}
+
+                                    {% csrf_token %}
+                                    <a>
+                                        <input class="btn btn-warning pull-right" type="submit" value="点我上传"/>
+                                    </a>
+                                </form>
                             </div>
                         </div>
                     </div>
