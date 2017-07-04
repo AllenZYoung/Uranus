@@ -60,6 +60,7 @@ class EditTermForm(forms.ModelForm):
         }
 
 
+
 class EditCourseForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     classroom = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
