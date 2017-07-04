@@ -44,7 +44,7 @@ def addAttendance(user):
     attendence.save()
     return attendence
 
-def create_stu_score_excel(file, course_id, attendance=None):
+def create_attendance(file, course_id, attendance=None):
     if attendance is None:
         attendance = showToday()
     users = Enroll.objects.filter(course_id=course_id)

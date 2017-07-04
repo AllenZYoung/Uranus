@@ -636,7 +636,7 @@ def attendance_view(request):
         return render(request, 'teacher/teacher_check.html', {'data': data,
                                                               'attendance': attendance,
                                                               'unattendance': unattendance, })
-    elif action_id == '1' or action_id is not None: # 结束签到
+    elif action_id == '1' or action_id is None or not action_id or action_id == '': # 结束签到
         course_id = request.session.get('course_id', None)
         data['is_ended'] = True
         data['is_started'] = False
@@ -674,7 +674,14 @@ def teacher_collect(request):
 
 @login_required(login_url='app:login')
 def teacher_check(request):
-    return render(request, 'teacher/teacher_check.html', {'users': showToday(), })
+    course_id = request.session.get('course_id', None)
+    enrolls = Enroll.objects.filter(course_id=course_id)
+    attendance = showToday()
+    attendance_id = [item.user_id for item in attendance]
+    unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
+    return render(request, 'teacher/teacher_check.html', {'data': data,
+                                                          'attendance': attendance,
+                                                          'unattendance': unattendance, })
 
 
 def test(request):
