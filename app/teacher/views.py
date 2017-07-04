@@ -517,7 +517,7 @@ def adjust_team(request):
     team = get_object_or_404(Team, serialNum=serial_num)
     member = Member(team=team, user=student, role='member', contribution=0)
     member.save()
-    return redirect('/teacher/teams?student_id=' + student_id)
+    return redirect('/teacher/team_members/?team_id=' + str(team.id))
 
 
 @login_required(login_url='app:login')
@@ -526,7 +526,7 @@ def dismiss_member(request):
     member_id = request.GET.get('member_id', None)
     member = get_object_or_404(Member, id=member_id)
     member.delete()
-    return redirect('/teacher/team_members?team_id=' + team_id)
+    return redirect('/teacher/teams')
 
 
 @login_required(login_url='app:login')
