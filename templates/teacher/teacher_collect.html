@@ -62,6 +62,12 @@
 	                        <p>团队管理</p>
 	                    </a>
 	                </li>
+                    <li>
+                        <a href="{% url 'teacher:score_manage' %}">
+                            <i class="material-icons">assessment</i>
+                            <p>成绩管理</p>
+                        </a>
+                    </li>
 	                <!-- Copy -->
 	                <li class="active">
 	                    <a href="{% url 'teacher:teacher_attendance' %}?course_id={{ course.id }}">

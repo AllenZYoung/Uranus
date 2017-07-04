@@ -63,6 +63,12 @@
 	                        <p>团队管理</p>
 	                    </a>
 	                </li>
+                    <li>
+                        <a href="{% url 'teacher:score_manage' %}">
+                            <i class="material-icons">assessment</i>
+                            <p>成绩管理</p>
+                        </a>
+                    </li>
 	                <!-- 侧边栏签到，将原有的 class="active"删去，不加蓝显示 -->
 	                <!-- Copy -->
 	                <li class="active">
@@ -86,7 +92,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="javascript:window.history.back();">返回</a>
+						<a class="navbar-brand" href="">签到</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
