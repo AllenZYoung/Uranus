@@ -653,7 +653,7 @@ data = {'is_ended': True,
 def attendance_view(request):
     global data
     action_id = request.GET.get('action')
-    log('action_id' + action_id, 'teacher/attendance_view')
+    log('action_id' + (action_id or 'None'), 'teacher/attendance_view')
     if action_id == '0':  # 开始签到
         course_id = request.session.get('course_id', None)
         data['is_ended'] = False
