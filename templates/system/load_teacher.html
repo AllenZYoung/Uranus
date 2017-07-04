@@ -101,7 +101,7 @@
                                 <p class="category">为课程导入老师</p>
                             </div>
                             <div class="card-content table-responsive">
-                            <a href="{{ url }}" class="btn btn-info" target="_blank">模板下载</a>
+                                <a href="{{ url }}" class="btn btn-info">模板下载</a>
                                 <table class="table table-hover">
                                     <thead>
                                     <th>年份</th>
@@ -144,21 +144,21 @@
                                                     <button class="btn btn-inverse" disabled="disabled">不可操作</button>
                                                 {% else %}
                                                     {% if course_dic.flag %}
-                                                        {#                                                                <form method="Post" action="{% url 'system:uploadTeachers' %}" enctype="multipart/form-data" >#}
-                                                        <input name="courseId" type="hidden"
-                                                               value='{{ course_dic.course.id }}'>
-                                                        {% csrf_token %}
-                                                        {{ form.filefield }}
-                                                        <button class="btn btn-warning" id="submit-data">重新导入</button>
-                                                        {#                                                               </form>#}
+                                                        <form method="Post" action="" enctype="multipart/form-data">
+                                                            <input name="courseId" type="hidden"
+                                                                   value='{{ course_dic.course.id }}'>
+                                                            {% csrf_token %}
+                                                            {{ form.filefield }}
+                                                            <button class="btn btn-warning submit-data">重新导入</button>
+                                                        </form>
                                                     {% else %}
-                                                        {#                                                               <form method="Post" action="{% url 'system:uploadTeachers' %}" enctype="multipart/form-data" >#}
-                                                        <input name="courseId" type="hidden"
-                                                               value='{{ course_dic.course.id }}'>
-                                                        {% csrf_token %}
-                                                        {{ form.filefield }}
-                                                        <button class="btn btn-warning" id="submit-data">导入</button>
-                                                        {#                                                               </form>#}
+                                                        <form method="Post" action="" enctype="multipart/form-data">
+                                                            <input name="courseId" type="hidden"
+                                                                   value='{{ course_dic.course.id }}'>
+                                                            {% csrf_token %}
+                                                            {{ form.filefield }}
+                                                            <button class="btn btn-warning submit-data">导入</button>
+                                                        </form>
                                                     {% endif %}
                                                 {% endif %}
                                             </td>
@@ -185,7 +185,7 @@
 </div>
 
 {% include 'modal.html' %}
-
+<div style="display:none;">{{ error_message }}</div>
 </body>
 
 <!--   Core JS Files   -->
@@ -215,14 +215,23 @@
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
 
-    });
-    $(function () {
-        $('#myModalLabel').text("上传老师信息");
-        $('#submit-data').click(function () {
-            submitClick("{% url 'system:uploadTeachers' %}", "上传成功！");
-        });
-    });
+        var error_message = "{{ error_message }}" || "";
+{#        alert(error_message);#}
+        if(error_message){
+            $(document).keydown(function (e) {
+                if (e.keyCode === 116) {
+                    e.preventDefault();
+                    window.location.replace("{% url 'system:loadTeacher' %}");
+                }
+            });
 
+            $('#myModalLabel').text('上传老师');
+            $('.modal-body').text(error_message);
+            $('#myModal').modal('show');
+
+        }
+
+    });
 
 </script>
 

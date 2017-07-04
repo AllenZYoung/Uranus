@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+    {% load app_tags %}
+    {% load  static %}
     <meta charset="utf-8"/>
     <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png"/>
     <link rel="icon" type="image/png" href="/static/assets/img/favicon.png"/>
@@ -118,7 +120,7 @@
                                 <p class="category">编辑课程公告并发布</p>
                             </div>
                             <div class="card-content">
-                                <form action="{% url 'teacher:setNotice' %}" method="post" enctype="multipart/form-data">
+{#                                <form action="{% url 'teacher:setNotice' %}" method="post" enctype="multipart/form-data">#}
                                     <div class="tim-typo">
 										<span class="tim-note">公告标题</span>
 											{{ form.title }}
@@ -131,7 +133,7 @@
                                         <button type="submit" id='submit-data' class="btn btn-danger pull-right">发布公告</button>
                                     </div>
                                     {% csrf_token %}
-                                </form>
+{#                                </form>#}
                             </div>
                         </div>
                         <div id="NoticeList" class="card">
@@ -140,7 +142,7 @@
                                 <p class="category">查看本课程的公告</p>
                             </div>
                             <div class="card-content table-responsive">
-                                <form">
+{#                                <form">#}
                                     <table class="table table-hover">
                                         <thead>
                                         <th>发布人</th>
@@ -159,7 +161,7 @@
                                             </tbody>
                                         {% endfor %}
                                     </table>
-                                </form>
+{#                                </form>#}
                             </div>
                         </div>
                     </div>
@@ -176,7 +178,7 @@
         </footer>
     </div>
 </div>
-
+{% include 'modal.html' %}
 </body>
 
 <!--   Core JS Files   -->
@@ -198,5 +200,16 @@
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="/static/assets/js/demo.js"></script>
+<script src="{% static 'assets/js/uranus.js' %}"></script>
+
+<script>
+    $('#myModalLabel').text('发布公告');
+    $(function () {
+        $('#submit-data').click(function () {
+            submitClick("{% url 'teacher:setNotice' %}", "发布成功！");
+        });
+    });
+
+</script>
 
 </html>
