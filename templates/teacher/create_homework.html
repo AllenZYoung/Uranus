@@ -22,6 +22,11 @@
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+
+     <!-- 日历 -->
+    <link href="{% static 'assets/css/bootstrap-datetimepicker.css' %}" rel="stylesheet" media="screen">
+    <!-- 日历 -->
+
     <style>
         html, body {
             height:100%
@@ -66,6 +71,12 @@
 	                    <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
 	                        <i class="material-icons">assessment</i>
 	                        <p>成绩管理</p>
+	                    </a>
+	                </li>
+					<li>
+	                    <a href="{% url 'teacher:teacher_attendance' %}">
+	                        <i class="material-icons">done</i>
+	                        <p>签到</p>
 	                    </a>
 	                </li>
 {#	                <li>#}
@@ -153,7 +164,22 @@
 									</div>
                     				<div class="tim-typo">
 										<p><span class="tim-note">截止日期</span>
-											{{ form.endTime }}
+                                            <!--日历控件-->
+                                            <div class="container">
+                                                <form action="" class="form-horizontal"  role="form">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <div class="input-group date form_date col-md-4" data-date="" data-date-format="yyyy-mm-dd" data-link-field="id_endTime" data-link-format="yyyy-mm-dd">
+                                                                <input class="form-control" size="16" type="text" value="" readonly>
+                                                                <span class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.bmp' %})"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                            </div>
+                                                            <input type="hidden" id="id_endTime" name='endTime' value="" /><br/>
+                                                        </div>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        <!--日历控件-->
+{#											{{ form.endTime }}#}
 										</p>
                     				</div>
                     				<div class="tim-typo">
@@ -206,22 +232,54 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="{% static 'assets/js/demo.js' %}"></script>
     <script src="{% static 'assets/js/uranus.js' %}"></script>
+
+    <!--日历-->
+    {#<script type="text/javascript" src="../../static/assets/js/jquery-1.8.3.min.js" charset="UTF-8"></script>#}
+    <script type="text/javascript" src="{% static 'assets/js/bootstrap-datetimepicker.js' %}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{% static 'assets/js/bootstrap-datetimepicker.zh-CN.js'%}" charset="UTF-8"></script>
+    <!--日历-->
+
 	<script type="text/javascript">
     	$(document).ready(function(){
 
 			// Javascript method's body can be found in assets/js/demos.js
         	demo.initDashboardPageCharts();
-
+             $('.form_date').datetimepicker({
+                language:  'zh-CN',
+                weekStart: 1,
+                todayBtn:  "linked",
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+             });
     	});
     	$('#myModalLabel').text('发布作业');
 
     	$(function () {
 
             $('#submit-data').click(function () {
-                var year = parseInt($('#id_endTime_year').val()) || 0;
-                var month = parseInt($('#id_endTime_month').val()) || 1;
-                var day = parseInt($('#id_endTime_day').val()) || 0;
-
+{#                var year = parseInt($('#id_endTime_year').val()) || 0;#}
+{#                var month = parseInt($('#id_endTime_month').val()) || 1;#}
+{#                var day = parseInt($('#id_endTime_day').val()) || 0;#}
+                var endTimeOrigin = $('#id_endTime').val()||'';
+                var endTimeSplit = endTimeOrigin.split('-');
+                for (var i=0;i<endTimeSplit.length;i++) {
+                     switch (i) {
+                         case 0:
+                            var year = parseInt(endTimeSplit[i]) || 0;
+                            break;
+                         case 1:
+                             var month = parseInt(endTimeSplit[i])|| 0;
+                             break;
+                         case 2:
+                             var day = parseInt(endTimeSplit[i])|| 0;
+                             break;
+                         default:
+                             break;
+                     };
+                };
                 var endTime = new Date(year, month-1, day).getTime();
                 var nowTime = new Date().getTime();
 

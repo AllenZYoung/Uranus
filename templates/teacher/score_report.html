@@ -70,6 +70,12 @@
                     <p>成绩管理</p>
                 </a>
             </li>
+            <li>
+                <a href="{% url 'teacher:teacher_attendance' %}">
+                    <i class="material-icons">done</i>
+                    <p>签到</p>
+                </a>
+            </li>
             {#	                <li>#}
             {#	                    <a href="teacher_team.html">#}
             {#	                        <i class="material-icons">face</i>#}
@@ -138,12 +144,50 @@
                                 <tbody>
                                 {% for row in datas %}
                                     <tr>
-                                        <td>{{ row.workmeta.title }}</td>
-                                        {% for work in row.works %}
-                                            <td>
-                                                {{ work.score }}
-                                            </td>
-                                        {% endfor %}
+                                        {% if  row.workmeta.submits != -10 %}
+                                            <td>{{ row.workmeta.title }}</td>
+                                            {% for work in row.works %}
+                                                <td>
+                                                    {{ work.score }}
+                                                </td>
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+
+                        <div class="card-header" data-background-color="orange">
+                            <h4 class="title">其他评分项</h4>
+                            <p class="category">显示其他评分项</p>
+                        </div>
+
+                        <div class="card-content table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>评分项名称\团队名称</th>
+                                    {% for team in teams %}
+                                        <th>{{ team.name }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in datas %}
+                                    <tr>
+                                        {% if  row.workmeta.submits < -1 %}
+                                            <td>{{ row.workmeta.title }}</td>
+                                            {% for work in row.works %}
+                                                <td>
+                                                    {{ work.score }}
+                                                </td>
+                                            {% endfor %}
+
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                                 </tbody>

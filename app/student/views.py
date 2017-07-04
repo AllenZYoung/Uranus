@@ -107,9 +107,10 @@ def work_submit(request):  # （团队负责人）学生的作业提交页面
 
 @login_required(login_url='app:login')
 def view_resources(request):
+    course_id = request.GET.get('')
     files = File.objects.all()
     file_meta = []
-    attachment_id = [a.file_id for a in Attachment.objects.all()]
+    attachment_id = [a.file.id for a in Attachment.objects.all()]
     for file in files:
         if file.id not in attachment_id:
             file_meta.append(file)
@@ -299,12 +300,12 @@ def view_score(request):
     leader = dict['leader'].user.name
     team_list, score_list, team_score = compute_team_score()
     stuScoreDict = compute_stu_score()
-    teamGrade = 0
-    stuGrade = 0
+    teamGrade = team_score[stu_team]
+    stuGrade = stuScoreDict[student]
     #TODO 计算teamGrade和stuGrade，可以根据前面几行的函数
     if stu_member is None:
         return HttpResponse('404 not member')
-    num = 0
+    num = Member.objects.filter(team=stu_team).count()
     return render(request,'student/student_course_score.html',
                   {'num':num,'team':stu_team,'student':student,'leader':leader,
                    'teamGrade':teamGrade,'stuGrade':stuGrade})

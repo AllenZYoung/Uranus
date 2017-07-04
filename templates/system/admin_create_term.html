@@ -33,7 +33,7 @@
 
 <div class="wrapper">
 
-    <div class="sidebar" data-color="blue" data-image="../assets/img/sidebar-1.jpg">
+    <div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
         <!--
             Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
@@ -41,7 +41,7 @@
         -->
 
         <div class="logo">
-            <a href="/system" class="simple-text">
+            <a href="{% url 'system:index' %}" class="simple-text">
                 教务
             </a>
         </div>
@@ -49,13 +49,13 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li class="active">
-                    <a href="term">
+                    <a href="{% url 'system:term' %}">
                         <i class="material-icons">today</i>
                         <p>学期管理</p>
                     </a>
                 </li>
                 <li>
-                    <a href="course">
+                    <a href="{% url 'system:index_course' %}">
                         <i class="material-icons">dashboard</i>
                         <p>课程管理</p>
                     </a>

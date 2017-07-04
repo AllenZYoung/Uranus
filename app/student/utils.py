@@ -49,12 +49,13 @@ def get_submittings(team_id, course_id):
     # 选择最晚提交作业
     last_submit = {}
     for work in Work.objects.filter(team_id=team_id):
-        if work.workMeta_id not in last_submit:
-            last_submit[work.workMeta_id] = {'work': work,
-                                             'time': datetime(2017, 1, 1, tzinfo=pytz.utc)}
-        if work.time > last_submit[work.workMeta_id]['time']:
-            last_submit[work.workMeta_id]['time'] = work.time
-            last_submit[work.workMeta_id]['work'] = work
+        if work.workMeta.submits >= -1:
+            if work.workMeta_id not in last_submit:
+                last_submit[work.workMeta_id] = {'work': work,
+                                                 'time': datetime(2017, 1, 1, tzinfo=pytz.utc)}
+            if work.time > last_submit[work.workMeta_id]['time']:
+                last_submit[work.workMeta_id]['time'] = work.time
+                last_submit[work.workMeta_id]['work'] = work
 
     last_submit = sorted(last_submit.items(), key=lambda d: d[0], reverse=False)
     submittings['submitted'] = [item[1]['work'] for item in last_submit]
