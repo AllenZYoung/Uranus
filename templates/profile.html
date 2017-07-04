@@ -65,13 +65,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-                        {% if user.role == 'student' %}
-                            <a class="navbar-brand" href="{% url 'student:index' %}">返回</a>
-                        {% elif user.role == 'teacher' %}
-                            <a class="navbar-brand" href="{% url 'teacher:index' %}">返回</a>
-                        {% else %}
-                            <a class="navbar-brand" href="{% url 'system:index' %}">返回</a>
-                        {% endif %}
+                         <a class="navbar-brand" href="javascript:location.href=document.referrer;">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
