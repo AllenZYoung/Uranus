@@ -1,6 +1,7 @@
 from app.utils.logUtils import log, LOG_LEVEL
 from datetime import datetime
 from app.models import *
+from openpyxl import *
 
 # 关于签到的工具集
 # by kahsolt
@@ -42,3 +43,25 @@ def addAttendance(user):
     attendence.user = user
     attendence.save()
     return attendence
+
+def create_stu_score_excel(file, course_id, attendance=None):
+    if attendance is None:
+        attendance = showToday()
+    users = Enroll.objects.filter(course_id=course_id)
+    attendance_stu = [item.user for item in attendance]
+    work_book = Workbook()
+    ws = work_book.get_active_sheet()
+    ws.cell(row=1, column=1).value = '学号'
+    ws.cell(row=1, column=2).value = '姓名'
+    ws.cell(row=1, column=3).value = '签到'
+
+    num = 2
+    for user in users:
+        ws.cell(row=num, column=1).value = user.username
+        ws.cell(row=num, column=2).value = user.name
+        if user in attendance_stu:
+            ws.cell(row=num, column=3).value = '0'
+        else:
+            ws.cell(row=num, column=3).value = '1'
+        num += 1
+    work_book.save(filename=file)

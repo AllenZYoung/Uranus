@@ -624,25 +624,41 @@ data = {'is_ended': True,
 
 def attendance_view(request):
     action_id = request.GET.get('action')
-    if action_id == '0':  # 开始签到
+    if action_id == '0': # 开始签到
+        course_id = request.session.get('course_id', None)
         data['is_ended'] = False
         data['is_started'] = True
         data['is_collected'] = False
-        return render(request, 'teacher/teacher_check.html', {'data': data, })
-    elif action_id == '1':  # 结束签到
+        enrolls = Enroll.objects.filter(course_id=course_id)
+        attendance = showToday()
+        attendance_id = [item.user_id for item in attendance]
+        unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
+        return render(request, 'teacher/teacher_check.html', {'data': data,
+                                                              'attendance': attendance,
+                                                              'unattendance': unattendance, })
+    elif action_id == '1' or action_id is not None: # 结束签到
+        course_id = request.session.get('course_id', None)
         data['is_ended'] = True
         data['is_started'] = False
         data['is_collected'] = False
-        return render(request, 'teacher/teacher_check.html', {'data': data})
-    elif action_id == '2':  # 收集照片
+        enrolls = Enroll.objects.filter(course_id=course_id)
+        attendance =  showToday()
+        attendance_id = [item.user_id for item in attendance]
+        unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
+        return render(request, 'teacher/teacher_check.html', {'data': data,
+                                                              'attendance': attendance,
+                                                              'unattendance': unattendance,})
+    elif action_id == '2': # 收集照片
         data['is_collected'] = True
-        return render(request, 'teacher/teacher_collect.html', {'data': data,
-                                                                'users': showToday(), })
-    elif action_id == '3':  # 停止收集
+        data['is_started'] = False
+        data['is_ended'] = True
+        return render(request, 'teacher/teacher_collect.html', {'data': data,})
+    elif action_id == '3': # 停止收集
         data['is_collected'] = False
-        return render(request, 'teacher/teacher_collect.html', {'data': data,
-                                                                'users': showToday(), })
-    elif action_id == '4':  # 向客户端发送数据
+        data['is_started'] = False
+        data['is_ended'] = True
+        return render(request, 'teacher/teacher_collect.html', {'data': data,})
+    elif action_id == '4': # 向客户端发送数据
         return JsonResponse(data.copy())
 
 @login_required(login_url='app:login')

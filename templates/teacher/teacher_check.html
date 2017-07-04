@@ -155,17 +155,33 @@
 	                                    	<th>手动签到</th>
 	                                    </thead>
 	                                    <tbody>
-										{% for user in users %}
-	                                        <tr>
-	                                        	<td>{{ user.user.username }}</td>
-	                                        	<td>{{ user.user.name }}</td>
-	                                        	<td>Y</td>
-	                                        	<td>
-		                                        	<button class="btn btn-info">
-		                                        		签到
-		                                        	</button>
-	                                        	</td>
-	                                        </tr>
+										{% for user in unattendance %}
+										{% if user.user.role == 'student' %}
+										<tr>
+											<td>{{ user.user.username }}</td>
+											<td>{{ user.user.name }}</td>
+											<td>N</td>
+											<td>
+												<button class="btn btn-info">
+													签到
+												</button>
+											</td>
+										</tr>
+										{% endif %}
+										{% endfor %}
+										{% for user in attendance %}
+										{% if user.user.role == 'student' %}
+										<tr>
+											<td>{{ user.user.username }}</td>
+											<td>{{ user.user.name }}</td>
+											<td>Y</td>
+											<td>
+												<button class="btn btn-info" disabled="disabled">
+													签到
+												</button>
+											</td>
+										</tr>
+										{% endif %}
 										{% endfor %}
 	                                    </tbody>
 	                                </table>
