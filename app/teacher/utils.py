@@ -122,6 +122,8 @@ def get_team_members_all_excel_file_abspath():
 
     # 团队成员表的excel命名规范：termYear_termsemester_stu_teams.xlsx
     file_path = os.path.join(REPORT_ROOT, 'stuTeams')
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
     file_name = '' + str(now_term.year) + str(now_term.semester) + '_stu_teams.xlsx'
     file = os.path.join(file_path, file_name)
     return file
@@ -143,7 +145,8 @@ def create_stu_teams_excel(file, course):
         num = i + 2
         ws.cell(row=num, column=1).value = team_stu_list[i]['id']
         ws.cell(row=num, column=2).value = team_stu_list[i]['name']
-        ws.cell(row=num, column=3).value = team_stu_list[i]['leader'].user.name
+        if team_stu_list[i]['leader'] is not None:
+            ws.cell(row=num, column=3).value = team_stu_list[i]['leader'].user.name
         column_index = 4
         for member in team_stu_list[i]['member']:
             ws.cell(row=num, column=column_index).value = member.user.name
@@ -160,7 +163,7 @@ def create_team_score_excel(file, team_list, score_list):
     ws.cell(row=1, column=3).value = '分数'
 
     for i in range(0, len(team_list)):
-        num = i + 2;
+        num = i + 2
         ws.cell(row=num, column=1).value = team_list[i].serialNum
         ws.cell(row=num, column=2).value = team_list[i].name
         ws.cell(row=num, column=3).value = score_list[i]
