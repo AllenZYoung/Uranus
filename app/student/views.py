@@ -299,7 +299,7 @@ def finish_team_bulid(request):
     user = get_object_or_404(User, username=request.user.username)
     team = Member.objects.get(user=user).team
     completeTeam(team)
-    return redirect('/student/student_team_build')
+    return redirect('/student/member_evaluation')
 
 
 @login_required(login_url='app:login')
