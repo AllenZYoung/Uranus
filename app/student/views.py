@@ -146,7 +146,7 @@ def view_submitted_work(request):
         member = get_object_or_404(Member, user=user)
     except:
         return HttpResponse('No team joined')
-    submittings = utils.get_submittings(member.team.id, enroll.course.id)
+    submittings = get_submittings(member.team.id, enroll.course.id)
     return render(request, 'student/student_task_view.html', {'submitted': submittings['submitted'], })
 
 
@@ -158,7 +158,7 @@ def view_unsubmitted_work(request):
         member = get_object_or_404(Member, user=user)
     except:
         return HttpResponse('No team joined')
-    submittings = utils.get_submittings(member.team.id, enroll.course.id)
+    submittings = get_submittings(member.team.id, enroll.course.id)
     return render(request, 'student/student_task_submit.html', {'unsubmitted': submittings['unsubmitted'], })
 
 

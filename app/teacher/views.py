@@ -10,6 +10,8 @@ from django.conf import settings
 from app.templatetags import app_tags
 from app.utils import *
 import pprint
+
+
 # Create your views here.
 @login_required(login_url='app:login')
 def index(request):
@@ -127,7 +129,7 @@ def resources(request):
     user = request.user
     teacher = User.objects.get(username=user.username)
 
-    files = File.objects.filter(course_id=course_id,user=teacher).order_by('-time')
+    files = File.objects.filter(course_id=course_id, user=teacher).order_by('-time')
     return render(request, 'teacher/resources.html',
                   {'course': course, 'teacher': teacher, 'files': files})
 
@@ -149,37 +151,6 @@ def create_resource(request):
         data['success'] = 'true'
         data['forward_url'] = '/teacher/resources'
         return HttpResponse(json.dumps(data))
-        # if request.method == 'GET':
-        #     course_id = request.session.get('course_id', None)
-        #     course = get_object_or_404(Course, id=course_id)
-        #     user = request.user
-        #     teacher = User.objects.get(username=user.username)
-        #     return render(request, 'teacher/create_resource.html',
-        #                   {'course': course, 'teacher': teacher, })
-        # else:
-        #     data = {}
-        #     course_id = request.session.get('course_id', None)
-        #     course = get_object_or_404(Course, id=course_id)
-        #     user = request.user
-        #     teacher = User.objects.get(username=user.username)
-        #     try:
-        #         file = request.FILES['file']
-        #     except:
-        #         data['error_message'] = '文件为空，请重新上传！'
-        #         return HttpResponse(json.dumps(data));
-        #         # return render(request, 'teacher/create_resource.html',
-        #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
-        #     if file is None:
-        #         data['error_message'] = '文件为空，请重新上传！'
-        #         return HttpResponse(json.dumps(data));
-        #         # return render(request, 'teacher/create_resource.html',
-        #         #               {'course': course, 'teacher': teacher, 'error_message': '文件为空!'})
-        #     else:
-        #         handle_uploaded_file(request, course_id, file)
-        #         data['success'] = 'true';
-        #         data['forward_url'] = '/teacher/resources?course_id=' + str(course_id)
-        #         return HttpResponse(json.dumps(data))
-        #         # return redirect('/teacher/resources?course_id=' + str(course_id))
 
 
 @login_required(login_url='app:login')
@@ -402,7 +373,7 @@ def course(request):
             course = enroll.course
             request.session['course_id'] = course.id
     teacher = User.objects.get(username=user.username)
-    return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course,'notice':notice_new})
+    return render(request, 'teacher/course.html', {'teacher': teacher, 'course': course, 'notice': notice_new})
 
 
 @login_required(login_url='app:login')
@@ -420,18 +391,21 @@ def submitted_work_list(request):
     course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
     work_meta_id = request.GET.get('work_meta_id')
-    workmetas = WorkMeta.objects.filter(id=work_meta_id)
+    workmeta = WorkMeta.objects.get(id=work_meta_id)
+    teams = Team.objects.filter(course=course, status='passed')
     works = []
-    for workmeta in workmetas:
-        works.extend(Work.objects.filter(workMeta=workmeta))
+    for team in teams:
+        work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').last()
+        if work:
+            works.append(work)
     attachment_team_dict = {}
     for work in works:
         attachments = Attachment.objects.filter(work=work)
         if attachments:
             attachment_team_dict[work.team] = attachments
+
     return render(request, 'teacher/submitted_work_list.html',
-                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id,
-                   'course': course})
+                  {'works': works, 'attachment_team_dict': attachment_team_dict, 'work_meta_id': work_meta_id, })
 
 
 # 设置分数和评论
@@ -572,17 +546,20 @@ def score_report(request):
     return render(request, 'teacher/score_report.html', {'datas': scores, 'teams': teams})
 
 
+# 生成单次作业的成绩报表
+@login_required(login_url='app:login')
+def single_workmeta_report(request):
+    course_id = request.session.get('course_id', None)
+    workmeta_id = request.GET.get('workmeta_id', None)
+    dest = generate_single_workmeta_exccel(course_id, workmeta_id)
+    return download(dest)
+
+
 @login_required(login_url='app:login')
 def generate_score_excel(request):
     course_id = request.session.get('course_id', None)
     dest = generate_scores_excel(course_id)
-    if os.path.exists(dest):
-        with open(dest, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(dest)
-            return response
-    else:
-        return HttpResponse('generate excel failed!')
+    return download(dest)
 
 
 @login_required(login_url='app:login')
@@ -615,6 +592,7 @@ def add_score_params(request):
             # return render(request, 'teacher/add_score_params.html', {'form': form,'error_message':'数据不合法!'})
         return HttpResponse(json.dumps(data))
 
+
 @login_required(login_url='app:login')
 def setNotice(request):
     user = request.user
@@ -623,60 +601,117 @@ def setNotice(request):
     notices = Notice.objects.filter(course=course).order_by('-time')
     if request.method == 'GET':
         form = NoticeForm()
-        return render(request, 'teacher/teacher_course_announcement.html',{'notices':notices,'form':form})
+        return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
     elif request.method == 'POST':
         user = request.user
         course = Enroll.objects.filter(user__username__contains=user).first().course
         user = User.objects.filter(username__contains=user).first()
         form = NoticeForm(request.POST)
         if form.is_valid():
-            notice = Notice(course=course,user=user,title=form.cleaned_data['title'],
+            notice = Notice(course=course, user=user, title=form.cleaned_data['title'],
                             content=form.cleaned_data['content'])
             notice.save()
             return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
         else:
             return HttpResponse('数据不合法，请重新填写！')
-    return render(request,'teacher/teacher_course_announcement.html')
-
-def test(request):
-    return render(request,'teacher/test.html')
+    return render(request, 'teacher/teacher_course_announcement.html')
 
 
 data = {'is_ended': True,
         'is_started': False,
         'is_collected': False}
 
+
 def attendance_view(request):
     action_id = request.GET.get('action')
     if action_id == '0': # 开始签到
+        course_id = request.session.get('course_id', None)
         data['is_ended'] = False
         data['is_started'] = True
         data['is_collected'] = False
-        return render(request, 'teacher/teacher_check.html', {'data': data, })
-    elif action_id == '1': # 结束签到
+        enrolls = Enroll.objects.filter(course_id=course_id)
+        attendance = showToday()
+        attendance_id = [item.user_id for item in attendance]
+        unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
+        return render(request, 'teacher/teacher_check.html', {'data': data,
+                                                              'attendance': attendance,
+                                                              'unattendance': unattendance, })
+    elif action_id == '1' or action_id is None or not action_id or action_id == '': # 结束签到
+        course_id = request.session.get('course_id', None)
         data['is_ended'] = True
         data['is_started'] = False
         data['is_collected'] = False
-        return render(request, 'teacher/teacher_check.html', {'data': data})
+        enrolls = Enroll.objects.filter(course_id=course_id)
+        attendance =  showToday()
+        attendance_id = [item.user_id for item in attendance]
+        unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
+        return render(request, 'teacher/teacher_check.html', {'data': data,
+                                                              'attendance': attendance,
+                                                              'unattendance': unattendance,})
     elif action_id == '2': # 收集照片
         data['is_collected'] = True
-        return render(request, 'teacher/teacher_collect.html', {'data': data,
-                                                                'users': showToday(),})
+        data['is_started'] = False
+        data['is_ended'] = True
+        return render(request, 'teacher/teacher_collect.html', {'data': data,})
     elif action_id == '3': # 停止收集
         data['is_collected'] = False
-        return render(request, 'teacher/teacher_collect.html', {'data': data,
-                                                                'users': showToday(),})
+        data['is_started'] = False
+        data['is_ended'] = True
+        return render(request, 'teacher/teacher_collect.html', {'data': data,})
     elif action_id == '4': # 向客户端发送数据
         return JsonResponse(data.copy())
+
 
 @login_required(login_url='app:login')
 def teacher_attendance(request):
     return render(request, 'teacher/teacher_attendence.html')
 
+
 @login_required(login_url='app:login')
 def teacher_collect(request):
     return render(request, 'teacher/teacher_collect.html', {'data': data})
 
+
 @login_required(login_url='app:login')
 def teacher_check(request):
-    return render(request, 'teacher/teacher_check.html', {'users': showToday(),})
+    course_id = request.session.get('course_id', None)
+    enrolls = Enroll.objects.filter(course_id=course_id)
+    attendance = showToday()
+    attendance_id = [item.user_id for item in attendance]
+    unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
+    return render(request, 'teacher/teacher_check.html', {'data': data,
+                                                          'attendance': attendance,
+                                                          'unattendance': unattendance, })
+
+
+def test(request):
+    if request.method == 'GET':
+        return render(request, 'teacher/test.html')
+    else:
+        name = request.POST.get('name', None)
+        data = {}
+        data['content'] = 'hello ' + name
+        return HttpResponse(json.dumps(data))
+
+
+def downloadAttendanceReport(request):
+    fp = '签到报表_%s.xls' % (datetime.now())
+    fp = os.path.join(REPORT_ROOT, fp)
+    course_id = request.session.get('course_id', None)
+    writeAttendanceReport(course_id, fp)
+    def read_file(fn, buf_size=102400):
+        f = open(fn, 'rb')
+        while True:
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+        f.close()
+
+    fn = os.path.basename(fp)
+    log('Downloading ' + fn, 'downloadAttendanceReport')
+    response = StreamingHttpResponse(read_file(fp))
+    response['Content-Type'] = 'application/vnd.ms-excel'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(fn)
+    return response

@@ -87,6 +87,7 @@
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a href="{% url 'app:profile' %}">个人中心</a></li>
                                 <li><a href="{% url 'app:logout' %}">注销登录</a></li>
                             </ul>
                         </li>
@@ -330,7 +331,7 @@
             $('#myModal').modal('show');
             return;
         }
-        var startTimeVal = new Date(startTime_year,startTime_month,startTime_day);
+{#        var startTimeVal = new Date(startTime_year,startTime_month,startTime_day);#}
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         $.ajax('{% url 'system:createCourse' %}', {
             method: 'post',

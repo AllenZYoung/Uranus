@@ -181,7 +181,7 @@
 
                                                 {% for meta in files %}
                                                     <tr>
-                                                        <td><a href="s/{{ meta.file.file }}">{{ meta.file.file }}</a>
+                                                        <td><a href="s/{{ meta.file.file }}">{{ meta.file.file.url|base_name }}</a>
                                                             {% if meta.file.file.url|is_office %}
                                                                 <a href="{% url 'student:preview_source_online' %}?file={{ meta.file.file }}"
                                                                    target="_blank">[预览]</a>
@@ -250,8 +250,6 @@
 
     }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
         var response = data.response;
-        alert(response['success']);
-        alert(response['forward_url']);
         showModal(response, '提交成功！');
     });
 </script>

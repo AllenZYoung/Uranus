@@ -2,6 +2,8 @@
 # define your utility function here
 import os
 from datetime import datetime
+
+from django.http import HttpResponse
 from openpyxl import *
 from app.models import *
 from django.shortcuts import get_object_or_404
@@ -9,7 +11,7 @@ from app.utils import *
 from app.utils.logUtils import *
 from app.teacher.entities import *
 from django.core.exceptions import *
-
+from django.utils.http import urlquote
 
 def handle_uploaded_file(request, course_id, f):
     teacher = get_object_or_404(User, username=request.user.username)
@@ -269,7 +271,7 @@ def generate_team_scores(course_id):
         for team in teams:
             work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').first()
             if work is None:
-                work = Work(score=0, team=team)
+                work=Work(score=-1,team=team)
             works.append(work)
         row_data = ScoreWrapper(workmeta=workmeta, works=works)
         datas.append(row_data)
@@ -293,14 +295,62 @@ def generate_scores_excel(course_id):
         ws1.cell(row=i + 2, column=1, value=data[i].workmeta.title)
         works = data[i].works
         for j in range(len(works)):
-            ws1.cell(row=i + 2, column=j + 2, value=works[j].score)
-
+            if works[j].score:
+                if works[j].score == -1:
+                    ws1.cell(row=i+2,column=j+2,value='未提交')
+                else:
+                    ws1.cell(row=i + 2, column=j + 2, value=works[j].score)
+            else:
+                ws1.cell(row=i + 2, column=j + 2, value='未评分')
     # 根据每次作业的权重，计算总成绩
     for i in range(len(teams)):
         sum = 0
         for j in range(len(data)):
-            weight = data[j].workmeta.proportion
-            sum += weight * data[j].works[i].score
-        ws1.cell(row=len(data) + 3, column=i + 2, value=sum)
+            weight=data[j].workmeta.proportion
+            if data[j].works[i].score and data[j].works[i].score > 0:
+                sum+=weight*data[j].works[i].score
+        ws1.cell(row=len(data)+3,column=i+2,value=sum)
     wb.save(filename=dest)
     return dest
+
+
+def generate_single_workmeta_exccel(course_id,workmeta_id):
+    course = get_object_or_404(Course, id=course_id)
+    workmeta = WorkMeta.objects.get(id=workmeta_id)
+    teams = Team.objects.filter(course=course, status='passed')
+    works = []
+    for team in teams:
+        work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').last()
+        if work:
+            works.append(work)
+    wb=Workbook()
+    ws1=wb.active
+    ws1.title='小组成绩报表'
+    ws1['A1']='小组名称'
+    ws1['B1']='小组成绩'
+    for i in range(len(teams)):
+        team=teams[i]
+        ws1.cell(row=i+2,column=1,value=team.name)
+        work = Work.objects.filter(workMeta=workmeta, team=team).order_by('-time').last()
+        if work:
+            if work.score:
+                ws1.cell(row=i+2,column=2,value=work.score)
+            else:
+                ws1.cell(row=i + 2, column=2, value='尚未评分')
+        else:
+            ws1.cell(row=i + 2, column=2, value='未提交')
+    dest = os.path.join(REPORT_ROOT,  workmeta.title+'_score_report'+'.xlsx')
+    wb.save(filename=dest)
+    return dest
+
+
+def download(dest):
+    if os.path.exists(dest):
+        with open(dest, 'rb') as fh:
+            dest = os.path.basename(dest)
+            dest.encode('utf-8')
+            response = HttpResponse(fh.read(), content_type="application/octet-stream")
+            response['Content-Disposition'] = 'attachment; filename=' + urlquote(dest)
+            return response
+    else:
+        return HttpResponse('generate excel failed!')

@@ -18,6 +18,7 @@
     font-size: 999px;
     text-align: right;
     color: #fff;
+    background: transparent url('../img/loading.gif') top left no-repeat;
     border: none;
 }
 
@@ -358,6 +359,7 @@
 }
 
 .file-uploading {
+    background: url('../img/loading-sm.gif') no-repeat center bottom 10px;
     opacity: 0.65;
 }
 

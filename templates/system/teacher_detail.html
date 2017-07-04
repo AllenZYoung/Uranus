@@ -81,6 +81,7 @@
 	 							   <p class="hidden-lg hidden-md">Profile</p>
 		 						</a>
 		 						<ul class="dropdown-menu">
+                                    <li><a href="{% url 'app:profile' %}">个人中心</a></li>
 									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
 								</ul>
 							</li>
@@ -106,6 +107,7 @@
                                                 {% csrf_token %}
                                                 {{ form.filefield }}
                                                 <button class="btn btn-warning">导入</button>
+                                                <a href="{{ url }}" class="btn btn-info" >模板下载</a>
                                             </form>
                                         {% endif %}
                                         {% if isReloadable %}
@@ -114,6 +116,7 @@
                                                 {% csrf_token %}
                                                 {{ form.filefield }}
                                                 <button class="btn btn-warning">重新导入</button>
+                                                <a href="{{ url }}" class="btn btn-info" >模板下载</a>
                                             </form>
                                         {% endif %}
                                     </div>

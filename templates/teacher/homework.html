@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>调整作业</title>
     {% load static %}
+    {% load app_tags %}
     <link rel="apple-touch-icon" sizes="76x76" href="{%  static 'assets/img/apple-icon.png' %}" />
 	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -142,7 +143,7 @@
                                                     <td>{{ work.workmeta.title }}</td>
                                                     <td>
                                                         {% for attachment in work.attachments %}
-                                                             <a href="{{ attachment.file.file.url }}">{{ attachment.file.file.name }}</a><br/>
+                                                             <a href="{{ attachment.file.file.url }}">{{ attachment.file.file.name|base_name }}</a><br/>
                                                         {% endfor %}
                                                     </td>
                                                     <td>{{ work.workmeta.endTime }}</td>
