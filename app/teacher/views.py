@@ -663,11 +663,14 @@ def attendance_view(request):
     elif action_id == '4': # 向客户端发送数据
         return JsonResponse(data.copy())
 
+@login_required(login_url='app:login')
 def teacher_attendance(request):
     return render(request, 'teacher/teacher_attendence.html')
 
+@login_required(login_url='app:login')
 def teacher_collect(request):
     return render(request, 'teacher/teacher_collect.html', {'data': data})
 
+@login_required(login_url='app:login')
 def teacher_check(request):
     return render(request, 'teacher/teacher_check.html', {'users': showToday(),})
