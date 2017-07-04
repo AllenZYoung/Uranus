@@ -58,7 +58,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="{% url 'app:profile' %}?course_id={{ course.id }}">返回</a>
+						<a class="navbar-brand" href="javascript:location.href=document.referrer;">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -90,6 +90,11 @@
 	                                <div class="card-content">
 	                            	<br>
                                          <p>{{ error_message }}</p>
+                                    <div class="tim-typo">
+										<p><span class="tim-note">个人技能描述</span>
+											{{ form.desc }}
+										</p>
+									</div>
                     				<div class="tim-typo">
 										<p><span class="tim-note">电话</span>
 											{{ form.tel }}

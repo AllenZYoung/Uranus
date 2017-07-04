@@ -12,3 +12,5 @@ resource/uploads/import
 Uranus/DEPRECATED/
 Uranus/Uranus.log
 /resource/*
+app/migrations/
+app/test/

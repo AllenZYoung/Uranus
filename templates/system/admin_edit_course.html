@@ -139,7 +139,7 @@
                                                 <form action="" class="form-horizontal"  role="form">
                                                     <fieldset>
                                                         <div class="form-group">
-                                                            <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy-mm-dd" data-link-field="id_startTime" data-link-format="yyyy-mm-dd">
+                                                            <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd日" data-link-field="id_startTime" data-link-format="yyyy-mm-dd">
                                                                 <input class="form-control" size="16" type="text" value="{{ courseInfo.startTime.date }} "  readonly>
                                                                 <span class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.bmp' %})"><span class="glyphicon glyphicon-calendar"></span></span>
                                                             </div>
@@ -155,7 +155,7 @@
                                          <form action="" class="form-horizontal"  role="form">
                                                     <fieldset>
                                                         <div class="form-group">
-                                                            <div class="input-group date form_date col-md-3" data-date="{{ courseInfo.endTime.date|date:"Y-m-d" }}" data-date-format="yyyy-mm-dd" data-link-field="id_endTime" data-link-format="yyyy-mm-dd">
+                                                            <div class="input-group date form_date col-md-3" data-date="{{ courseInfo.endTime.date|date:"Y-m-d" }}" data-date-format="yyyy年mm月dd日" data-link-field="id_endTime" data-link-format="yyyy-mm-dd">
                                                                 <input class="form-control" size="16" type="text" value="{{courseInfo.endTime.date|date:"Y-m-d" }} "  readonly>
                                                                 <span class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.bmp' %})"><span class="glyphicon glyphicon-calendar"></span></span>
                                                             </div>

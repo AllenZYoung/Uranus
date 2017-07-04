@@ -645,49 +645,46 @@ def setNotice(request):
     return render(request, 'teacher/teacher_course_announcement.html')
 
 
-data = {'is_ended': True,
-        'is_started': False,
-        'is_collected': False}
+
+STATE = 1
 
 
 def attendance_view(request):
+    global STATE
     action_id = request.GET.get('action')
     if action_id == '0':  # 开始签到
         course_id = request.session.get('course_id', None)
-        data['is_ended'] = False
-        data['is_started'] = True
-        data['is_collected'] = False
+        STATE = 0
+        log('开始签到', 'teacher/attendance_view')
         enrolls = Enroll.objects.filter(course_id=course_id)
         attendance = showToday()
         attendance_id = [item.user_id for item in attendance]
         unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
-        return render(request, 'teacher/teacher_check.html', {'data': data,
+        return render(request, 'teacher/teacher_check.html', {'STATE': STATE,
                                                               'attendance': attendance,
                                                               'unattendance': unattendance, })
     elif action_id == '1' or action_id is None or not action_id or action_id == '':  # 结束签到
         course_id = request.session.get('course_id', None)
-        data['is_ended'] = True
-        data['is_started'] = False
-        data['is_collected'] = False
+        STATE = 1
+        log('结束签到', 'teacher/attendance_view')
         enrolls = Enroll.objects.filter(course_id=course_id)
         attendance = showToday()
         attendance_id = [item.user_id for item in attendance]
         unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
-        return render(request, 'teacher/teacher_check.html', {'data': data,
+        return render(request, 'teacher/teacher_check.html', {'STATE': STATE,
                                                               'attendance': attendance,
                                                               'unattendance': unattendance, })
     elif action_id == '2':  # 收集照片
-        data['is_collected'] = True
-        data['is_started'] = False
-        data['is_ended'] = True
-        return render(request, 'teacher/teacher_collect.html', {'data': data, })
+        STATE = 2
+        log('收集照片', 'teacher/attendance_view')
+        return render(request, 'teacher/teacher_collect.html', {'STATE': STATE, })
     elif action_id == '3':  # 停止收集
-        data['is_collected'] = False
-        data['is_started'] = False
-        data['is_ended'] = True
-        return render(request, 'teacher/teacher_collect.html', {'data': data, })
+        STATE = 3
+        log('停止收集', 'teacher/attendance_view')
+        return render(request, 'teacher/teacher_collect.html', {'STATE': STATE, })
     elif action_id == '4':  # 向客户端发送数据
-        return JsonResponse(data.copy())
+        log('查询='+str(STATE), 'teacher/attendance_view')
+        return HttpResponse(STATE)
 
 
 @login_required(login_url='app:login')
@@ -697,17 +694,19 @@ def teacher_attendance(request):
 
 @login_required(login_url='app:login')
 def teacher_collect(request):
-    return render(request, 'teacher/teacher_collect.html', {'data': data})
+    global STATE
+    return render(request, 'teacher/teacher_collect.html', {'STATE': STATE})
 
 
 @login_required(login_url='app:login')
 def teacher_check(request):
+    global  STATE
     course_id = request.session.get('course_id', None)
     enrolls = Enroll.objects.filter(course_id=course_id)
     attendance = showToday()
     attendance_id = [item.user_id for item in attendance]
     unattendance = [enroll.user for enroll in enrolls if enroll.user_id not in attendance_id]
-    return render(request, 'teacher/teacher_check.html', {'data': data,
+    return render(request, 'teacher/teacher_check.html', {'STATE': STATE,
                                                           'attendance': attendance,
                                                           'unattendance': unattendance, })
 
