@@ -81,7 +81,7 @@ class EditTeamForm(forms.Form):
 class ScoreParamForm(forms.Form):
     title = forms.CharField(label='评分项标题')
     content = forms.CharField(label='评分项内容', widget=widgets.Textarea)
-    proportion = forms.FloatField(label='总分折算占比', min_value=0, max_value=1)
+    proportion = forms.FloatField(label='总分折算占比(百分比)', min_value=0, max_value=1)
 
     def __init__(self, *args, **kwargs):
         super(ScoreParamForm, self).__init__(*args, **kwargs)
