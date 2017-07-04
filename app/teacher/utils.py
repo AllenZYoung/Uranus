@@ -11,7 +11,7 @@ from app.utils import *
 from app.utils.logUtils import *
 from app.teacher.entities import *
 from django.core.exceptions import *
-from django.utils.encoding import smart_str
+from django.utils.http import urlquote
 
 def handle_uploaded_file(request, course_id, f):
     teacher = get_object_or_404(User, username=request.user.username)
@@ -325,7 +325,7 @@ def generate_single_workmeta_exccel(course_id,workmeta_id):
             works.append(work)
     wb=Workbook()
     ws1=wb.active
-    ws1.title=workmeta.content+' 小组成绩报表'
+    ws1.title='小组成绩报表'
     ws1['A1']='小组名称'
     ws1['B1']='小组成绩'
     for i in range(len(teams)):
@@ -348,9 +348,9 @@ def download(dest):
     if os.path.exists(dest):
         with open(dest, 'rb') as fh:
             dest = os.path.basename(dest)
-            dest.encode('utf8')
+            dest.encode('utf-8')
             response = HttpResponse(fh.read(), content_type="application/octet-stream")
-            response['Content-Disposition'] = 'inline; filename=' + dest
+            response['Content-Disposition'] = 'attachment; filename=' + urlquote(dest)
             return response
     else:
         return HttpResponse('generate excel failed!')
