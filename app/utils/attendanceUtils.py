@@ -50,7 +50,8 @@ def writeAttendanceReport(file, course_id, attendance=None):
     if attendance is None:
         attendance = showToday()
 
-    attendance_stu = [att.user for att in attendance]
+    users_att = [att.user for att in attendance]
+    log(users_att, 'writeAttendanceReport')
     work_book = Workbook()
     ws = work_book.get_active_sheet()
     ws.cell(row=1, column=1).value = '学号'
@@ -58,12 +59,13 @@ def writeAttendanceReport(file, course_id, attendance=None):
     ws.cell(row=1, column=3).value = '签到'
 
     num = 2
-    users = Enroll.objects.filter(course_id=course_id)
+    enrolls = Enroll.objects.filter(course_id=course_id)
+    users = [enr.user for enr in enrolls]
     for user in users:
-        if isStudent(user.user):
-            ws.cell(row=num, column=1).value = str(user.user.username)
-            ws.cell(row=num, column=2).value = str(user.user.name)
-            if user in attendance_stu:
+        if isStudent(user):
+            ws.cell(row=num, column=1).value = str(user.username)
+            ws.cell(row=num, column=2).value = str(user.name)
+            if user in users_att:
                 ws.cell(row=num, column=3).value = '1'
             else:
                 ws.cell(row=num, column=3).value = '0'

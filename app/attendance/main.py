@@ -17,12 +17,12 @@ from tkinter import *
 face_base = 'data'
 face_db = os.path.join(face_base, 'face_db')
 face_var = os.path.join(face_base, 'face_var')
-SERVER_URL = 'http://127.0.0.1:8000/student/attendance'
-STATE_URL = 'http://127.0.0.1:8000/teacher/attendance_view'
+SERVER_BASE = 'http://localhost:8000'
+# SERVER_BASE = 'http://uranus.kahsolt.tk'
+SERVER_URL = SERVER_BASE + '/student/attendance'
+STATE_URL = SERVER_BASE + '/teacher/attendance_view'
 ID = None
 INTERVAL = 10
-is_collect = False
-is_run = False
 
 cv2.namedWindow('FaceDetect', cv2.WND_PROP_FULLSCREEN)
 cv2.setWindowProperty('FaceDetect', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
@@ -66,41 +66,29 @@ def send(user_id):
 
 def read_state():
     try:
-        state = requests.get(STATE_URL, params={'action': 4}).json()
+        STATE = int(requests.get(STATE_URL, params={'action': 4}).text)
     except:
-        state = {'start_time': None,
-                 'end_time': None,
-                 'is_ended': True,
-                 'is_started': False}
         print('Server crashed')
-    return state
+    print(STATE)
+    return STATE
 
 
 def collect():
-    global is_collect
-    is_collect = True
+    STATE = 2
     collect_start = time.time()
     nextCaptureTime = time.time()
     faces = []
     global ID
-    state = {}
-    state['is_collected'] = True
     image = None
     face_image = None
     if not capInput.isOpened():
         print('Capture failed because of camera')
 
-    '''
-    input_thread = threading.Thread(target=wait_for_input)
-    if state['is_collected']:
-        input_thread.start()
-    '''
-
-    while state['is_collected']:
+    while STATE == 2:
         if time.time() - collect_start > INTERVAL:
             collect_start = time.time()
-            state = read_state()
-            if not state['is_collected']:
+            STATE = read_state()
+            if STATE != 2:
                 break
         if ID is not None:
             face_image = str(ID) + '.jpg'
@@ -131,7 +119,7 @@ def collect():
             face_image = None
     # capInput.release()
     # cv2.destroyAllWindows()
-    return state
+    return STATE
 
 
 def wait_for_input():
@@ -141,13 +129,11 @@ def wait_for_input():
 
 
 def run():
-    global is_run
-    is_run = True
+    STATE = 0
     attend_start = time.time()
 
     global ID
-    state = {}
-    state['is_started'] = True
+
     if not capInput.isOpened():
         print('Capture failed because of camera')
     # threading.Thread(target=wait_for_input).start()
@@ -160,11 +146,11 @@ def run():
     is_saved = False
     face_image = None
 
-    while state['is_started']:
+    while STATE == 0:
         if time.time() - attend_start > INTERVAL:
             attend_start = time.time()
-            state = read_state()
-            if state['is_ended']:
+            STATE = read_state()
+            if STATE == 1:
                 break
         is_saved = False
         # avoid blocking
@@ -200,6 +186,7 @@ def run():
                 send(ID)
                 winsound.Beep(440, 1000)
                 ID = None
+                print(ID)
                 is_saved = False
             else:
                 ID = None
@@ -214,7 +201,7 @@ def run():
 
     # capInput.release()
     # cv2.destroyAllWindows()
-    return state
+    return STATE
 
 
 class Application(Frame):
@@ -222,7 +209,7 @@ class Application(Frame):
         Frame.__init__(self, master)
         self.pack()
         self.createWidgets()
-        self.bind("<Enter>", self.sign_in)
+        # self.bind("<Enter>", self.sign_in)
 
     def createWidgets(self):
         self.labelInfo = Label(self, text='请输入学号：')
@@ -232,37 +219,38 @@ class Application(Frame):
         self.alertButton = Button(self, text='确定', command=self.sign_in)
         self.alertButton.pack(fill=BOTH)
 
-    def sign_in(self, event):
+    def sign_in(self):
         global ID
         temp = self.nameInput.get()
         if temp != '':
             ID = temp
+            print(ID)
         self.nameInput.delete('0', 'end')
         # messagebox.showinfo('Message', 'Hello, %s' % name)
 
 
-def normal(state):
+def normal(STATE):
     start_time = time.time()
-    while not state['is_collected'] and not state['is_started']:
+    while STATE != 2 and STATE != 0:
         if time.time() - start_time > INTERVAL:
             start_time = time.time()
-            state = read_state()
+            STATE = read_state()
         ret, img = capInput.read()
         cv2.imshow('FaceDetect', img)
         if cv2.waitKey(1) & 0xFF == 27:
             break
-    return state
+    return STATE
 
 
 def start():
-    state = read_state()
+    STATE = read_state()
     while True:
-        if state['is_collected']:
-            state = collect()
-        elif state['is_started']:
-            state = run()
+        if STATE == 2:
+            STATE = collect()
+        elif STATE == 0:
+            STATE = run()
         else:
-            state = normal(state)
+            STATE = normal(STATE)
 
 
 def initTk(tk):
