@@ -501,7 +501,7 @@ def adjust_team(request):
     else:
         member = Member(team=team, user=student, role='member', contribution=0)
         member.save()
-    return redirect('/teacher/teams?student_id=' + student_id)
+    return redirect('/teacher/team_members/?team_id='+str(team.id))
 
 
 @login_required(login_url='app:login')
