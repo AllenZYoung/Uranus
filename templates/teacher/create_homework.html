@@ -264,31 +264,31 @@
 {#                var year = parseInt($('#id_endTime_year').val()) || 0;#}
 {#                var month = parseInt($('#id_endTime_month').val()) || 1;#}
 {#                var day = parseInt($('#id_endTime_day').val()) || 0;#}
-                var endTimeOrigin = $('#id_endTime').val()||'';
-                var endTimeSplit = endTimeOrigin.split('-');
-                for (var i=0;i<endTimeSplit.length;i++) {
-                     switch (i) {
-                         case 0:
-                            var year = parseInt(endTimeSplit[i]) || 0;
-                            break;
-                         case 1:
-                             var month = parseInt(endTimeSplit[i])|| 0;
-                             break;
-                         case 2:
-                             var day = parseInt(endTimeSplit[i].split(' ')[0])|| 0;
-                             break;
-                         default:
-                             break;
-                     };
-                };
-                var endTime = new Date(year, month-1, day).getTime();
-                var nowTime = new Date().getTime();
-
-    	        if(endTime <= nowTime){
-                    $('.modal-body').text('截止时间应大于当前发布时间！');
-                    $('#myModal').modal('show');
-                    return;
-                }
+{#                var endTimeOrigin = $('#id_endTime').val()||'';#}
+{#                var endTimeSplit = endTimeOrigin.split('-');#}
+{#                for (var i=0;i<endTimeSplit.length;i++) {#}
+{#                     switch (i) {#}
+{#                         case 0:#}
+{#                            var year = parseInt(endTimeSplit[i]) || 0;#}
+{#                            break;#}
+{#                         case 1:#}
+{#                             var month = parseInt(endTimeSplit[i])|| 0;#}
+{#                             break;#}
+{#                         case 2:#}
+{#                             var day = parseInt(endTimeSplit[i].split(' ')[0])|| 0;#}
+{#                             break;#}
+{#                         default:#}
+{#                             break;#}
+{#                     };#}
+{#                };#}
+{#                var endTime = new Date(year, month-1, day).getTime();#}
+{#                var nowTime = new Date().getTime();#}
+{##}
+{#    	        if(endTime <= nowTime){#}
+{#                    $('.modal-body').text('截止时间应大于当前发布时间！');#}
+{#                    $('#myModal').modal('show');#}
+{#                    return;#}
+{#                }#}
                 submitClick("{% url 'teacher:create_homework' %}", "发布成功");
             });
         });

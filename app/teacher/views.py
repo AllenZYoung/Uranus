@@ -45,9 +45,13 @@ def create_homework(request):
                 file = request.FILES['attachment']
             except:
                 file = None
-            add_homework(form, course_id, request.user.username, file)
-            data['success'] = 'true'
-            data['forward_url'] = '/teacher/homework?course_id=' + str(course_id)
+            end_time=form.cleaned_data['endTime']
+            if end_time.replace(tzinfo=None)<=datetime.now():
+                data['error_message'] = '截止时间应大于当前发布时间！'
+            else:
+                add_homework(form, course_id, request.user.username, file)
+                data['success'] = 'true'
+                data['forward_url'] = '/teacher/homework?course_id=' + str(course_id)
             # return HttpResponseRedirect('/teacher/homework?course_id=' + str(course_id))
         else:
             data['error_message'] = '数据不合法'
