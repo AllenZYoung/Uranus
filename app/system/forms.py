@@ -60,8 +60,6 @@ class EditTermForm(forms.ModelForm):
         }
 
 
-<<<<<<< Updated upstream
-=======
 class EditCourseForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     classroom = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -75,6 +73,3 @@ class EditCourseForm(forms.ModelForm):
     class Meta:
         model = models.Course
         fields = ['name','term','classroom','credit','startTime','endTime']
-
-
->>>>>>> Stashed changes

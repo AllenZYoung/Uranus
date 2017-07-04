@@ -44,11 +44,12 @@ def addAttendance(user):
     attendence.save()
     return attendence
 
-def create_stu_score_excel(file, course_id, attendance=None):
+
+def writeAttendanceReport(file, course_id, attendance=None):
     if attendance is None:
         attendance = showToday()
-    users = Enroll.objects.filter(course_id=course_id)
-    attendance_stu = [item.user for item in attendance]
+
+    attendance_stu = [att.user for att in attendance]
     work_book = Workbook()
     ws = work_book.get_active_sheet()
     ws.cell(row=1, column=1).value = '学号'
@@ -56,12 +57,13 @@ def create_stu_score_excel(file, course_id, attendance=None):
     ws.cell(row=1, column=3).value = '签到'
 
     num = 2
+    users = Enroll.objects.filter(course_id=course_id)
     for user in users:
         ws.cell(row=num, column=1).value = user.username
         ws.cell(row=num, column=2).value = user.name
         if user in attendance_stu:
-            ws.cell(row=num, column=3).value = '0'
-        else:
             ws.cell(row=num, column=3).value = '1'
+        else:
+            ws.cell(row=num, column=3).value = '0'
         num += 1
     work_book.save(filename=file)

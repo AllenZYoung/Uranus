@@ -685,3 +685,26 @@ def test(request):
         data = {}
         data['content'] = 'hello ' + name
         return HttpResponse(json.dumps(data))
+
+
+def downloadAttendanceReport(request):
+    fp = '签到报表_%s.xls' % (datetime.now())
+    fp = os.path.join(REPORT_ROOT, fp)
+    course_id = request.session.get('course_id', None)
+    writeAttendanceReport(course_id, fp)
+    def read_file(fn, buf_size=102400):
+        f = open(fn, 'rb')
+        while True:
+            c = f.read(buf_size)
+            if c:
+                yield c
+            else:
+                break
+        f.close()
+
+    fn = os.path.basename(fp)
+    log('Downloading ' + fn, 'downloadAttendanceReport')
+    response = StreamingHttpResponse(read_file(fp))
+    response['Content-Type'] = 'application/vnd.ms-excel'
+    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(fn)
+    return response
