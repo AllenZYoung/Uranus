@@ -36,5 +36,7 @@ def attendance_view(request):
     elif action_id == '3': # 停止收集
         data['is_collected'] = False
     elif action_id == '4': # 向客户端发送数据
+        log(data, 'attendance_view')
+        log(action_id, 'attendance_view')
         return JsonResponse(data.copy())
     return render(request, 'teacher_collect.html', {'data': data})

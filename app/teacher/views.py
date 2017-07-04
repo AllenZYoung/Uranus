@@ -723,10 +723,10 @@ def test(request):
 
 
 def downloadAttendanceReport(request):
-    fp = '签到报表_%s.xls' % (datetime.now())
+    fp = '签到报表_%s.xls' % (datetime.now().date())
     fp = os.path.join(REPORT_ROOT, fp)
     course_id = request.session.get('course_id', None)
-    writeAttendanceReport(course_id, fp)
+    writeAttendanceReport(fp, int(course_id))
 
     def read_file(fn, buf_size=102400):
         f = open(fn, 'rb')
@@ -741,6 +741,6 @@ def downloadAttendanceReport(request):
     fn = os.path.basename(fp)
     log('Downloading ' + fn, 'downloadAttendanceReport')
     response = StreamingHttpResponse(read_file(fp))
-    response['Content-Type'] = 'application/vnd.ms-excel'
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(fn)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment; filename="%s"' % (urlquote(fn))
     return response

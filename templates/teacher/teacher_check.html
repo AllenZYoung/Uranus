@@ -27,173 +27,182 @@
 </head>
 
 <body>
+	<div class="wrapper">
 
-<div class="wrapper">
+	    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
+			<!--
+		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
-        <!--
-            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+		        Tip 2: you can also add an image using data-image tag
+		    -->
 
-            Tip 2: you can also add an image using data-image tag
-        -->
+			<div class="logo">
+				<a href="#" class="simple-text">
+					教师
+				</a>
+			</div>
 
-        <div class="logo">
-            <a href="#" class="simple-text">
-                教师
-            </a>
-        </div>
+	    	<div class="sidebar-wrapper">
+	            <ul class="nav">
+	                <li>
+	                    <a href="{% url 'teacher:course' %}">
+	                        <i class="material-icons">dashboard</i>
+	                        <p>课程管理</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="{% url 'teacher:task' %}">
+	                        <i class="material-icons">content_copy</i>
+	                        <p>作业管理</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="{% url 'teacher:team_manage' %}">
+	                        <i class="material-icons">face</i>
+	                        <p>团队管理</p>
+	                    </a>
+	                </li>
+                    <li>
+                        <a href="{% url 'teacher:score_manage' %}">
+                            <i class="material-icons">assessment</i>
+                            <p>成绩管理</p>
+                        </a>
+                    </li>
+	                <!-- Copy -->
+	                <li class="active">
+	                    <a href="{% url 'teacher:teacher_attendance' %}">
+	                        <i class="material-icons">done</i>
+	                        <p>签到</p>
+	                    </a>
+	                </li>
+	                <!-- Copy -->
+	            </ul>
+	    	</div>
+	    </div>
 
-        <div class="sidebar-wrapper">
-            <ul class="nav">
-                <li>
-                    <a href="{% url 'teacher:course' %}">
-                        <i class="material-icons">dashboard</i>
-                        <p>课程管理</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'teacher:task' %}">
-                        <i class="material-icons">content_copy</i>
-                        <p>作业管理</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'teacher:team_manage' %}">
-                        <i class="material-icons">face</i>
-                        <p>团队管理</p>
-                    </a>
-                </li>
-                <!-- Copy -->
-                <li class="active">
-                    <a href="{% url 'teacher:teacher_attendance' %}">
-                        <i class="material-icons">done</i>
-                        <p>签到</p>
-                    </a>
-                </li>
-                <!-- Copy -->
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-panel">
-        <nav class="navbar navbar-transparent navbar-absolute">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{% url 'teacher:teacher_attendance' %}">返回</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="material-icons">person</i>
-                                <p class="hidden-lg hidden-md">Profile</p>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">注销登录</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Copy -->
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card" data-color="blue">
-                            <div class="card-header" data-background-color="blue">
-                                <h4 class="title">发起签到</h4>
-                                <p class="category">发起一次签到，学生在指定时间短内进行人脸识别签到</p>
-                            </div>
-                            <div class="card-content table-responsive">
-                                <br>
-                                <div class="tim-typo">
-                                    <p><span class="tim-note">使用指南</span>
-                                    <p>
-                                        ·课程学生需在签到前进行收集照片流程<br><br>·点击开始签到，并打开客户端程序，发起一次签到（一天发起一次）<br><br>·即时签到情况将在下表显示<br><br>·点击结束签到，即可结束当前签到<br><br>·当天签到表格即可在下载卡片处下载
+	    <div class="main-panel">
+			<nav class="navbar navbar-transparent navbar-absolute">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="{% url 'teacher:teacher_attendance' %}">返回</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+	 							   <i class="material-icons">person</i>
+	 							   <p class="hidden-lg hidden-md">Profile</p>
+		 						</a>
+		 						<ul class="dropdown-menu">
+									<li><a href="#">注销登录</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<!-- Copy -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card" data-color="blue">
+								<div class="card-header" data-background-color="blue">
+	                                <h4 class="title">发起签到</h4>
+									<p class="category">发起一次签到，学生在指定时间短内进行人脸识别签到</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+									<br>
+	                                <div class="tim-typo">
+										<p><span class="tim-note">使用指南</span>
+											<p>·课程学生需在签到前进行收集照片流程<br><br>
+                                        ·点击开始签到，并打开客户端程序，发起一次签到（一天发起一次）
                                     </p>
-                                    </p>
-                                </div>
-                                <div class="tim-typo">
-                                    <div class="row">
-                                        {% if not data.is_started %}
-                                            <a href="{% url 'teacher:attendance_view' %}?action=0">
-                                                <div class="col-md-6">
-                                                    <button class="btn btn-success">开始签到</button>
-                                                </div>
-                                            </a>
-                                        {% else %}
-                                            <a href="{% url 'teacher:attendance_view' %}?action=1">
-                                                <div class="col-md-6">
-                                                    <button class="btn btn-danger">结束签到</button>
-                                                </div>
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card" data-color="blue">
-                            <div class="card-header" data-background-color="blue">
-                                <h4 class="title">查看当前签到情况</h4>
-                                <p class="category">查看当前签到情况，需刷新后更新</p>
-                            </div>
-                            <div class="card-content table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <th>学号</th>
-                                    <th>姓名</th>
-                                    <th>是否签到</th>
-                                    </thead>
-                                    <tbody>
-                                    {% for user in unattendance %}
-                                        {% if user.role == 'student' %}
-                                            <tr>
-                                                <td>{{ user.username }}</td>
-                                                <td>{{ user.name }}</td>
-                                                <td>N</td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% for user in attendance %}
-                                        {% if user.user.role == 'student' %}
-                                            <tr>
-                                                <td>{{ user.user.username }}</td>
-                                                <td>{{ user.user.name }}</td>
-                                                <td>Y</td>
-                                            </tr>
-                                        {% endif %}
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Copy -->
-        <footer class="footer">
-            <div class="container-fluid">
-                <p class="copyright pull-right">
-                    URANUS@2017
-                </p>
-            </div>
-        </footer>
-    </div>
-</div>
-
+										</p>
+									</div>
+									<div class="tim-typo">
+										<div class="row">
+											{% if not data.is_started %}
+											<a href="{% url 'teacher:attendance_view' %}?action=0">
+												<div class="col-md-6">
+													<button class="btn btn-success">开始签到</button>
+												</div>
+											</a>
+											{% else %}
+											<a href="{% url 'teacher:attendance_view' %}?action=1">
+											<div class="col-md-6">
+												<button class="btn btn-danger">结束签到</button>
+											</div>
+											</a>
+											{% endif %}
+											<a href="{% url 'teacher:downloadAttendanceReport' %}">
+											<div class="col-md-6">
+												<button class="btn btn-warning">下载当日签到报表</button>
+											</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card" data-color="blue">
+								<div class="card-header" data-background-color="blue">
+	                                <h4 class="title">查看当前签到情况</h4>
+									<p class="category">查看当前签到情况，需刷新后更新</p>
+	                            </div>
+	                            <div class="card-content table-responsive">
+									<table class="table table-hover">
+	                                    <thead>
+	                                        <th>学号</th>
+	                                    	<th>姓名</th>
+	                                    	<th>是否签到</th>
+	                                    </thead>
+	                                    <tbody>
+										{% for user in unattendance %}
+										{% if user.role == 'student' %}
+										<tr>
+											<td>{{ user.username }}</td>
+											<td>{{ user.name }}</td>
+											<td>N</td>
+										</tr>
+										{% endif %}
+										{% endfor %}
+										{% for user in attendance %}
+										{% if user.user.role == 'student' %}
+										<tr>
+											<td>{{ user.user.username }}</td>
+											<td>{{ user.user.name }}</td>
+											<td>Y</td>
+										</tr>
+										{% endif %}
+										{% endfor %}
+	                                    </tbody>
+	                                </table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Copy -->
+			<footer class="footer">
+				<div class="container-fluid">
+					<p class="copyright pull-right">
+						URANUS@2017
+					</p>
+				</div>
+			</footer>
+		</div>
+	</div>
 </body>
 
 <!--   Core JS Files   -->
