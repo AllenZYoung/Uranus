@@ -1,219 +1,213 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png" />
-	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png"/>
+    <link rel="icon" type="image/png" href="/static/assets/img/favicon.png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
-	<title>签到</title>
+    <title>签到</title>
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
 
     <!-- Bootstrap core CSS     -->
-    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet"/>
 
     <!--  Material Dashboard CSS    -->
     <link href="/static/assets/css/material-dashboard.css" rel="stylesheet"/>
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="/static/assets/css/demo.css" rel="stylesheet" />
+    <link href="/static/assets/css/demo.css" rel="stylesheet"/>
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet'
+          type='text/css'>
 </head>
 
 <body>
+<div class="wrapper">
 
-	<div class="wrapper">
+    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
+        <!--
+            Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-	    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
-			<!--
-		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+            Tip 2: you can also add an image using data-image tag
+        -->
 
-		        Tip 2: you can also add an image using data-image tag
-		    -->
+        <div class="logo">
+            <a href="#" class="simple-text">
+                教师
+            </a>
+        </div>
 
-			<div class="logo">
-				<a href="#" class="simple-text">
-					教师
-				</a>
-			</div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li>
+                    <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
+                        <i class="material-icons">dashboard</i>
+                        <p>课程管理</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
+                        <i class="material-icons">content_copy</i>
+                        <p>作业管理</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
+                        <i class="material-icons">face</i>
+                        <p>团队管理</p>
+                    </a>
+                </li>
+                <!-- Copy -->
+                <li class="active">
+                    <a href="{% url 'teacher:teacher_attendance' %}?course_id={{ course.id }}">
+                        <i class="material-icons">done</i>
+                        <p>签到</p>
+                    </a>
+                </li>
+                <!-- Copy -->
+            </ul>
+        </div>
+    </div>
 
-	    	<div class="sidebar-wrapper">
-	            <ul class="nav">
-	                <li>
-	                    <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
-	                        <i class="material-icons">content_copy</i>
-	                        <p>作业管理</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
-	                        <i class="material-icons">face</i>
-	                        <p>团队管理</p>
-	                    </a>
-	                </li>
-                    <li>
-                        <a href="{% url 'teacher:score_manage' %}">
-                            <i class="material-icons">assessment</i>
-                            <p>成绩管理</p>
-                        </a>
-                    </li>
-	                <!-- Copy -->
-	                <li class="active">
-	                    <a href="{% url 'teacher:teacher_attendance' %}?course_id={{ course.id }}">
-	                        <i class="material-icons">done</i>
-	                        <p>签到</p>
-	                    </a>
-	                </li>
-	                <!-- Copy -->
-	            </ul>
-	    	</div>
-	    </div>
-
-	    <div class="main-panel">
-			<nav class="navbar navbar-transparent navbar-absolute">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="{% url 'teacher:teacher_attendance' %}">返回</a>
-					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-		 						</a>
-		 						<ul class="dropdown-menu">
-									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
-                            		<li><a href="{% url 'app:profile' %}">个人中心</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-			<!-- Copy -->
-			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card" data-color="blue">
-								<div class="card-header" data-background-color="green">
-	                                <h4 class="title">收集照片</h4>
-									<p class="category">收集每期课程参与学生照片，作为识别依据</p>
-	                            </div>
-	                            <div class="card-content table-responsive">
-									<div class="card-content table-responsive">
-										<br>
-		                                <div class="tim-typo">
-											<p><span class="tim-note">使用指南</span>
-												<p>轮询（Polling）是一种CPU决策如何提供周边设备服务的方式，又称“程控输出入”（Programmed I/O）。轮询法的概念是，由CPU定时发出询问，依序询问每一个周边设备是否需要其服</p>
-											</p>
-										</div>
-										<div class="tim-typo">
-											<div class="row">
-												<div class="col-md-6">
-													{% if not data.is_collected %}
-													<a href="{% url 'teacher:attendance_view' %}?action=2">
-														<button class="btn btn-success">开始收集</button>
-													</a>
-													{% else %}
-													<a href="{% url 'teacher:attendance_view' %}?action=3">
-														<button class="btn btn-danger">停止收集</button>
-													</a>
-													{% endif %}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="card" data-color="blue">
-								<div class="card-header" data-background-color="green">
-	                                <h4 class="title">查看当前收集情况</h4>
-									<p class="category">查看当前签到情况，需刷新后更新</p>
-	                            </div>
-	                            <div class="card-content table-responsive">
-									<table class="table table-hover">
-	                                    <thead>
-	                                        <th>学号</th>
-	                                    	<th>姓名</th>
-	                                    	<th>已收集</th>
-	                                    </thead>
-	                                    <tbody>
-	                                        <tr>
-	                                        	<td>121321</td>
-	                                        	<td>fdfasd</td>
-	                                        	<td>Y</td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- Copy -->
-			<footer class="footer">
-				<div class="container-fluid">
-					<p class="copyright pull-right">
-						URANUS@2017
-					</p>
-				</div>
-			</footer>
-		</div>
-	</div>
+    <div class="main-panel">
+        <nav class="navbar navbar-transparent navbar-absolute">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'teacher:teacher_attendance' %}">返回</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="material-icons">person</i>
+                                <p class="hidden-lg hidden-md">Profile</p>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'app:logout' %}">注销登录</a></li>
+                                <li><a href="{% url 'app:profile' %}">个人中心</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Copy -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" data-color="blue">
+                            <div class="card-header" data-background-color="green">
+                                <h4 class="title">收集照片</h4>
+                                <p class="category">收集每期课程参与学生照片，作为识别依据</p>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <div class="card-content table-responsive">
+                                    <br>
+                                    <div class="tim-typo">
+                                        <p><span class="tim-note">使用指南</span>
+                                        <p>·在课程开始前，将参与课程的学号与照片录入<br><br>·点击开始收集后，即可打开客户端程序，请同学以此在摄像头前就坐，待屏幕上显示正确后，即表明该名同学照片录入完毕<br><br>·下方表格显示了当前课程中学生名单的照片录入情况
+                                        </p>                                            </p>
+                                    </div>
+                                    <div class="tim-typo">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                {% if not data.is_collected %}
+                                                    <a href="{% url 'teacher:attendance_view' %}?action=2">
+                                                        <button class="btn btn-success">开始收集</button>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'teacher:attendance_view' %}?action=3">
+                                                        <button class="btn btn-danger">停止收集</button>
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" data-color="blue">
+                            <div class="card-header" data-background-color="green">
+                                <h4 class="title">查看当前收集情况</h4>
+                                <p class="category">查看当前签到情况，需刷新后更新</p>
+                            </div>
+                            <div class="card-content table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th>已收集</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>121321</td>
+                                        <td>fdfasd</td>
+                                        <td>Y</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copy -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <p class="copyright pull-right">
+                    URANUS@2017
+                </p>
+            </div>
+        </footer>
+    </div>
+</div>
 
 </body>
 
-	<!--   Core JS Files   -->
-	<script src="/static/assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
-	<script src="/static/assets/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/static/assets/js/material.min.js" type="text/javascript"></script>
+<!--   Core JS Files   -->
+<script src="/static/assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
+<script src="/static/assets/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/assets/js/material.min.js" type="text/javascript"></script>
 
-	<!--  Charts Plugin -->
-	<script src="/static/assets/js/chartist.min.js"></script>
+<!--  Charts Plugin -->
+<script src="/static/assets/js/chartist.min.js"></script>
 
-	<!--  Notifications Plugin    -->
-	<script src="/static/assets/js/bootstrap-notify.js"></script>
+<!--  Notifications Plugin    -->
+<script src="/static/assets/js/bootstrap-notify.js"></script>
 
-	<!--  Google Maps Plugin    -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
-	<!-- Material Dashboard javascript methods -->
-	<script src="/static/assets/js/material-dashboard.js"></script>
+<!-- Material Dashboard javascript methods -->
+<script src="/static/assets/js/material-dashboard.js"></script>
 
-	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-	<script src="/static/assets/js/demo.js"></script>
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="/static/assets/js/demo.js"></script>
 
-	<script type="text/javascript">
-    	$(document).ready(function(){
+<script type="text/javascript">
+    $(document).ready(function () {
 
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
+        // Javascript method's body can be found in assets/js/demos.js
+        demo.initDashboardPageCharts();
 
-    	});
-	</script>
+    });
+</script>
 
 </html>
