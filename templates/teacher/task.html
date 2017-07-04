@@ -53,19 +53,19 @@
 	                    </a>
 	                </li>
 	                <li class="active">
-	                    <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
+	                    <a href="{% url 'teacher:task' %}">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
                     <li>
-	                    <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
+	                    <a href="{% url 'teacher:team_manage' %}">
 	                        <i class="material-icons">face</i>
 	                        <p>团队管理</p>
 	                    </a>
 	                </li>
                     <li>
-	                    <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+	                    <a href="{% url 'teacher:score_manage' %}">
 	                        <i class="material-icons">assessment</i>
 	                        <p>成绩管理</p>
 	                    </a>
@@ -76,18 +76,6 @@
 	                        <p>签到</p>
 	                    </a>
 	                </li>
-{#	                <li>#}
-{#	                    <a href="teacher_team.html">#}
-{#	                        <i class="material-icons">face</i>#}
-{#	                        <p>学生团队管理</p>#}
-{#	                    </a>#}
-{#	                </li>#}
-{#	                <li>#}
-{#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
-{#	                        <i class="material-icons">receipt</i>#}
-{#	                        <p>往期课程</p>#}
-{#	                    </a>#}
-{#	                </li>#}
 	            </ul>
 	    	</div>
 	    </div>
@@ -174,25 +162,7 @@
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>评价已截止的作业</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'teacher:past_homeworks' %}?course_id={{ course.id }}">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="red">
-										<i class="material-icons">content_copy</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">往期作业</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p>查看本学期课程内往期所布置作业，以及团队提交</p>
+											<p>评价学生提交的的作业</p>
 										</div>
 									</div>
 								</div>

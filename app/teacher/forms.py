@@ -4,7 +4,7 @@ from datetime import datetime
 
 # define your custom forms here
 from django.forms import widgets
-from app.models import Notice
+from app.models import Notice,WorkMeta
 
 
 class UploadFileForm(forms.Form):
@@ -97,4 +97,9 @@ class NoticeForm(forms.ModelForm):
     class Meta:
         model = Notice
         fields = ['title','content']
+
+class ProportionForm(forms.ModelForm):
+    class Meta:
+        model = WorkMeta
+        fields = ['proportion']
 

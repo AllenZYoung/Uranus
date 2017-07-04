@@ -16,7 +16,6 @@
     <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
 
      <!-- 日历 -->
-
     <link href="{% static 'assets/css/bootstrap-datetimepicker.css' %}" rel="stylesheet" media="screen">
     <!-- 日历 -->
 
@@ -256,7 +255,16 @@
 
     });
 
-
+    $('.form_date').datetimepicker({
+                language:  'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 1,
+                forceParse: 0
+             });
     $(function () {
         $('#myModalLabel').text('创建课程'); //不同的页面，text值不同，需要修改
         $('#submit-data').click(function () {
@@ -266,27 +274,11 @@
             );
         });
     });
-{#    <!--#}
-{#    term:1#}
-{#name:kecheng#}
-{#credit:1#}
-{#classroom:didain#}
-{#startTime_year:2024#}
-{#startTime_month:5#}
-{#startTime_day:11#}
-{#endTime_year:2024#}
-{#endTime_month:6#}
-{#endTime_day:11-->#}
+
     $('#submit-data').click(function () {
         var term = $('#term').val();
         var course_name = $('#id_name').val() || "";
         var credit = $('#id_credit').val() || "";
-{#        var startTime_year = $('#id_startTime_year').val() || "";#}
-{#        var startTime_month = $('#id_startTime_month').val() || "";#}
-{#        var startTime_day = $('#id_startTime_day').val() || "";#}
-{#        var endTime_year = $('#id_endTime_year').val() || "";#}
-{#        var endTime_month = $('#id_endTime_month').val() || "";#}
-{#        var endTime_day = $('#id_endTime_day').val() || "";#}
 
         //日历控件测试
         var startTime = $('#id_startTime').val();
@@ -365,17 +357,6 @@
         });
     });
 
-<!---->
-    $('.form_date').datetimepicker({
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  "linked",
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
-    });
 
 
 </script>

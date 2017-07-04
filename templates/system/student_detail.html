@@ -71,7 +71,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="{% url 'system:index_course' %}">课程管理</a>
+						<a class="navbar-brand" href="javascript:location.href=document.referrer;">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -102,22 +102,22 @@
 	                            <div class="card-content table-responsive">
                                      <div>
                                         {% if firstLoad %}
-                                            <form method="Post" action="{% url 'system:uploadStudents' %}" enctype="multipart/form-data" >
+{#                                            <form method="Post" action="{% url 'system:uploadStudents' %}" enctype="multipart/form-data" >#}
                                                 <input name="courseId" type="hidden"  value='{{ courseId }}' >
                                                 {% csrf_token %}
                                                 {{ form.filefield }}
-                                                <button class="btn btn-danger">导入</button>
+                                                <button class="btn btn-danger" id="submit-data">导入</button>
                                                 <a href="{{ url }}" class="btn btn-info" >模板下载</a>
-                                            </form>
+{#                                            </form>#}
                                         {% endif %}
                                         {% if isReloadable %}
-                                            <form method="Post" action="{% url 'system:uploadStudents' %}" enctype="multipart/form-data" >
+{#                                            <form method="Post" action="{% url 'system:uploadStudents' %}" enctype="multipart/form-data" >#}
                                                 <input name="courseId" type="hidden"  value='{{ courseId }}' >
                                                 {% csrf_token %}
                                                 {{ form.filefield }}
-                                                <button class="btn btn-danger">重新导入</button>
+                                                <button class="btn btn-danger" id="submit-data">重新导入</button>
                                                 <a href="{{ url }}" class="btn btn-info" >模板下载</a>
-                                            </form>
+{#                                            </form>#}
                                         {% endif %}
                                     </div>
 	                                <table class="table table-hover">
@@ -160,7 +160,7 @@
 			</footer>
 		</div>
 	</div>
-
+{% include 'modal.html' %}
 </body>
 
 	<!--   Core JS Files   -->
@@ -182,7 +182,7 @@
 
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="{%  static 'assets/js/demo.js' %}"></script>
-
+    <script src="{% static 'assets/js/uranus.js' %}"></script>
 	<script type="text/javascript">
     	$(document).ready(function(){
 
@@ -190,6 +190,11 @@
         	demo.initDashboardPageCharts();
 
     	});
+
+    	$('#myModalLabel').text('上传学生');
+        $('#submit-data').click(function () {
+            submitClick("{% url 'system:uploadStudents' %}", '上传成功！');
+        });
 	</script>
 
 </html>

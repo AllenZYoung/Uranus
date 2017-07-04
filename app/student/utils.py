@@ -90,6 +90,8 @@ def handle_uploaded_contribution(request, f=None):
     # log(filepath)
     # table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
     datenow = datetime.now()
+    user = request.user
+    user = User.objects.filter(username__contains=user).first()
     filedate = datenow.strftime('%Y%m%d-%H%M%S')
     path = UPLOAD_ROOT
     log(path, 'handle_uploaded_user')
@@ -102,6 +104,12 @@ def handle_uploaded_contribution(request, f=None):
     wb = load_workbook(filepath)
     log('导入exel', 'handle_uploaded_user')
     table = wb.get_sheet_by_name(wb.get_sheet_names()[0])
+    my_member = Member.objects.filter(user=user).first()
+    team = my_member.team
+    print(team)
+    members = Member.objects.filter(team=team)
+    ctrlContib = 0
+    maxContrib = members.count()
     for i in range(2, table.max_row + 1):
         if table.cell(row=i, column=1).value is None:
             # '为空，应跳过'
@@ -110,13 +118,17 @@ def handle_uploaded_contribution(request, f=None):
 
         student_id = table.cell(row=i, column=1).value
         student_contribution = table.cell(row=i, column=3).value
+        ctrlContib += student_contribution
         print(student_id, student_contribution)
         student = User.objects.filter(username=student_id).first()
         # if student is not None:
         #     Member.objects.filter(user=student).update(contribution=student_contribution)
         # else:
         #     return None
-        setContribution(student, student_contribution)
+        if ctrlContib <= maxContrib:
+            setContribution(student, student_contribution)
+        else:
+            log('团队总贡献度超额', 'teamutils', LOG_LEVEL.ERROR)
 
 
 def check_submit_time(workMeta):

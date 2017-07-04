@@ -125,9 +125,9 @@ def submitTeam(team):
         return False
     num = Member.objects.filter(team=team).count()
     # print(num)
-    if num < team.course.teamMeta.minNum or num > team.course.teamMeta.maxNum:
-        log('不在人数限制范围', 'teamutils', LOG_LEVEL.ERROR)
-        return False
+    # if num < team.course.teamMeta.minNum or num > team.course.teamMeta.maxNum:
+    #     log('不在人数限制范围', 'teamutils', LOG_LEVEL.ERROR)
+    #     return False
     users = reportTeam(team)
     users['member'].append(users['leader'])
     num = 0
@@ -219,19 +219,21 @@ def setContribution(user, contribution):
         log('设定的个人贡献比例不在值范围', 'teamutils', LOG_LEVEL.ERROR)
         return False
 
-    enroll = Enroll.objects.filter(user=user).first()
-    team = Team.objects.filter(course=enroll.course).first()
+    # enroll = Enroll.objects.filter(user=user).first()
+    my_member = Member.objects.filter(user=user).first()
+    team = my_member.team
+    print(team)
     members = Member.objects.filter(team=team)
-    maxContrib = members.count()
-    curContrib = 0
-    curContrib += contribution
-    if curContrib > maxContrib:
-        log('团队总贡献度超额', 'teamutils', LOG_LEVEL.ERROR)
-        return False
 
+
+    # print("curC")
+    # print(curContrib)
+    # if curContrib > maxContrib:
+    #     log('团队总贡献度超额', 'teamutils', LOG_LEVEL.ERROR)
+    #     return False
     Member.objects.filter(user=user).update(contribution=contribution)
     log('setContribution OK', 'teamutils', LOG_LEVEL.INFO)
-    return curContrib + contribution
+    # return curContrib + contribution
 
 
 # 按照团队角色对团队成员进行排序，newMoe > leader > member
