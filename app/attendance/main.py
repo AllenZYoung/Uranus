@@ -15,6 +15,13 @@ import winsound
 import requests
 from tkinter import *
 
+WIN32API = True
+try:
+    from win32api import GetSystemMetrics   # SHOULD it work on Windows!!
+except:
+    WIN32API = False
+    print('Win32API引入失败=_=，放弃窗口置顶居中')
+
 face_base ='data'
 face_db = os.path.join(face_base, 'face_db')
 face_var = os.path.join(face_base, 'face_var')
@@ -252,18 +259,27 @@ def start():
             state = run()
         else:
             state = normal(state)
-    
-    
+
+def initTk(tk):
+    WIDTH = 150
+    HEIGHT = 50
+    X = 5
+    Y = 5
+    MAGIC = 5
+    if WIN32API:
+        X = GetSystemMetrics(0) / 2.0 - WIDTH / 2.0 - MAGIC
+    tk.minsize(WIDTH, HEIGHT)
+    tk.maxsize(WIDTH, HEIGHT)
+    tk.geometry('%sx%s+%s+%s' % (WIDTH, HEIGHT, X, Y))
+    tk.wm_attributes('-topmost', 1)  # 窗口置顶，仅win有效……
+
+
+# Main Entry
 capInput = cv2.VideoCapture(search_webcam())
 tk = Tk()
-tk.wm_attributes('-topmost',1)  # 窗口置顶，仅win有效……
-tk.geometry('150x50+0+0')
-tk.minsize(150 ,50)
-tk.maxsize(150 ,50)
+initTk(tk)
 app = Application(tk)
-# 设置窗口标题:
 app.master.title('签到系统')
-# 主消息循环:
 threading.Thread(target=start).start()
 app.mainloop()
 

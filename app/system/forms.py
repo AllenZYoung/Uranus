@@ -61,3 +61,16 @@ class EditTermForm(forms.ModelForm):
 
 
 
+class EditCourseForm(forms.ModelForm):
+    name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
+    classroom = forms.CharField( widget=forms.TextInput(attrs={'class': 'form-control'}))
+    credit = forms.CharField(widget=forms.TextInput(attrs={'type':'number','class': 'form-control'}))
+    startTime = forms.DateField(label='开始时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
+    endTime = forms.DateField(label='结束时间', widget=SelectDateWidget(attrs={'class': 'form-control'}))
+
+    def __init__(self, *args, **kwargs):
+        super(EditCourseForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = models.Course
+        fields = ['name','term','classroom','credit','startTime','endTime']

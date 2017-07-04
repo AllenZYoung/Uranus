@@ -1,33 +1,3 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>课程资源</title>#}
-{#</head>#}
-{#<body>#}
-{#<table>#}
-{#    <tr>#}
-{#        <th>类型</th>#}
-{#        <th>资源名称</th>#}
-{#        <th>上传时间</th>#}
-{#        <th>删除资源</th>#}
-{#    </tr>#}
-{#    {% for file in files %}#}
-{#        <tr>#}
-{#            <td>{{ file.type }}</td>#}
-{#            <td>#}
-{#                <a href="/teacher{{ file.file.url }}">{{ file.file.name }}</a>#}
-{#            </td>#}
-{#            <td>{{ file.time }}</td>#}
-{#            <td>#}
-{#                <a href="{% url 'teacher:delete_file' %}?file_id={{ file.id }}">删除</a>#}
-{#            </td>#}
-{#        </tr>#}
-{#    {% endfor %}#}
-{#</table>#}
-{#</body>#}
-{#</html>#}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,18 +76,6 @@
                     <p>签到</p>
                 </a>
             </li>
-            {#	                <li>#}
-            {#	                    <a href="teacher_team.html">#}
-            {#	                        <i class="material-icons">face</i>#}
-            {#	                        <p>学生团队管理</p>#}
-            {#	                    </a>#}
-            {#	                </li>#}
-            {#	                <li>#}
-            {#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
-            {#	                        <i class="material-icons">receipt</i>#}
-            {#	                        <p>往期课程</p>#}
-            {#	                    </a>#}
-            {#	                </li>#}
         </ul>
     </div>
 </div>
@@ -172,7 +130,11 @@
                                 <tbody>
                                 {% for file in files %}
                                     <tr>
-                                        <td>{{ file.file.name|base_name }}</td>
+                                        <td>
+                                            <a href="{{ file.file.url }}">
+                                                {{ file.file.name|base_name }}
+                                            </a>
+                                        </td>
                                         <td>{{ file.get_type_display }}</td>
                                         <td>{{ file.time }}</td>
                                         <td>{{ file.user.name }}</td>
