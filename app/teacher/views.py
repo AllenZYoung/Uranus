@@ -651,12 +651,15 @@ data = {'is_ended': True,
 
 
 def attendance_view(request):
+    global data
     action_id = request.GET.get('action')
+    log('action_id' + action_id, 'teacher/attendance_view')
     if action_id == '0':  # 开始签到
         course_id = request.session.get('course_id', None)
         data['is_ended'] = False
         data['is_started'] = True
         data['is_collected'] = False
+        log(data, 'teacher/attendance_view')
         enrolls = Enroll.objects.filter(course_id=course_id)
         attendance = showToday()
         attendance_id = [item.user_id for item in attendance]
@@ -669,6 +672,7 @@ def attendance_view(request):
         data['is_ended'] = True
         data['is_started'] = False
         data['is_collected'] = False
+        log(data, 'teacher/attendance_view')
         enrolls = Enroll.objects.filter(course_id=course_id)
         attendance = showToday()
         attendance_id = [item.user_id for item in attendance]
@@ -680,13 +684,16 @@ def attendance_view(request):
         data['is_collected'] = True
         data['is_started'] = False
         data['is_ended'] = True
+        log(data, 'teacher/attendance_view')
         return render(request, 'teacher/teacher_collect.html', {'data': data, })
     elif action_id == '3':  # 停止收集
         data['is_collected'] = False
         data['is_started'] = False
         data['is_ended'] = True
+        log(data, 'teacher/attendance_view')
         return render(request, 'teacher/teacher_collect.html', {'data': data, })
     elif action_id == '4':  # 向客户端发送数据
+        log(data, 'teacher/attendance_view')
         return JsonResponse(data.copy())
 
 
