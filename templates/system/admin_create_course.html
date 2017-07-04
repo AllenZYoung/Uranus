@@ -16,7 +16,6 @@
     <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
 
      <!-- 日历 -->
-
     <link href="{% static 'assets/css/bootstrap-datetimepicker.css' %}" rel="stylesheet" media="screen">
     <!-- 日历 -->
 
@@ -253,7 +252,16 @@
 
         // Javascript method's body can be found in assets/js/demos.js
         demo.initDashboardPageCharts();
-
+        $('.form_date').datetimepicker({
+                language:  'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 1,
+                forceParse: 0
+             });
     });
 
 
@@ -365,17 +373,6 @@
         });
     });
 
-<!---->
-    $('.form_date').datetimepicker({
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  "linked",
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
-    });
 
 
 </script>
