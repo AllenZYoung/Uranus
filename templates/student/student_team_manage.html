@@ -129,6 +129,7 @@
                                         <th>学号</th>
                                         <th>姓名</th>
                                         <th>职务</th>
+                                        <th>个人技能</th>
                                         {% if user_role.role == 'leader' %}
                                             <th>状态</th>
                                         {% endif %}
@@ -153,6 +154,7 @@
                                                         </td>
                                                     {% else %}
                                                         <td>{{ member.get_role_display }}</td>
+                                                        <td>{{ member.user.desc }}</td>
                                                         <td>已同意</td>
                                                     {% endif %}
                                                 {% else %}

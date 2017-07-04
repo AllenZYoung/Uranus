@@ -89,12 +89,14 @@ def change_info(request):
         form=UserChangeForm()
         form.fields['tel'].initial=user.tel
         form.fields['email'].initial = user.email
+        form.fields['desc'].initial = user.desc
         return render(request,'change_info.html',{'form':form,'user':user})
     else:
         form=UserChangeForm(request.POST)
         if form.is_valid():
             tel=form.cleaned_data['tel']
             email=form.cleaned_data['email']
+            desc=form.cleaned_data['desc']
             passwd=form.cleaned_data['passwd']
             second_passwd=form.cleaned_data['second_passwd']
             if passwd is not None and passwd != second_passwd:
@@ -104,6 +106,8 @@ def change_info(request):
                 user.tel=tel
             if email is not None:
                 user.email=email
+            if desc is not None:
+                user.desc=desc
             if passwd is not None and len(passwd) > 0:
                 user.password=passwd
                 request.user.set_password(passwd)

@@ -26,6 +26,7 @@ class User(models.Model):
     gender = models.CharField(max_length=8, choices=GENDER, default='male')
     tel = models.CharField(max_length=16, null=True, blank=True, help_text='电话')
     email = models.EmailField(max_length=64, null=True, blank=True)
+    desc=models.CharField(max_length=20,null=True,blank=True)
 
     def __str__(self):
         return self.name or self.username
