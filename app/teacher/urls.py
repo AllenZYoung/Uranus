@@ -46,4 +46,6 @@ urlpatterns = [
     url(r'^teacher_check$', views.teacher_check, name='teacher_check'),
     url(r'^teacher_collect$', views.teacher_collect, name='teacher_collect'),
     url(r'^attendance_view', views.attendance_view, name='attendance_view'),  # 签到
+    url(r'^single_workmeta_report/',views.single_workmeta_report,name='single_workmeta_report'),
+
 ]

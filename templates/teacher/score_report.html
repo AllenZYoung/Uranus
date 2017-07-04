@@ -183,10 +183,17 @@
                                             <td>{{ row.workmeta.title }}</td>
                                             {% for work in row.works %}
                                                 <td>
-                                                    {{ work.score }}
+                                                   {% if work.score  %}
+                                                        {% if work.score == -1 %}
+                                                            未评分
+                                                        {% else %}
+                                                            {{ work.score }}
+                                                        {% endif %}
+                                                {% else %}
+                                                    未提交
+                                                {% endif %}
                                                 </td>
                                             {% endfor %}
-
                                         {% endif %}
                                     </tr>
                                 {% endfor %}

@@ -47,25 +47,25 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li>
-                <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:course' %}">
                     <i class="material-icons">dashboard</i>
                     <p>课程管理</p>
                 </a>
             </li>
             <li class="active">
-                <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:task' %}">
                     <i class="material-icons">content_copy</i>
                     <p>作业管理</p>
                 </a>
             </li>
             <li>
-                <a href="{% url 'teacher:team_manage' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:team_manage' %}">
                     <i class="material-icons">face</i>
                     <p>团队管理</p>
                 </a>
             </li>
             <li>
-                <a href="{% url 'teacher:score_manage' %}?course_id={{ course.id }}">
+                <a href="{% url 'teacher:score_manage' %}">
                     <i class="material-icons">assessment</i>
                     <p>成绩管理</p>
                 </a>
@@ -76,18 +76,6 @@
                     <p>签到</p>
                 </a>
             </li>
-            {#	                <li>#}
-            {#	                    <a href="teacher_team.html">#}
-            {#	                        <i class="material-icons">face</i>#}
-            {#	                        <p>学生团队管理</p>#}
-            {#	                    </a>#}
-            {#	                </li>#}
-            {#	                <li>#}
-            {#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
-            {#	                        <i class="material-icons">receipt</i>#}
-            {#	                        <p>往期课程</p>#}
-            {#	                    </a>#}
-            {#	                </li>#}
         </ul>
     </div>
 </div>
@@ -102,7 +90,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'teacher:show_works' %}?course_id={{ course.id }}">返回</a>
+                <a class="navbar-brand" href="{% url 'teacher:show_works' %}">返回</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -155,9 +143,13 @@
                                                 </td>
                                                 <td>{{ team.name }}</td>
                                                 <td>
-                                                    <a href="{% url 'teacher:add_comment_score' %}?work_id={{ work.id }}&work_meta_id={{ work_meta_id }}&course_id={{ course.id }}">
+                                                {% if work.score is None %}
+                                                    <a href="{% url 'teacher:add_comment_score' %}?work_id={{ work.id }}&work_meta_id={{ work_meta_id }}">
                                                         <button class="btn btn-warning">评分与评价</button>
                                                     </a>
+                                                {% else %}
+                                                    {{ work.score }}
+                                                {% endif %}
                                                 </td>
 
                                                 {#            <td><a href="{% url 'teacher:add_comment_score' %}?work_id={{ work.id }}&work_meta_id={{ work_meta_id }}">评论</a></td>#}
@@ -167,6 +159,9 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                        <a href="{% url 'teacher:single_workmeta_report' %}?workmeta_id={{ work_meta_id }}">
+                            <button class="btn btn-warning">下载成绩报表</button>
+                        </a>
                         </div>
                     </div>
                 </div>
