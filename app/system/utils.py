@@ -26,6 +26,8 @@ def handle_uploaded_user(request,course_id, f=None, user_role='student'):
     log(path, 'handle_uploaded_user')
     filepath = os.path.join(path,filedate+'_'+f.name)
     log(filepath, 'handle_uploaded_user')
+    if (not os.path.exists(path)):
+        os.makedirs(path)
     with open(filepath, 'wb+') as de:
         for chunk in f.chunks():
             de.write(chunk)

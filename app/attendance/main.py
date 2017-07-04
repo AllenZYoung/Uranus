@@ -225,6 +225,7 @@ class Application(Frame):
         temp = self.nameInput.get()
         if temp != '':
             ID = temp
+        self.nameInput.delete('0.0','end')
         # messagebox.showinfo('Message', 'Hello, %s' % name)
 
 def normal(state):
@@ -252,6 +253,7 @@ def start():
     
 capInput = cv2.VideoCapture(search_webcam())
 tk = Tk()
+tk.wm_attributes('-topmost',1)  # 窗口置顶，仅win有效……
 tk.geometry('150x50+0+0')
 tk.minsize(150 ,50)
 tk.maxsize(150 ,50)

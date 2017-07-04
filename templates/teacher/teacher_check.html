@@ -45,32 +45,26 @@
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
 	                <li>
-	                    <a href="teacher_course.html">
+	                    <a href="{% url 'teacher:course' %}">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="teacher_task.html">
+	                    <a href="{% url 'teacher:task' %}">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="teacher_team.html">
+	                    <a href="{% url 'teacher:team_manage' %}">
 	                        <i class="material-icons">face</i>
-	                        <p>学生团队管理</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="teacher_pastcourse.html">
-	                        <i class="material-icons">receipt</i>
-	                        <p>往期课程</p>
+	                        <p>团队管理</p>
 	                    </a>
 	                </li>
 	                <!-- Copy -->
 	                <li class="active">
-	                    <a href="teacher_pastcourse.html">
+	                    <a href="{% url 'teacher:teacher_attendance' %}">
 	                        <i class="material-icons">done</i>
 	                        <p>签到</p>
 	                    </a>
