@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.shortcuts import render,render_to_response, redirect
 from django.http import HttpResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
@@ -268,12 +269,18 @@ def student_team_build(request):
 
 @login_required(login_url='app:login')
 def apply_for_team(request):
+    data = {}
     user = get_object_or_404(User, username=request.user.username)
     member = joinTeam(user, Team.objects.get(name=request.GET.get('name')))
     if member:
-        return redirect('/student/student_team_build')
+        data['success'] = 'true'
+        data['forward_url'] = '/student/student_team_build'
+        # return redirect('/student/student_team_build')
     else:
-        return HttpResponse('申请失败')
+        data['error_message'] = '申请失败！'
+        # return HttpResponse('申请失败')
+    return HttpResponse(json.dumps(data))
+
 
 @login_required(login_url='app:login')
 def process_apply(request):

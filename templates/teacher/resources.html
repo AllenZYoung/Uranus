@@ -131,9 +131,10 @@
                                 {% for file in files %}
                                     <tr>
                                         <td>
-                                            <a href="{{ file.file.url }}">
-                                                {{ file.file.name|base_name }}
-                                            </a>
+                                            <a href="{{ file.file.url }}">{{ file.file.name|base_name }}</a>
+                                            {% if file.file.url|is_office %}
+                                                <a href="{% url 'teacher:preview_source_online' %}?file={{ file.file }}" target="_blank">[预览]</a>
+                                            {% endif %}
                                         </td>
                                         <td>{{ file.get_type_display }}</td>
                                         <td>{{ file.time }}</td>
