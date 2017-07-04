@@ -8,7 +8,7 @@ from Uranus.settings import BASE_DIR, MEDIA_ROOT, MEDIA_URL
 RESOURCE_ROOT   = os.path.join(BASE_DIR, 'resource')
 PHOTO_ROOT      = os.path.join(RESOURCE_ROOT, 'photos')
 REPORT_ROOT     = os.path.join(RESOURCE_ROOT, 'reports')
-UPLOAD_ROOT     = MEDIA_ROOT    # os.path.join(RESOURCE_ROOT, 'uploads')
+UPLOAD_ROOT     = os.path.join(RESOURCE_ROOT, 'uploads')
 
 RESOURCE_URL    = MEDIA_URL
 

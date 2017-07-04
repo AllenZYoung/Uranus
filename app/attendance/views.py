@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from app.utils import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+import os
 
 data = {'start_time': None,
         'end_time': None,
@@ -25,13 +26,15 @@ def attendance_view(request):
     if not action_id:
         data['start_time'] = request.GET.get('start_time')
         data['end_time'] = request.GET.get('end_time')
+        data['is_ended'] = False
+        data['is_started'] = True
     elif action_id == '1': # 结束签到
         data['is_ended'] = True
+        data['is_started'] = False
     elif action_id == '2': # 收集照片
         data['is_collected'] = True
     elif action_id == '3': # 停止收集
         data['is_collected'] = False
-    elif action_id == '4':
-        sendings = data.copy()
-        return JsonResponse(sendings)
-    return render(request, 'attendance.html', {'data': data})
+    elif action_id == '4': # 向客户端发送数据
+        return JsonResponse(data.copy())
+    return render(request, 'teacher_collect.html', {'data': data})

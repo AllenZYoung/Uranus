@@ -6,11 +6,10 @@
 	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>课程资源</title>
+	<title>课程管理</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
-
 
     <!-- Bootstrap core CSS     -->
     <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,42 +28,57 @@
 <body>
 
 	<div class="wrapper">
+
 	    <div class="sidebar" data-color="blue" data-image="/static/assets/img/sidebar-1.jpg">
 			<!--
-	        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-		    Tip 2: you can also add an image using data-image tag
+		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
-			-->
+		        Tip 2: you can also add an image using data-image tag
+		    -->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
-					学生
+				<a href="#" class="simple-text">
+					教师
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li class="active">
-	                    <a href="student_course.html">
+	                <li>
+	                    <a href="teacher_course.html">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="student_task.html">
+	                    <a href="teacher_task.html">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href="student_team.html">
+	                    <a href="teacher_team.html">
 	                        <i class="material-icons">face</i>
-	                        <p>团队管理</p>
+	                        <p>学生团队管理</p>
 	                    </a>
 	                </li>
+	                <li>
+	                    <a href="teacher_pastcourse.html">
+	                        <i class="material-icons">receipt</i>
+	                        <p>往期课程</p>
+	                    </a>
+	                </li>
+	                <!-- Copy -->
+	                <li class="active">
+	                    <a href="teacher_pastcourse.html">
+	                        <i class="material-icons">done</i>
+	                        <p>签到</p>
+	                    </a>
+	                </li>
+	                <!-- Copy -->
 	            </ul>
 	    	</div>
-		</div>
+	    </div>
 
 	    <div class="main-panel">
 			<nav class="navbar navbar-transparent navbar-absolute">
@@ -76,7 +90,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="{% url 'student:index' %}">返回</a>
+						<a class="navbar-brand" href="{% url 'teacher:teacher_attendance' %}">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -88,75 +102,86 @@
 		 						<ul class="dropdown-menu">
 									<li><a href="#">注销登录</a></li>
 								</ul>
-							</li>c
+							</li>
 						</ul>
 					</div>
 				</div>
 			</nav>
-
-	        <div class="content">
-	            <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-md-12">
-	                        <div class="card">
-	                            <div class="card-header" data-background-color="orange">
-	                                <h4 class="title">团队成绩</h4>
-	                                <p class="category">团队的课程最终成绩</p>
+			<!-- Copy -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card" data-color="blue">
+								<div class="card-header" data-background-color="green">
+	                                <h4 class="title">收集照片</h4>
+									<p class="category">收集每期课程参与学生照片，作为识别依据</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
-	                                    <thead>
-	                                        <th>团队名称</th>
-	                                    	<th>队长</th>
-	                                    	<th>团队人数</th>
-	                                    	<th>成绩</th>
-	                                    </thead>
-	                                    <tbody>
-	                                        <tr>
-	                                        	<td>{{ team.name }}</td>
-	                                        	<td>{{ leader }}</td>
-	                                        	<td>{{ num }}</td>
-	                                        	<td>{{ teamGrade }}</td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </div>
-	                        </div>
-	                        <div class="card">
-	                            <div class="card-header" data-background-color="orange">
-	                                <h4 class="title">个人成绩</h4>
-	                                <p class="category">个人的课程最终成绩</p>
+									<div class="card-content table-responsive">
+										<br>
+		                                <div class="tim-typo">
+											<p><span class="tim-note">使用指南</span>
+												<p>轮询（Polling）是一种CPU决策如何提供周边设备服务的方式，又称“程控输出入”（Programmed I/O）。轮询法的概念是，由CPU定时发出询问，依序询问每一个周边设备是否需要其服</p>
+											</p>
+										</div>
+										<div class="tim-typo">
+											<div class="row">
+												<div class="col-md-6">
+													{% if not data.is_collected %}
+													<a href="{% url 'teacher:attendance_view' %}?action=2">
+														<button class="btn btn-success">开始收集</button>
+													</a>
+													{% else %}
+													<a href="{% url 'teacher:attendance_view' %}?action=3">
+														<button class="btn btn-success">停止收集</button>
+													</a>
+													{% endif %}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card" data-color="blue">
+								<div class="card-header" data-background-color="green">
+	                                <h4 class="title">查看当前收集情况</h4>
+									<p class="category">查看当前签到情况，需刷新后更新</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
+									<table class="table table-hover">
 	                                    <thead>
 	                                        <th>学号</th>
 	                                    	<th>姓名</th>
-	                                    	<th>成绩</th>
+	                                    	<th>已收集</th>
 	                                    </thead>
 	                                    <tbody>
 	                                        <tr>
-	                                        	<td>{{ student.username }}</td>
-	                                        	<td>{{ student.name }}</td>
-	                                        	<td>{{ stuGrade }}</td>
+	                                        	<td>121321</td>
+	                                        	<td>fdfasd</td>
+	                                        	<td>Y</td>
 	                                        </tr>
 	                                    </tbody>
 	                                </table>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-
-	        <footer class="footer">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Copy -->
+			<footer class="footer">
 				<div class="container-fluid">
 					<p class="copyright pull-right">
 						URANUS@2017
 					</p>
 				</div>
 			</footer>
-	    </div>
+		</div>
 	</div>
 
 </body>
@@ -180,5 +205,14 @@
 
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="/static/assets/js/demo.js"></script>
+
+	<script type="text/javascript">
+    	$(document).ready(function(){
+
+			// Javascript method's body can be found in assets/js/demos.js
+        	demo.initDashboardPageCharts();
+
+    	});
+	</script>
 
 </html>

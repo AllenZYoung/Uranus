@@ -110,6 +110,7 @@
                                     <h3 class="category">团队状态：{{ team.status }}</h3>
                                     {% if team.status == 'rejected' %}
                                         <h4 class="category text-warning">被驳回，请解散团队后重新发起或加入团队</h4>
+                                        <h4 class="category text-warning">教师驳回意见：{{ team.info }}</h4>
                                     {% elif team.status == 'unsubmitted' %}
                                         <h4 class="category text-warning">未提交，请负责人向教师提交申请</h4>
                                     {% elif team.status == 'auditing' %}
@@ -282,7 +283,7 @@
                             </div>
                             <div>
                                 <div class="card-content">
-                                    <h4>团队创建成功！请设置团队成员贡献度</h4>
+                                    <h4>团队创建成功！请队长设置团队成员贡献度</h4>
                                 </div>
                             </div>
                             <div class="card-content table-responsive">
@@ -295,8 +296,20 @@
                                     {% for member in member_list %}
                                         <tr>
                                             <td>{{ member.user }}</td>
-                                            <td>{{ member.role }}</td>
-                                            <td>{{ member.contribution }}</td>
+                                            <td>
+                                                {% if member.role == 'leader' %}
+                                                    负责人（队长）
+                                                {% elif member.role == 'member' %}
+                                                    队员
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if member.contribution == None %}
+                                                    尚未设置
+                                                {% else %}
+                                                    {{ member.contribution }}
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                 </table>
@@ -310,7 +323,7 @@
                                         {{ form.file }}
 
                                         {% csrf_token %}
-                                        <input type="submit" value="点我上传"/>
+                                        <input class="btn-warning" type="submit" value="点我上传"/>
                                     </form>
                                     </p>
                                 </div>

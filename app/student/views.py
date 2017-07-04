@@ -14,11 +14,16 @@ from app.utils import *
 from app.utils.authUtils import *
 from .utils import isXls
 import json
+from app.teacher.utils import compute_stu_score,compute_team_score
 # Create your views here.
 
 @login_required(login_url='app:login')
 def index(request):  # 也可以看做是“courseRoot函数”
-    return render(request, 'student/student_course.html')
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notice_new = Notice.objects.filter(course=course).order_by('-time').first()
+
+    return render(request, 'student/student_course.html',{'notice':notice_new})
 
 
 @login_required(login_url='app:login')  # 显示学生的课程信息
@@ -40,10 +45,10 @@ def member_evaluation(request):  # （团队负责人）学生的团队管理，
     student = User.objects.filter(username=student_id).first()
     member_model = Member.objects.filter(user__username__contains=student_id).first()
     if member_model is None:
-        return render(request,'pages-error-404.html')
+        return redirect('/student/student_team_build')
     team = member_model.team
     if team is None:
-        return render(request, 'pages-error-404.html')
+        return redirect('/student/student_team_build')
 
     if request.method == 'GET':  # 显示所有成员及其贡献度（包括队长自己）
         try:
@@ -163,22 +168,27 @@ def workView(request):
     member = get_object_or_404(Member, user=user)
     if request.method == 'POST':
         data = {}
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            ret = utils.submit_homework_file(request)
-            if ret:
-                data['success'] = 'true'
-                data['forward_url'] = '/student/submits'
-                # return redirect('/student/submits')
-            else:
-                data['error_message'] = '提交失败，请重新提交！'
-                # return HttpResponse('Sumbit failed')
-        else:
-            data['error_message'] = '数据不合法，请重新填写提交！'
-            # return HttpResponse('form is not valid')
+        if len(request.FILES.getlist('files')) == 0:
+            data['error_message'] = '文件为空，请重新上传！'
+            return HttpResponse(json.dumps(data))
+        utils.submit_homework_file(request)
+        data['success'] = 'true'
+        data['forward_url'] = '/student/submits'
         return HttpResponse(json.dumps(data))
+        # if form.is_valid():
+        #     ret = utils.submit_homework_file(request)
+        #     if ret:
+        #         data['success'] = 'true'
+        #         data['forward_url'] = '/student/submits'
+        #         # return redirect('/student/submits')
+        #     else:
+        #         data['error_message'] = '提交失败，请重新提交！'
+        #         # return HttpResponse('Sumbit failed')
+        # else:
+        #     data['error_message'] = '数据不合法，请重新填写提交！'
+        #     # return HttpResponse('form is not valid')
+        # return HttpResponse(json.dumps(data))
     elif request.method == 'GET':
-        form = UploadFileForm()
         if 'work_id' in request.GET:
             wid = request.GET['work_id']
             work = Work.objects.get(id=wid)
@@ -193,7 +203,6 @@ def workView(request):
             workMeta = WorkMeta.objects.get(id=wid)
             return render(request, 'student/student_task_details.html', {'workMeta': workMeta,
                                                                          'is_work': False,
-                                                                         'form': form,
                                                                          'member': member,})
     else:
         return render(request,'pages-error-404.html')
@@ -283,7 +292,22 @@ def dismiss_team(request):
 
 @login_required(login_url='app:login')
 def view_score(request):
-    return render(request,'student/student_course_score.html')
+    student = get_object_or_404(User, username=request.user.username)
+    stu_member = Member.objects.get(user=student)
+    stu_team = stu_member.team
+    dict = reportTeam(stu_team)
+    leader = dict['leader'].user.name
+    team_list, score_list, team_score = compute_team_score()
+    stuScoreDict = compute_stu_score()
+    teamGrade = 0
+    stuGrade = 0
+    #TODO 计算teamGrade和stuGrade，可以根据前面几行的函数
+    if stu_member is None:
+        return HttpResponse('404 not member')
+    num = 0
+    return render(request,'student/student_course_score.html',
+                  {'num':num,'team':stu_team,'student':student,'leader':leader,
+                   'teamGrade':teamGrade,'stuGrade':stuGrade})
 
 
 @login_required(login_url='app:login')
@@ -293,4 +317,11 @@ def preview_source_online(request):
     url = fileUtils.docPreviewUrl(file)
     log(url, 'preview_source_online')
     return redirect(url)
+
+@login_required(login_url='app:login')
+def viewNotice(request):
+    user = request.user
+    course = Enroll.objects.filter(user__username__contains=user).first().course
+    notices = Notice.objects.filter(course=course).order_by('-time')
+    return render(request,'student/student_course_announcement.html',{'notices':notices})
 

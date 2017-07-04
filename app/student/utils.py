@@ -9,7 +9,9 @@ import pytz
 import os
 from openpyxl.reader.excel import load_workbook
 from app.utils import *
-from datetime import datetime # 请直接使用datetime()函数
+from datetime import datetime  # 请直接使用datetime()函数
+
+
 def auth_user(form):  # 瞎写的东西
     if form.is_valid():
         data = form.cleaned_data
@@ -24,25 +26,25 @@ def auth_user(form):  # 瞎写的东西
     else:
         return False
 
+
 # 提交某个作业（的文件），只能是负责人提交
 def submit_homework_file(request):
     workMeta_id = request.POST.get('workMeta_id')
-    user=get_object_or_404(User, username=request.user.username)
+    user = get_object_or_404(User, username=request.user.username)
     enroll = Enroll.objects.get(user=user)
     member = get_object_or_404(Member, user=user)
     print(member.role)
-    f = request.FILES['file']
-    file = File(file=f, course=enroll.course, user_id=user.id)
-    file.save()
     work = Work(team=member.team, workMeta_id=workMeta_id)
     work.save()
-    Attachment(file=file, work=work, workMeta_id=workMeta_id).save()
-    return True
+    for file in request.FILES.getlist('files'):
+        f = file
+        file = File(file=f, course=enroll.course, user_id=user.id)
+        file.save()
+        Attachment(file=file, work=work, workMeta_id=workMeta_id).save()
 
 
 # 获得对应团队，对应课程的提交情况，包括已提交和未提交
 def get_submittings(team_id, course_id):
-
     submittings = {'submitted': [], 'unsubmitted': []}
     # 选择最晚提交作业
     last_submit = {}
@@ -64,6 +66,7 @@ def get_submittings(team_id, course_id):
             if check_submit_time(workMeta):
                 submittings['unsubmitted'].append(workMeta)
     return submittings
+
 
 def handle_uploaded_contribution(request, f=None):
     # datenow = datetime.datetime.now()
@@ -95,7 +98,7 @@ def handle_uploaded_contribution(request, f=None):
             continue
         print('正在导入第' + str(i - 1) + '行...')
 
-        student_id = table.cell(row=i,column=1).value
+        student_id = table.cell(row=i, column=1).value
         student_contribution = table.cell(row=i, column=3).value
         print(student_id, student_contribution)
         student = User.objects.filter(username=student_id).first()
@@ -103,8 +106,8 @@ def handle_uploaded_contribution(request, f=None):
         #     Member.objects.filter(user=student).update(contribution=student_contribution)
         # else:
         #     return None
-        setContribution(student,student_contribution)
+        setContribution(student, student_contribution)
+
 
 def check_submit_time(workMeta):
     return workMeta.startTime < datetime.now(tz=pytz.utc) < workMeta.endTime
-

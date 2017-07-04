@@ -95,7 +95,6 @@ function submitClick(postUrl, modalShowText) {
         return;
     }
     var postData = getFormData(inputData, selectData, textData);
-
     $.ajax(
         {
             url: postUrl,
@@ -106,23 +105,25 @@ function submitClick(postUrl, modalShowText) {
             contentType: false,
             success: function (data) {
                 data = $.parseJSON(data);
-                var success_info = data['success'] || "";
-                var error_message = data['error_message'] || "";
-                if (success_info) {
-                    $('.modal-body').text(modalShowText);
-                    $('#myModal').modal('show');
-                    $('#confirm-btn').click(function () {
-                        window.location = data['forward_url'];
-                    });
-                } else {
-                    $('.modal-body').text(error_message);
-                    $('#myModal').modal('show');
-                }
-
+                showModal(data, modalShowText);
             }
         });
 }
 
+function showModal(data, modalShowText) {
+    var success_info = data['success'] || "";
+    var error_message = data['error_message'] || "";
+    if (success_info) {
+        $('.modal-body').text(modalShowText);
+        $('#myModal').modal('show');
+        $('#confirm-btn').click(function () {
+            window.location = data['forward_url'];
+        });
+    } else {
+        $('.modal-body').text(error_message);
+        $('#myModal').modal('show');
+    }
+}
 //删除提示
 function onDeleteMessage(deleteUrl) {
     var handleDeleteUrl = deleteUrl;

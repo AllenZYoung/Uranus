@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png" />
-	<link rel="icon" type="image/png" href="/static/assets/img/favicon.png" />
+	{% load static %}
+	<link rel="apple-touch-icon" sizes="76x76" href="{%  static 'assets/img/apple-icon.png' %}" />
+	<link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
 	<title>课程管理</title>
@@ -12,13 +13,13 @@
     <meta name="viewport" content="width=device-width" />
 
     <!-- Bootstrap core CSS     -->
-    <link href="/static/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
 
     <!--  Material Dashboard CSS    -->
-    <link href="/static/assets/css/material-dashboard.css" rel="stylesheet"/>
+    <link href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet"/>
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="/static/assets/css/demo.css" rel="stylesheet" />
+    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet" />
 
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -38,30 +39,45 @@
 
 			<div class="logo">
 				<a href="#" class="simple-text">
-					学生
+					教师
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	                <li class="active">
-	                    <a href={% url 'student:index' %}>
+	                <li>
+	                    <a href="teacher_course.html">
 	                        <i class="material-icons">dashboard</i>
 	                        <p>课程管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href={% url 'student:workpage' %}>
+	                    <a href="teacher_task.html">
 	                        <i class="material-icons">content_copy</i>
 	                        <p>作业管理</p>
 	                    </a>
 	                </li>
 	                <li>
-	                    <a href={% url 'student:teampage' %}>
+	                    <a href="teacher_team.html">
 	                        <i class="material-icons">face</i>
-	                        <p>团队管理</p>
+	                        <p>学生团队管理</p>
 	                    </a>
 	                </li>
+	                <li>
+	                    <a href="teacher_pastcourse.html">
+	                        <i class="material-icons">receipt</i>
+	                        <p>往期课程</p>
+	                    </a>
+	                </li>
+	                <!-- 侧边栏签到，将原有的 class="active"删去，不加蓝显示 -->
+	                <!-- Copy -->
+	                <li class="active">
+	                    <a href="teacher_pastcourse.html">
+	                        <i class="material-icons">done</i>
+	                        <p>签到</p>
+	                    </a>
+	                </li>
+	                <!-- Copy -->
 	            </ul>
 	    	</div>
 	    </div>
@@ -76,7 +92,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="student_course.html">课程管理</a>
+						<a class="navbar-brand" href="#">返回</a>
 					</div>
 					<div class="collapse navbar-collapse">
 						<ul class="nav navbar-nav navbar-right">
@@ -86,85 +102,67 @@
 	 							   <p class="hidden-lg hidden-md">Profile</p>
 		 						</a>
 		 						<ul class="dropdown-menu">
-									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
-                                	<li><a href="{% url 'app:profile' %}">个人中心</a></li>
+									<li><a href="#">注销登录</a></li>
 								</ul>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</nav>
-
+			<!-- 替换相应的class = "content"，签到主页面卡片 -->
+			<!-- Copy -->
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:my_course' %}">
+							<a href="{% url 'teacher:teacher_check' %}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="blue">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">done</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">课程基本信息</h3>
+										<h3 class="title">发起签到</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看课程相关基本信息，如课程要求、课程大纲等</p>
+											<p>发起一次签到，学生在指定时间短内进行人脸识别签到</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
 						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:resources' %}">
+							<a href="{% url 'teacher:teacher_collect' %}">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="green">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">recent_actors</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">课程资源</h3>
+										<h3 class="title">收集照片</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看下载课程资源</p>
+											<p>收集每期课程参与学生照片，作为识别依据</p>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
 						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:view_score'%}">
+							<a href="#">
 								<div class="card card-stats">
 									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">dashboard</i>
+										<i class="material-icons">recent_actors</i>
 									</div>
 									<div class="card-content">
 										<p class="category"><br></p>
-										<h3 class="title">课程成绩</h3>
+										<h3 class="title">点击下载签到记录</h3>
 									</div>
 									<div class="card-footer">
 										<div class="stats">
-											<p>查看最终团队成绩及个人成绩</p>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-sm-6">
-							<a href="{% url 'student:view_notice' %}">
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="red">
-										<i class="material-icons">dashboard</i>
-									</div>
-									<div class="card-content">
-										<p class="category"><br></p>
-										<h3 class="title">课程公告</h3>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<p class="text-warning">最新公告：{{ notice.title }}</p>
+											<p>下载已有的签到记录Excel</p>
 										</div>
 									</div>
 								</div>
@@ -173,7 +171,7 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- Copy -->
 			<footer class="footer">
 				<div class="container-fluid">
 					<p class="copyright pull-right">
@@ -185,26 +183,25 @@
 	</div>
 
 </body>
-
-	<!--   Core JS Files   -->
-	<script src="/static/assets/js/jquery-3.1.0.min.js" type="text/javascript"></script>
-	<script src="/static/assets/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/static/assets/js/material.min.js" type="text/javascript"></script>
+<!--   Core JS Files   -->
+	<script src="{% static 'assets/js/jquery-3.1.0.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'assets/js/bootstrap.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'assets/js/material.min.js' %}" type="text/javascript"></script>
 
 	<!--  Charts Plugin -->
-	<script src="/static/assets/js/chartist.min.js"></script>
+	<script src="{% static 'assets/js/chartist.min.js' %}"></script>
 
 	<!--  Notifications Plugin    -->
-	<script src="/static/assets/js/bootstrap-notify.js"></script>
+	<script src="{% static 'assets/js/bootstrap-notify.js' %}"></script>
 
 	<!--  Google Maps Plugin    -->
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
 	<!-- Material Dashboard javascript methods -->
-	<script src="/static/assets/js/material-dashboard.js"></script>
+	<script src="{% static 'assets/js/material-dashboard.js' %}"></script>
 
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
-	<script src="/static/assets/js/demo.js"></script>
+	<script src="{% static 'assets/js/demo.js' %}"></script>
 
 	<script type="text/javascript">
     	$(document).ready(function(){
