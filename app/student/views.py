@@ -146,7 +146,7 @@ def view_submitted_work(request):
         member = get_object_or_404(Member, user=user)
     except:
         return HttpResponse('No team joined')
-    submittings = utils.get_submittings(member.team.id, enroll.course.id)
+    submittings, _ = get_submittings(member.team.id, enroll.course.id)
     return render(request, 'student/student_task_view.html', {'submitted': submittings['submitted'], })
 
 
@@ -158,8 +158,26 @@ def view_unsubmitted_work(request):
         member = get_object_or_404(Member, user=user)
     except:
         return HttpResponse('No team joined')
-    submittings = utils.get_submittings(member.team.id, enroll.course.id)
-    return render(request, 'student/student_task_submit.html', {'unsubmitted': submittings['unsubmitted'], })
+    submittings, submitted_times = get_submittings(member.team.id, enroll.course.id)
+    # refactor
+    dictWorks = []
+    for s in submittings['submitted']:
+        w = {}
+        w['id'] = s.workMeta.id
+        w['title'] = s.workMeta.title
+        w['startTime'] = s.workMeta.startTime
+        w['endTime'] = s.workMeta.endTime
+        w['times'] = submitted_times[s.workMeta.id]
+        dictWorks.append(w)
+    for s in submittings['unsubmitted']:
+        w = {}
+        w['id'] = s.id
+        w['title'] = s.title
+        w['startTime'] = s.startTime
+        w['endTime'] = s.endTime
+        w['times'] = submitted_times[s.id]
+        dictWorks.append(w)
+    return render(request, 'student/student_task_submit.html', {'works': dictWorks})
 
 
 # added by wanggd 2017-06-28
@@ -172,7 +190,7 @@ def workView(request):
         if len(request.FILES.getlist('files')) == 0:
             data['error_message'] = '文件为空，请重新上传！'
             return HttpResponse(json.dumps(data))
-        utils.submit_homework_file(request)
+        submit_homework_file(request)
         data['success'] = 'true'
         data['forward_url'] = '/student/submits'
         return HttpResponse(json.dumps(data))

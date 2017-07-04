@@ -46,6 +46,8 @@ def submit_homework_file(request):
 # 获得对应团队，对应课程的提交情况，包括已提交和未提交
 def get_submittings(team_id, course_id):
     submittings = {'submitted': [], 'unsubmitted': []}
+    # 指示提交次数
+    submitted_times = {}
     # 选择最晚提交作业
     last_submit = {}
     for work in Work.objects.filter(team_id=team_id):
@@ -53,6 +55,9 @@ def get_submittings(team_id, course_id):
             if work.workMeta_id not in last_submit:
                 last_submit[work.workMeta_id] = {'work': work,
                                                  'time': datetime(2017, 1, 1, tzinfo=pytz.utc)}
+                submitted_times[work.workMeta_id] = 1
+            else:
+                submitted_times[work.workMeta_id] += 1
             if work.time > last_submit[work.workMeta_id]['time']:
                 last_submit[work.workMeta_id]['time'] = work.time
                 last_submit[work.workMeta_id]['work'] = work
@@ -65,8 +70,12 @@ def get_submittings(team_id, course_id):
     for workMeta in WorkMeta.objects.filter(course_id=course_id):
         if workMeta.id not in submitted_id:
             if check_submit_time(workMeta):
+                submitted_times[workMeta.id] = workMeta.submits
                 submittings['unsubmitted'].append(workMeta)
-    return submittings
+        else:
+            if check_submit_time(workMeta):
+                submitted_times[workMeta.id] = workMeta.submits - submitted_times[workMeta.id]
+    return submittings, submitted_times
 
 
 def handle_uploaded_contribution(request, f=None):
