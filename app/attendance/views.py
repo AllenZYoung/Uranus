@@ -39,4 +39,6 @@ def attendance_view(request):
         log(data, 'attendance_view')
         log(action_id, 'attendance_view')
         return JsonResponse(data.copy())
+    log(data, 'attendance_view')
+    log(action_id, 'attendance_view')
     return render(request, 'teacher_collect.html', {'data': data})

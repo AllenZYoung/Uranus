@@ -134,11 +134,11 @@
 										<div class="tim-typo">
 											<div class="row">
 												<div class="col-md-6">
-													{% if not data.is_collected %}
+													{% if not STATE == 2 %}
 													<a href="{% url 'teacher:attendance_view' %}?action=2">
 														<button class="btn btn-success">开始收集</button>
 													</a>
-													{% else %}
+													{% elif not STATE == 3 %}
 													<a href="{% url 'teacher:attendance_view' %}?action=3">
 														<button class="btn btn-danger">停止收集</button>
 													</a>

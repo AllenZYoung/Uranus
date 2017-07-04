@@ -128,13 +128,13 @@
 									</div>
 									<div class="tim-typo">
 										<div class="row">
-											{% if not data.is_started %}
+											{% if not STATE == 0 %}
 											<a href="{% url 'teacher:attendance_view' %}?action=0">
 												<div class="col-md-6">
 													<button class="btn btn-success">开始签到</button>
 												</div>
 											</a>
-											{% else %}
+											{% elif not STATE == 1 %}
 											<a href="{% url 'teacher:attendance_view' %}?action=1">
 											<div class="col-md-6">
 												<button class="btn btn-danger">结束签到</button>
