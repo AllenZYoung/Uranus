@@ -30,44 +30,20 @@
 </head>
 <body>
         <div class="sidebar" data-color="blue" data-image="{% static 'assets/img/sidebar-1.jpg' %}">
-			<!--
-		        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-		        Tip 2: you can also add an image using data-image tag
-		    -->
-
 			<div class="logo">
 				<a href="#" class="simple-text">
-					教师
+					{% if user.role == 'student' %}
+                        学生
+                    {% elif user.role == 'teacher' %}
+                        教师
+                    {% else %}
+                        教务
+                    {% endif %}
 				</a>
 			</div>
 
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
-	               <li >
-	                    <a href="{% url 'teacher:course' %}?course_id={{ course.id }}">
-	                        <i class="material-icons">dashboard</i>
-	                        <p>课程管理</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="{% url 'teacher:task' %}?course_id={{ course.id }}">
-	                        <i class="material-icons">content_copy</i>
-	                        <p>作业管理</p>
-	                    </a>
-	                </li>
-{#	                <li>#}
-{#	                    <a href="teacher_team.html">#}
-{#	                        <i class="material-icons">face</i>#}
-{#	                        <p>学生团队管理</p>#}
-{#	                    </a>#}
-{#	                </li>#}
-{#	                <li>#}
-{#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
-{#	                        <i class="material-icons">receipt</i>#}
-{#	                        <p>往期课程</p>#}
-{#	                    </a>#}
-{#	                </li>#}
 	            </ul>
 	    	</div>
 	    </div>

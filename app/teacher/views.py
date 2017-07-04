@@ -157,7 +157,7 @@ def create_resource(request):
 def homework(request):
     course_id = request.session.get('course_id', None)
     course = get_object_or_404(Course, id=course_id)
-    works = WorkMeta.objects.filter(course_id=course_id)
+    works = WorkMeta.objects.filter(course_id=course_id).order_by('-startTime')
     homeworks = []
     for work in works:
         if work.submits != -10:
@@ -620,6 +620,7 @@ def setNotice(request):
             notice = Notice(course=course, user=user, title=form.cleaned_data['title'],
                             content=form.cleaned_data['content'])
             notice.save()
+            form.clean()
             return render(request, 'teacher/teacher_course_announcement.html', {'notices': notices, 'form': form})
         else:
             return HttpResponse('数据不合法，请重新填写！')

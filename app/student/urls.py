@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^unsubmits$', views.view_unsubmitted_work, name='unsubmitted_work'),  # 查看未提交情况
     url(r'^submit_team$', views.submit_team),  # 提交组队请求
     url(r'^student_team_build$', views.student_team_build ,name='student_team_build'),
-    url(r'^s', views.download, name='download'),  # 资源下载链接
+    url(r'^s$', views.download, name='download'),  # 资源下载链接
     url(r'^workpage$', views.workRoot, name='workpage'),  # 查看作业详情
     url(r'^work', views.workView, name='work'),  # 查看作业详情
     url(r'^teampage$',views.teamRoot, name='teampage') ,# 团队主页，其下有多个功能

@@ -84,12 +84,12 @@ def profile(request):
 
 @login_required(login_url='app:login')
 def change_info(request):
+    user = get_object_or_404(User, username=request.user.username)
     if request.method == 'GET':
-        user=get_object_or_404(User,username=request.user.username)
         form=UserChangeForm()
         form.fields['tel'].initial=user.tel
         form.fields['email'].initial = user.email
-        return render(request,'change_info.html',{'form':form})
+        return render(request,'change_info.html',{'form':form,'user':user})
     else:
         form=UserChangeForm(request.POST)
         if form.is_valid():
@@ -111,7 +111,7 @@ def change_info(request):
             user.save()
             return redirect('/user/profile')
         else:
-            return render(request,'change_info.html',{'form':form,'error_message':'请输入合法数据'})
+            return render(request,'change_info.html',{'form':form,'error_message':'请输入合法数据','user':user})
 
 
 def bad_request(request):

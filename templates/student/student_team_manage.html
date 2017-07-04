@@ -107,7 +107,7 @@
                                     <p class="category">组建中的团队</p>
                                 </div>
                                 <div class="card-content">
-                                    <h3 class="category">团队状态：{{ team.status }}</h3>
+                                    <h3 class="category">团队状态：{{ team.get_status_display }}</h3>
                                     {% if team.status == 'rejected' %}
                                         <h4 class="category text-warning">被驳回，请解散团队后重新发起或加入团队</h4>
                                         <h4 class="category text-warning">教师驳回意见：{{ team.info }}</h4>
