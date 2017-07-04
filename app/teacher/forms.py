@@ -16,7 +16,7 @@ class HomeworkForm(forms.Form):
     content = forms.CharField(label='作业内容', widget=widgets.Textarea)
     proportion = forms.FloatField(label='总分占比', min_value=0, max_value=1)
     submits = forms.IntegerField(label='最大提交次数', min_value=1)
-    endTime = forms.DateField(label='截止日期', widget=widgets.SelectDateWidget)
+    endTime = forms.DateField(label='截止日期',widget=widgets.SelectDateWidget(attrs={'class':'form-control'}))
     attachment = forms.FileField(label='上传附件', required=False, widget=widgets.FileInput)
 
     def set_data(self, workmeta):

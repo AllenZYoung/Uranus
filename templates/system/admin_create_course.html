@@ -145,7 +145,7 @@
                                                         <div class="form-group">
                                                             <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy-mm-dd" data-link-field="id_startTime" data-link-format="yyyy-mm-dd">
                                                                 <input class="form-control" size="16" type="text" value=""  readonly>
-                                                                <span class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.png' %})"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                <div class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.bmp' %})" ><span class="glyphicon glyphicon-calendar"></span></div>
                                                             </div>
                                                             <input type="hidden" id="id_startTime"  name="startTime" value="" /><br/>
                                                         </div>
@@ -163,7 +163,7 @@
                                                         <div class="form-group">
                                                             <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy-mm-dd" data-link-field="id_endTime" data-link-format="yyyy-mm-dd">
                                                                 <input class="form-control" size="16" type="text" value="" readonly>
-                                                                <span class="input-group-addon" style=" background-image: url({% static 'assets/img/Calendar3.png' %})"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                                <span class="input-group-addon" style=" background-image: url({% static 'assets/img/calendar.bmp' %})"><span class="glyphicon glyphicon-calendar"></span></span>
                                                             </div>
                                                             <input type="hidden" id="id_endTime" name='endTime' value="" /><br/>
                                                         </div>
@@ -368,7 +368,7 @@
     $('.form_date').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
-        todayBtn:  1,
+        todayBtn:  "linked",
 		autoclose: 1,
 		todayHighlight: 1,
 		startView: 2,
