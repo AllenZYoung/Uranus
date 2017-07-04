@@ -105,6 +105,7 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
+<<<<<<< Updated upstream
                         <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="material-icons">person</i>
                             <p class="hidden-lg hidden-md">Profile</p>
@@ -163,6 +164,102 @@
     </footer>
 </div>
 
+=======
+	                    <a href="{% url 'teacher:score_manage' %}">
+	                        <i class="material-icons">assessment</i>
+	                        <p>成绩管理</p>
+	                    </a>
+	                </li>
+{#	                <li>#}
+{#	                    <a href="teacher_team.html">#}
+{#	                        <i class="material-icons">face</i>#}
+{#	                        <p>学生团队管理</p>#}
+{#	                    </a>#}
+{#	                </li>#}
+{#	                <li>#}
+{#	                    <a href="{% url 'teacher:teacher_postcourse' %}">#}
+{#	                        <i class="material-icons">receipt</i>#}
+{#	                        <p>往期课程</p>#}
+{#	                    </a>#}
+{#	                </li>#}
+	            </ul>
+	    	</div>
+	    </div>
+
+	    <div class="main-panel">
+			<nav class="navbar navbar-transparent navbar-absolute">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="{% url 'teacher:course' %}">返回</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
+	 							   <i class="material-icons">person</i>
+	 							   <p class="hidden-lg hidden-md">Profile</p>
+		 						</a>
+		 						<ul class="dropdown-menu">
+									<li><a href="{% url 'app:logout' %}">注销登录</a></li>
+                                    <li><a href="{% url 'app:profile' %}">个人中心</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header" data-background-color="green">
+	                                <h4 class="title">发布课程资源</h4>
+									<p class="category">发布相应的课程资源</p>
+	                            </div>
+                                <form method="post" action="" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="card-content">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="">课程名称</label>
+                                                <input readonly="readonly" type="text" class="form-control" value="{{ course.name }}">
+                                            </div>
+                                        </div>
+                                        <div class="container kv-main">
+                                                <label for="">选择附件上传</label>
+                                                    <input id="file-zh" name="file-zh[]" type="file" multiple>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button class="btn btn-success" id="submit-data" type="submit">发布课程资源</button>
+                                                 <p>{{ error_message }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<p class="copyright pull-right">
+						URANUS@2017
+					</p>
+				</div>
+			</footer>
+		</div>
+>>>>>>> Stashed changes
 {% include 'modal.html' %}
 </body>
 <!--   Core JS Files   -->
@@ -254,5 +351,16 @@
             });
         });
 	</script>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+    <script>
+        $('#file-zh').fileinput({
+            language: 'zh',
+            uploadUrl: '{% url 'teacher:create_resource' %}',
+            // maxFileSize: 1000,
+            maxFilesNum:20,
+        });
+    </script>
 >>>>>>> Stashed changes
 </html>
