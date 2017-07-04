@@ -135,34 +135,43 @@
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th>作业名称\团队名称</th>
+                                    <th>
+                                        作业ID
+                                    </th>
+                                    <th>
+                                        作业名称
+                                    </th>
+                                    <th>分数占比</th>
                                     {% for team in teams %}
                                         <th>{{ team.name }}</th>
                                     {% endfor %}
                                 </tr>
                                 </thead>
+
                                 <tbody>
-                                {% for row in datas %}
-                                    <tr>
+                                <tr>
+                                    {% for row in datas %}
                                         {% if  row.workmeta.submits != -10 %}
+                                            <td>{{ row.workmeta.id }}</td>
                                             <td>{{ row.workmeta.title }}</td>
+                                            <td>{{ row.workmeta.proportion }}</td>
                                             {% for work in row.works %}
                                                 <td>
-                                                   {% if work.score  %}
+                                                    {% if work.score %}
                                                         {% if work.score == -1 %}
                                                             未评分
                                                         {% else %}
                                                             {{ work.score }}
                                                         {% endif %}
-                                                {% else %}
-                                                    未提交
-                                                {% endif %}
+                                                    {% else %}
+                                                        未提交
+                                                    {% endif %}
                                                 </td>
                                             {% endfor %}
 
                                         {% endif %}
-                                    </tr>
-                                {% endfor %}
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -178,7 +187,10 @@
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th>评分项名称\团队名称</th>
+                                    <th>评分项ID</th>
+                                    <th>评分项名称</th>
+                                    <th>分数占比</th>
+
                                     {% for team in teams %}
                                         <th>{{ team.name }}</th>
                                     {% endfor %}
@@ -188,7 +200,9 @@
                                 {% for row in datas %}
                                     <tr>
                                         {% if  row.workmeta.submits < -1 %}
+                                            <td>{{ row.workmeta.id }}</td>
                                             <td>{{ row.workmeta.title }}</td>
+                                            <td>{{ row.workmeta.proportion }}</td>
                                             {% for work in row.works %}
                                                 <td>
                                                     {{ work.score }}
