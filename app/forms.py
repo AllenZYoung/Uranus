@@ -16,6 +16,7 @@ class UserChangeForm(forms.Form):
     email = forms.EmailField(required=False, label='邮箱')
     passwd = forms.CharField(max_length=32, required=False, label='密码', widget=forms.PasswordInput(attrs={'placeholder': '不填写则不更改密码', }))
     second_passwd = forms.CharField(max_length=32, required=False, label='再次输入密码',)
+    desc=forms.CharField(max_length=20,required=False,label='个人技能描述')
 
     def __init__(self, *args, **kwargs):
         super(UserChangeForm, self).__init__(*args, **kwargs)
